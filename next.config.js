@@ -6,10 +6,16 @@ const nextConfig = {
   },
   async rewrites() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://sitedotrabalhador-backend-production.up.railway.app';
+    
+    // Garantir que a URL sempre comece com https://
+    const validApiUrl = apiUrl.startsWith('http') ? apiUrl : `https://${apiUrl}`;
+    
+    console.log('🔗 API URL configurada para rewrites:', validApiUrl);
+    
     return [
       {
         source: '/api/:path*',
-        destination: `${apiUrl}/api/:path*`,
+        destination: `${validApiUrl}/api/:path*`,
       },
     ]
   },
