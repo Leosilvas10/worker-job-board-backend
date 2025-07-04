@@ -310,44 +310,7 @@ router.post('/sync', async (req, res) => {
   }
 });
 
-// GET /api/vagas - Listar vagas do cache
-router.get('/', async (req, res) => {
-  try {
-    const { limit = 50, offset = 0, categoria, ativo = true } = req.query;
-    
-    let query = 'SELECT * FROM vagas_cache WHERE ativo = ?';
-    let params = [ativo];
-
-    if (categoria) {
-      query += ' AND categoria = ?';
-      params.push(categoria);
-    }
-
-    query += ' ORDER BY data_criacao DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), parseInt(offset));
-
-    const vagas = await db.allAsync(query, params);
-
-    // Converter tags de JSON string para array
-    const vagasFormatadas = vagas.map(vaga => ({
-      ...vaga,
-      tags: vaga.tags ? JSON.parse(vaga.tags) : []
-    }));
-
-    res.json({
-      success: true,
-      vagas: vagasFormatadas,
-      total: vagas.length
-    });
-
-  } catch (error) {
-    console.error('Erro ao buscar vagas:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Erro ao buscar vagas'
-    });
-  }
-});
+// Esta rota foi removida pois está duplicada - já existe uma rota GET / acima
 
 // GET /api/vagas/stats - Estatísticas das vagas
 router.get('/stats', async (req, res) => {
@@ -493,6 +456,7 @@ router.post('/import-from-frontend', async (req, res) => {
       message: 'Erro ao importar vagas do frontend',
       error: error.message
     });
+  }
 });
 
 // NOVA ROTA: /api/simple-jobs - Para compatibilidade com o frontend
