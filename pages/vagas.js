@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
-import LeadModal from '../src/components/LeadModal/index'
-import JobCard from '../src/components/JobCard/JobCard'
+import LeadModal from '../src/components/LeadModal/LeadModal.jsx'
+import JobCard from '../src/components/JobCard/JobCard.jsx'
 import { useJobStats, useJobFormatting } from '../src/hooks/useJobStats'
 
 const Vagas = () => {
