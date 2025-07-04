@@ -68,11 +68,12 @@ export default async function handler(req, res) {
       console.error('❌ Erro ao buscar vagas externas:', error);
     }
 
-    // 2.1. Buscar vagas de empregos simples DIRETAMENTE DO BACKEND
+    // 2.1. Buscar vagas de empregos simples DIRETAMENTE DO BACKEND - HARDCODED
     try {
       console.log('🎯 Buscando vagas de empregos simples DIRETAMENTE DO BACKEND...');
-      const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend.onrender.com';
-      console.log('🔗 Conectando diretamente ao backend:', backendUrl);
+      // HARDCODED - GARANTINDO QUE FUNCIONE EM PRODUÇÃO
+      const backendUrl = 'https://worker-job-board-backend.onrender.com';
+      console.log('🔗 Conectando diretamente ao backend (HARDCODED):', backendUrl);
       
       const simpleResponse = await fetch(`${backendUrl}/api/simple-jobs`);
       const simpleData = await simpleResponse.json();

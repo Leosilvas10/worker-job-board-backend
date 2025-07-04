@@ -20,9 +20,9 @@ export default async function handler(req, res) {
       });
     }
 
-    // Buscar vagas do backend
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend.onrender.com';
-    console.log('🔗 Conectando ao backend:', backendUrl);
+    // Buscar vagas do backend - HARDCODED PARA GARANTIR FUNCIONAMENTO
+    const backendUrl = 'https://worker-job-board-backend.onrender.com';
+    console.log('🔗 Conectando ao backend (HARDCODED):', backendUrl);
     
     const response = await fetch(`${backendUrl}/api/simple-jobs`);
     
