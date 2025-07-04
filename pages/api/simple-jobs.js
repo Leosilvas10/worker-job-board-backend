@@ -20,9 +20,9 @@ export default async function handler(req, res) {
       });
     }
 
-    // Buscar vagas do backend - HARDCODED PARA GARANTIR FUNCIONAMENTO
-    const backendUrl = 'https://worker-job-board-backend.onrender.com';
-    console.log('🔗 Conectando ao backend (HARDCODED):', backendUrl);
+    // Buscar vagas do backend - RAILWAY
+    const backendUrl = 'https://sitedotrabalhador-backend-production.up.railway.app';
+    console.log('🔗 Conectando ao backend RAILWAY:', backendUrl);
     
     const response = await fetch(`${backendUrl}/api/simple-jobs`);
     
