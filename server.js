@@ -13,8 +13,24 @@ dotenv.config();
 const app = express();
 
 // Middleware
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://worker-job-board-frontend.vercel.app',
+  'https://worker-job-board-frontend-git-main-leosilvas10.vercel.app',
+  'https://worker-job-board-frontend-leosilvas10.vercel.app'
+];
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: function (origin, callback) {
+    // Permite requisições sem origin (como Postman) em desenvolvimento
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+      callback(null, true);
+    } else {
+      callback(new Error('Não permitido pelo CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
