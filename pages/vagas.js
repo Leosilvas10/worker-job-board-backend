@@ -189,15 +189,6 @@ const Vagas = () => {
         console.log('⚠️ API não disponível, usando apenas vagas fixas:', err.message)
         // Continua com vagas fixas
       })
-          setError(data.message || 'Erro ao carregar vagas')
-        }
-        setLoading(false)
-      })
-      .catch(err => {
-        console.error('❌ Erro ao buscar vagas:', err)
-        setError('Erro ao carregar vagas. Tente novamente.')
-        setLoading(false)
-      })
   }, [])
 
   // Effect para aplicar filtros
