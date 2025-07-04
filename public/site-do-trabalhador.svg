@@ -1,0 +1,24 @@
+<svg width="200" height="100" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fundo azul do governo -->
+  <rect width="200" height="100" fill="#2563eb"/>
+  
+  <!-- Símbolo do trabalho -->
+  <g transform="translate(20, 25)">
+    <!-- Ferramenta/martelo -->
+    <path d="M5 35 L15 25 L25 35 L15 45 Z" fill="#facc15"/>
+    <rect x="12" y="45" width="6" height="20" fill="#facc15"/>
+    
+    <!-- Engrenagem -->
+    <circle cx="35" cy="35" r="8" fill="none" stroke="#facc15" stroke-width="2"/>
+    <circle cx="35" cy="35" r="4" fill="#facc15"/>
+    
+    <!-- Pessoa/trabalhador -->
+    <circle cx="55" cy="30" r="4" fill="#22c55e"/>
+    <rect x="52" y="34" width="6" height="12" fill="#22c55e"/>
+  </g>
+  
+  <!-- Texto -->
+  <text x="85" y="35" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">SITE DO</text>
+  <text x="85" y="55" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#facc15">TRABALHADOR</text>
+  <text x="85" y="70" font-family="Arial, sans-serif" font-size="8" fill="#86efac">Direitos • Vagas • Calculadora</text>
+</svg>
