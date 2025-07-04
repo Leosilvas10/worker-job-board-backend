@@ -464,62 +464,34 @@ router.get('/simple-jobs', async (req, res) => {
   try {
     console.log('🎯 Buscando vagas formatadas para frontend...');
     
-    // Primeiro, verificar se há vagas no banco
-    const stmt = db.prepare('SELECT * FROM vagas WHERE ativa = 1 ORDER BY data_criacao DESC LIMIT 50');
-    const vagasDoBanco = stmt.all();
+    // Primeiro, verificar se há vagas no banco com verificação de null
+    let vagasDoBanco = [];
+    try {
+      const stmt = db.prepare('SELECT * FROM vagas WHERE ativa = 1 ORDER BY data_criacao DESC LIMIT 50');
+      const rows = stmt.all();
+      vagasDoBanco = rows || [];
+    } catch (dbError) {
+      console.error('⚠️ Erro ao acessar banco, usando fallback:', dbError.message);
+      vagasDoBanco = [];
+    }
     
     console.log(`📊 ${vagasDoBanco.length} vagas ativas encontradas no banco`);
     
-    // Se não há vagas no banco, popular automaticamente
-    if (vagasDoBanco.length === 0) {
-      console.log('🔄 Banco vazio! Populando com vagas iniciais...');
-      await popularBancoAutomaticamente();
-      
-      // Buscar novamente após popular
-      const vagasAposPopular = stmt.all();
-      console.log(`📊 ${vagasAposPopular.length} vagas após popular o banco`);
-      
-      if (vagasAposPopular.length > 0) {
-        const vagasFormatadas = vagasAposPopular.map(vaga => ({
-          id: vaga.id.toString(),
-          title: vaga.titulo,
-          company: vaga.empresa,
-          location: vaga.localizacao,
-          salary: vaga.salario,
-          description: vaga.descricao,
-          type: vaga.tipo,
-          category: vaga.categoria,
-          source: vaga.fonte,
-          external_url: vaga.external_url || '',
-          tags: vaga.tags ? JSON.parse(vaga.tags) : [],
-          created_at: vaga.data_criacao
-        }));
-        
-        return res.json({
-          success: true,
-          data: vagasFormatadas,
-          message: `${vagasFormatadas.length} vagas encontradas (banco populado automaticamente)`,
-          meta: {
-            total: vagasFormatadas.length,
-            source: 'database_populated'
-          }
-        });
-      }
-    } else {
-      // Converter vagas do banco para formato do frontend
-      const vagasFormatadas = vagasDoBanco.map(vaga => ({
-        id: vaga.id.toString(),
-        title: vaga.titulo,
-        company: vaga.empresa,
-        location: vaga.localizacao,
-        salary: vaga.salario,
-        description: vaga.descricao,
-        type: vaga.tipo,
-        category: vaga.categoria,
-        source: vaga.fonte,
+    // Se há vagas no banco, formatá-las com verificação de null
+    if (vagasDoBanco.length > 0) {
+      const vagasFormatadas = vagasDoBanco.filter(vaga => vaga && vaga.id).map(vaga => ({
+        id: vaga.id ? vaga.id.toString() : `temp_${Date.now()}`,
+        title: vaga.titulo || 'Vaga Disponível',
+        company: vaga.empresa || 'Empresa Não Informada',
+        location: vaga.localizacao || 'Local Não Informado',
+        salary: vaga.salario || 'A combinar',
+        description: vaga.descricao || 'Descrição não disponível',
+        type: vaga.tipo || 'CLT',
+        category: vaga.categoria || 'Outros',
+        source: vaga.fonte || 'database',
         external_url: vaga.external_url || '',
-        tags: vaga.tags ? JSON.parse(vaga.tags) : [],
-        created_at: vaga.data_criacao
+        tags: vaga.tags ? (typeof vaga.tags === 'string' ? JSON.parse(vaga.tags) : vaga.tags) : [],
+        created_at: vaga.data_criacao || new Date().toISOString()
       }));
       
       return res.json({
@@ -533,12 +505,51 @@ router.get('/simple-jobs', async (req, res) => {
       });
     }
     
-    // Fallback se tudo falhar
+    // Se não há vagas no banco, popular automaticamente
+    console.log('🔄 Banco vazio! Populando com vagas iniciais...');
+    await popularBancoAutomaticamente();
+    
+    // Buscar novamente após popular com verificação
+    try {
+      const stmt = db.prepare('SELECT * FROM vagas WHERE ativa = 1 ORDER BY data_criacao DESC LIMIT 50');
+      const vagasAposPopular = stmt.all() || [];
+      
+      if (vagasAposPopular.length > 0) {
+        const vagasFormatadas = vagasAposPopular.filter(vaga => vaga && vaga.id).map(vaga => ({
+          id: vaga.id ? vaga.id.toString() : `temp_${Date.now()}`,
+          title: vaga.titulo || 'Vaga Disponível',
+          company: vaga.empresa || 'Empresa Não Informada',
+          location: vaga.localizacao || 'Local Não Informado',
+          salary: vaga.salario || 'A combinar',
+          description: vaga.descricao || 'Descrição não disponível',
+          type: vaga.tipo || 'CLT',
+          category: vaga.categoria || 'Outros',
+          source: vaga.fonte || 'auto_populated',
+          external_url: vaga.external_url || '',
+          tags: vaga.tags ? (typeof vaga.tags === 'string' ? JSON.parse(vaga.tags) : vaga.tags) : [],
+          created_at: vaga.data_criacao || new Date().toISOString()
+        }));
+        
+        return res.json({
+          success: true,
+          data: vagasFormatadas,
+          message: `${vagasFormatadas.length} vagas encontradas (banco populado automaticamente)`,
+          meta: {
+            total: vagasFormatadas.length,
+            source: 'database_populated'
+          }
+        });
+      }
+    } catch (dbError) {
+      console.error('⚠️ Erro ao buscar após popular:', dbError.message);
+    }
+    
+    // Fallback final - vagas demo seguras
     const vagasFallback = [
       {
         id: 'fallback_1',
         title: 'Doméstica',
-        company: 'Família Silva',
+        company: 'Família Particular',
         location: 'São Paulo, SP',
         salary: 'R$ 1.320,00',
         description: 'Limpeza geral da casa, organização, preparo de refeições simples.',
@@ -548,8 +559,38 @@ router.get('/simple-jobs', async (req, res) => {
         external_url: '',
         tags: ['doméstica', 'limpeza', 'organização'],
         created_at: new Date().toISOString()
+      },
+      {
+        id: 'fallback_2',
+        title: 'Diarista',
+        company: 'Residencial Particular',
+        location: 'Rio de Janeiro, RJ',
+        salary: 'R$ 120,00/dia',
+        description: 'Limpeza completa de apartamento 2 quartos.',
+        type: 'Diarista',
+        category: 'Doméstica',
+        source: 'Fallback',
+        external_url: '',
+        tags: ['diarista', 'limpeza', 'apartamento'],
+        created_at: new Date().toISOString()
+      },
+      {
+        id: 'fallback_3',
+        title: 'Porteiro',
+        company: 'Edifício Central',
+        location: 'São Paulo, SP',
+        salary: 'R$ 1.500,00',
+        description: 'Controle de acesso e atendimento.',
+        type: 'CLT',
+        category: 'Portaria',
+        source: 'Fallback',
+        external_url: '',
+        tags: ['porteiro', 'atendimento'],
+        created_at: new Date().toISOString()
       }
     ];
+    
+    console.log('✅ Retornando vagas fallback:', vagasFallback.length);
     
     return res.json({
       success: true,
@@ -566,149 +607,6 @@ router.get('/simple-jobs', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Erro ao buscar vagas simples',
-      error: error.message
-    });
-  }
-});
-
-// Função para popular banco automaticamente
-async function popularBancoAutomaticamente() {
-  const vagasIniciais = [
-    {
-      titulo: 'Doméstica',
-      empresa: 'Família Residencial',
-      localizacao: 'São Paulo, SP',
-      salario: 'R$ 1.320,00',
-      descricao: 'Limpeza geral da casa, organização, preparo de refeições simples. Experiência mínima de 1 ano.',
-      categoria: 'Doméstica',
-      tipo: 'CLT',
-      fonte: 'auto_inicial',
-      tags: JSON.stringify(['doméstica', 'limpeza', 'organização', 'clt']),
-      external_id: 'auto_domestica_1'
-    },
-    {
-      titulo: 'Diarista',
-      empresa: 'Apartamento Particular',
-      localizacao: 'Rio de Janeiro, RJ',
-      salario: 'R$ 120,00/dia',
-      descricao: 'Limpeza completa de apartamento 2 quartos, 2x por semana.',
-      categoria: 'Doméstica',
-      tipo: 'Diarista',
-      fonte: 'auto_inicial',
-      tags: JSON.stringify(['diarista', 'limpeza', 'apartamento']),
-      external_id: 'auto_diarista_1'
-    },
-    {
-      titulo: 'Porteiro Diurno',
-      empresa: 'Edifício Central',
-      localizacao: 'São Paulo, SP',
-      salario: 'R$ 1.500,00',
-      descricao: 'Controle de acesso, recebimento de correspondências, atendimento ao público.',
-      categoria: 'Portaria',
-      tipo: 'CLT',
-      fonte: 'auto_inicial',
-      tags: JSON.stringify(['porteiro', 'diurno', 'atendimento']),
-      external_id: 'auto_porteiro_1'
-    },
-    {
-      titulo: 'Cuidador de Idosos',
-      empresa: 'Residência Geriátrica',
-      localizacao: 'Belo Horizonte, MG',
-      salario: 'R$ 1.800,00',
-      descricao: 'Acompanhamento de idosos, auxílio em atividades diárias, administração de medicamentos.',
-      categoria: 'Cuidados',
-      tipo: 'CLT',
-      fonte: 'auto_inicial',
-      tags: JSON.stringify(['cuidador', 'idosos', 'saúde']),
-      external_id: 'auto_cuidador_1'
-    },
-    {
-      titulo: 'Auxiliar de Limpeza',
-      empresa: 'Empresa Clean Service',
-      localizacao: 'Curitiba, PR',
-      salario: 'R$ 1.400,00',
-      descricao: 'Limpeza de escritórios, banheiros, organização de materiais.',
-      categoria: 'Limpeza',
-      tipo: 'CLT',
-      fonte: 'auto_inicial',
-      tags: JSON.stringify(['limpeza', 'escritório', 'organização']),
-      external_id: 'auto_limpeza_1'
-    }
-  ];
-  
-  try {
-    const stmt = db.prepare(`
-      INSERT INTO vagas (
-        external_id, titulo, empresa, localizacao, salario, descricao,
-        categoria, tipo, fonte, tags, ativa
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
-    `);
-    
-    for (const vaga of vagasIniciais) {
-      stmt.run([
-        vaga.external_id,
-        vaga.titulo,
-        vaga.empresa,
-        vaga.localizacao,
-        vaga.salario,
-        vaga.descricao,
-        vaga.categoria,
-        vaga.tipo,
-        vaga.fonte,
-        vaga.tags
-      ]);
-    }
-    
-    stmt.finalize();
-    console.log(`✅ ${vagasIniciais.length} vagas inseridas automaticamente!`);
-    
-  } catch (error) {
-    console.error('❌ Erro ao popular banco automaticamente:', error);
-  }
-}
-
-// POST /api/vagas/populate - Popular banco com vagas iniciais (rota manual)
-router.post('/populate', async (req, res) => {
-  try {
-    console.log('🗄️ Populando banco de dados via API...');
-    
-    // Verificar se já existem vagas
-    const vagasExistentes = await new Promise((resolve, reject) => {
-      db.get('SELECT COUNT(*) as total FROM vagas', (err, row) => {
-        if (err) reject(err);
-        else resolve(row);
-      });
-    });
-    
-    if (vagasExistentes.total > 0) {
-      return res.json({
-        success: false,
-        message: `Banco já possui ${vagasExistentes.total} vagas. Use /api/vagas/clear antes de popular novamente.`,
-        total: vagasExistentes.total
-      });
-    }
-    
-    await popularBancoAutomaticamente();
-    
-    // Verificar resultado
-    const totalFinal = await new Promise((resolve, reject) => {
-      db.get('SELECT COUNT(*) as total FROM vagas', (err, row) => {
-        if (err) reject(err);
-        else resolve(row);
-      });
-    });
-    
-    res.json({
-      success: true,
-      message: 'Banco populado com sucesso!',
-      total: totalFinal.total
-    });
-    
-  } catch (error) {
-    console.error('❌ Erro ao popular banco via API:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Erro ao popular banco',
       error: error.message
     });
   }
