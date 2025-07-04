@@ -459,41 +459,52 @@ router.post('/import-from-frontend', async (req, res) => {
   }
 });
 
-// NOVA ROTA: /api/simple-jobs - Para compatibilidade com o frontend
+// GET /api/simple-jobs - Vagas formatadas para frontend
 router.get('/simple-jobs', async (req, res) => {
   try {
-    console.log('🎯 Endpoint /api/simple-jobs chamado pelo frontend');
+    console.log('🎯 Buscando vagas formatadas para frontend...');
     
-    // Buscar todas as vagas do banco
-    const stmt = db.prepare(`
-      SELECT 
-        id, titulo as title, empresa as company, localizacao as location,
-        salario as salary, descricao as description, tipo as type,
-        categoria as category, fonte as source, external_url,
-        tags, created_at
-      FROM vagas 
-      WHERE ativo = 1
-      ORDER BY created_at DESC
-    `);
+    // Primeiro, tentar buscar do banco
+    let stmt, vagasDoBanco;
+    try {
+      stmt = db.prepare('SELECT * FROM vagas WHERE ativa = 1 ORDER BY data_criacao DESC LIMIT 50');
+      vagasDoBanco = stmt.all();
+    } catch (dbError) {
+      console.log('⚠️ Erro ao consultar banco, usando vagas demo:', dbError.message);
+      vagasDoBanco = [];
+    }
     
-    const vagasDoBanco = stmt.all();
-    console.log(`📊 ${vagasDoBanco.length} vagas encontradas no banco`);
+    console.log(`📊 ${vagasDoBanco.length} vagas ativas encontradas no banco`);
     
-    // Se não há vagas no banco, usar vagas simuladas
-    let vagasFinais = vagasDoBanco;
+    let vagasFinais = [];
     
-    if (vagasDoBanco.length === 0) {
-      console.log('🔄 Banco vazio, gerando vagas simuladas...');
-      
-      // Gerar vagas simuladas para demonstração
+    if (vagasDoBanco.length > 0) {
+      // Converter formato do banco para o formato esperado pelo frontend
+      vagasFinais = vagasDoBanco.map(vaga => ({
+        id: vaga.id.toString(),
+        title: vaga.titulo,
+        company: vaga.empresa,
+        location: vaga.localizacao,
+        salary: vaga.salario,
+        description: vaga.descricao,
+        type: vaga.tipo,
+        category: vaga.categoria,
+        source: vaga.fonte,
+        external_url: vaga.external_url,
+        tags: vaga.tags,
+        created_at: vaga.data_criacao
+      }));
+    } else {
+      // Se não há vagas no banco, usar vagas demo
+      console.log('⚠️ Nenhuma vaga encontrada no banco, usando vagas demo...');
       vagasFinais = [
         {
           id: 'demo_1',
-          title: 'Empregada Doméstica',
-          company: 'Família Particular - Zona Sul',
+          title: 'Doméstica',
+          company: 'Família Silva',
           location: 'São Paulo, SP',
           salary: 'R$ 1.320,00',
-          description: 'Limpeza geral da casa, organização, preparo de refeições simples. Experiência comprovada.',
+          description: 'Limpeza geral da casa, organização, preparo de refeições simples. Experiência mínima de 1 ano.',
           type: 'CLT',
           category: 'Doméstica',
           source: 'Demo',
@@ -527,6 +538,34 @@ router.get('/simple-jobs', async (req, res) => {
           source: 'Demo',
           external_url: '',
           tags: '["faxineira", "condomínio", "áreas comuns"]',
+          created_at: new Date().toISOString()
+        },
+        {
+          id: 'demo_4',
+          title: 'Porteiro Diurno',
+          company: 'Edifício Comercial Central',
+          location: 'São Paulo, SP',
+          salary: 'R$ 1.500,00',
+          description: 'Controle de acesso, recebimento de correspondências, atendimento ao público.',
+          type: 'CLT',
+          category: 'Portaria',
+          source: 'Demo',
+          external_url: '',
+          tags: '["porteiro", "diurno", "atendimento"]',
+          created_at: new Date().toISOString()
+        },
+        {
+          id: 'demo_5',
+          title: 'Cuidador de Idosos',
+          company: 'Cuidados Senior',
+          location: 'Rio de Janeiro, RJ',
+          salary: 'R$ 1.800,00',
+          description: 'Acompanhamento de idosos, auxílio em atividades diárias, administração de medicamentos.',
+          type: 'CLT',
+          category: 'Cuidados',
+          source: 'Demo',
+          external_url: '',
+          tags: '["cuidador", "idosos", "saúde"]',
           created_at: new Date().toISOString()
         }
       ];
