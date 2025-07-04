@@ -138,7 +138,7 @@ export default async function handler(req, res) {
 
     // Tentar buscar do backend primeiro
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://sitedotrabalhador-backend-production.up.railway.app';
+      const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://acceptable-warmth-production.up.railway.app';
       console.log('🔗 Tentando conectar ao backend:', backendUrl);
       
       const response = await fetch(`${backendUrl}/api/simple-jobs`, {

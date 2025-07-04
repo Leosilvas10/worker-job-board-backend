@@ -175,7 +175,8 @@ const Vagas = () => {
       .then(data => {
         console.log('📋 Dados recebidos da API:', data)
         
-        if (data.success && data.jobs && data.jobs.length > 0) {
+        // Só atualizar se realmente tiver vagas da API
+        if (data.success && ((data.jobs && data.jobs.length > 0) || (data.data && data.data.length > 0))) {
           const vagasAPI = data.jobs || data.data || []
           console.log(`🔄 Mesclando ${vagasAPI.length} vagas da API com ${vagasFixas.length} vagas fixas`)
           
@@ -183,6 +184,9 @@ const Vagas = () => {
           const vagasMescladas = [...vagasAPI, ...vagasFixas]
           setJobs(vagasMescladas)
           setFilteredJobs(vagasMescladas)
+        } else {
+          console.log('⚠️ API retornou dados vazios, mantendo vagas fixas')
+          // Manter vagas fixas se API não retornar dados úteis
         }
       })
       .catch(err => {

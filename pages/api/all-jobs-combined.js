@@ -17,9 +17,9 @@ export default async function handler(req, res) {
     try {
       console.log('🚨 CORREÇÃO URGENTE - Buscando vagas DIRETAMENTE DO BACKEND...');
       
-      // URL HARDCODED DEFINITIVA - RAILWAY
-      const BACKEND_URL_PRODUCTION = 'https://sitedotrabalhador-backend-production.up.railway.app';
-      console.log('🔗 URL RAILWAY DEFINITIVA:', BACKEND_URL_PRODUCTION);
+      // URL CORRIGIDA - RAILWAY ATUAL
+      const BACKEND_URL_PRODUCTION = 'https://acceptable-warmth-production.up.railway.app';
+      console.log('🔗 URL RAILWAY ATUAL:', BACKEND_URL_PRODUCTION);
       
       const simpleResponse = await fetch(`${BACKEND_URL_PRODUCTION}/api/simple-jobs`, {
         method: 'GET',
