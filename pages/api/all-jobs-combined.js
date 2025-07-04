@@ -68,10 +68,13 @@ export default async function handler(req, res) {
       console.error('❌ Erro ao buscar vagas externas:', error);
     }
 
-    // 2.1. Buscar vagas de empregos simples (FOCO NO SEU PÚBLICO)
+    // 2.1. Buscar vagas de empregos simples DIRETAMENTE DO BACKEND
     try {
-      console.log('🎯 Buscando vagas de empregos simples...');
-      const simpleResponse = await fetch(`${baseUrl}/api/simple-jobs`);
+      console.log('🎯 Buscando vagas de empregos simples DIRETAMENTE DO BACKEND...');
+      const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend.onrender.com';
+      console.log('🔗 Conectando diretamente ao backend:', backendUrl);
+      
+      const simpleResponse = await fetch(`${backendUrl}/api/simple-jobs`);
       const simpleData = await simpleResponse.json();
       
       if (simpleData.success && simpleData.data) {
@@ -84,10 +87,10 @@ export default async function handler(req, res) {
         
         allJobs.push(...simpleJobs);
         sources.push('Empregos Simples');
-        console.log(`✅ ${simpleJobs.length} vagas de empregos simples carregadas`);
+        console.log(`✅ ${simpleJobs.length} vagas de empregos simples carregadas DIRETAMENTE DO BACKEND`);
       }
     } catch (error) {
-      console.error('❌ Erro ao buscar vagas de empregos simples:', error);
+      console.error('❌ Erro ao buscar vagas de empregos simples do backend:', error);
     }
 
     // 3. Buscar vagas de tecnologia
