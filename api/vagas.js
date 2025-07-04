@@ -464,129 +464,61 @@ router.get('/simple-jobs', async (req, res) => {
   try {
     console.log('🎯 Buscando vagas formatadas para frontend...');
     
-    // Primeiro, tentar buscar do banco
-    let stmt, vagasDoBanco;
-    try {
-      stmt = db.prepare('SELECT * FROM vagas WHERE ativa = 1 ORDER BY data_criacao DESC LIMIT 50');
-      vagasDoBanco = stmt.all();
-    } catch (dbError) {
-      console.log('⚠️ Erro ao consultar banco, usando vagas demo:', dbError.message);
-      vagasDoBanco = [];
-    }
+    // Usar sempre vagas demo por enquanto para debuggar
+    const vagasDemo = [
+      {
+        id: 'demo_1',
+        title: 'Doméstica',
+        company: 'Família Silva',
+        location: 'São Paulo, SP',
+        salary: 'R$ 1.320,00',
+        description: 'Limpeza geral da casa, organização, preparo de refeições simples.',
+        type: 'CLT',
+        category: 'Doméstica',
+        source: 'Demo',
+        external_url: '',
+        tags: ['doméstica', 'limpeza', 'organização'],
+        created_at: new Date().toISOString()
+      },
+      {
+        id: 'demo_2',
+        title: 'Diarista',
+        company: 'Residencial Particular',
+        location: 'Rio de Janeiro, RJ',
+        salary: 'R$ 120,00/dia',
+        description: 'Limpeza completa de apartamento 2 quartos.',
+        type: 'Diarista',
+        category: 'Doméstica',
+        source: 'Demo',
+        external_url: '',
+        tags: ['diarista', 'limpeza', 'apartamento'],
+        created_at: new Date().toISOString()
+      },
+      {
+        id: 'demo_3',
+        title: 'Porteiro',
+        company: 'Edifício Central',
+        location: 'São Paulo, SP',
+        salary: 'R$ 1.500,00',
+        description: 'Controle de acesso e atendimento.',
+        type: 'CLT',
+        category: 'Portaria',
+        source: 'Demo',
+        external_url: '',
+        tags: ['porteiro', 'atendimento'],
+        created_at: new Date().toISOString()
+      }
+    ];
     
-    console.log(`📊 ${vagasDoBanco.length} vagas ativas encontradas no banco`);
-    
-    let vagasFinais = [];
-    
-    if (vagasDoBanco.length > 0) {
-      // Converter formato do banco para o formato esperado pelo frontend
-      vagasFinais = vagasDoBanco.map(vaga => ({
-        id: vaga.id.toString(),
-        title: vaga.titulo,
-        company: vaga.empresa,
-        location: vaga.localizacao,
-        salary: vaga.salario,
-        description: vaga.descricao,
-        type: vaga.tipo,
-        category: vaga.categoria,
-        source: vaga.fonte,
-        external_url: vaga.external_url,
-        tags: vaga.tags,
-        created_at: vaga.data_criacao
-      }));
-    } else {
-      // Se não há vagas no banco, usar vagas demo
-      console.log('⚠️ Nenhuma vaga encontrada no banco, usando vagas demo...');
-      vagasFinais = [
-        {
-          id: 'demo_1',
-          title: 'Doméstica',
-          company: 'Família Silva',
-          location: 'São Paulo, SP',
-          salary: 'R$ 1.320,00',
-          description: 'Limpeza geral da casa, organização, preparo de refeições simples. Experiência mínima de 1 ano.',
-          type: 'CLT',
-          category: 'Doméstica',
-          source: 'Demo',
-          external_url: '',
-          tags: '["doméstica", "limpeza", "organização"]',
-          created_at: new Date().toISOString()
-        },
-        {
-          id: 'demo_2',
-          title: 'Diarista',
-          company: 'Residencial Particular',
-          location: 'Rio de Janeiro, RJ',
-          salary: 'R$ 120,00/dia',
-          description: 'Limpeza completa de apartamento 2 quartos, 2x por semana.',
-          type: 'Diarista',
-          category: 'Doméstica',
-          source: 'Demo',
-          external_url: '',
-          tags: '["diarista", "limpeza", "apartamento"]',
-          created_at: new Date().toISOString()
-        },
-        {
-          id: 'demo_3',
-          title: 'Faxineira',
-          company: 'Condomínio Residencial Verde',
-          location: 'Belo Horizonte, MG',
-          salary: 'R$ 1.280,00',
-          description: 'Limpeza de áreas comuns do condomínio, salão de festas e academia.',
-          type: 'CLT',
-          category: 'Doméstica',
-          source: 'Demo',
-          external_url: '',
-          tags: '["faxineira", "condomínio", "áreas comuns"]',
-          created_at: new Date().toISOString()
-        },
-        {
-          id: 'demo_4',
-          title: 'Porteiro Diurno',
-          company: 'Edifício Comercial Central',
-          location: 'São Paulo, SP',
-          salary: 'R$ 1.500,00',
-          description: 'Controle de acesso, recebimento de correspondências, atendimento ao público.',
-          type: 'CLT',
-          category: 'Portaria',
-          source: 'Demo',
-          external_url: '',
-          tags: '["porteiro", "diurno", "atendimento"]',
-          created_at: new Date().toISOString()
-        },
-        {
-          id: 'demo_5',
-          title: 'Cuidador de Idosos',
-          company: 'Cuidados Senior',
-          location: 'Rio de Janeiro, RJ',
-          salary: 'R$ 1.800,00',
-          description: 'Acompanhamento de idosos, auxílio em atividades diárias, administração de medicamentos.',
-          type: 'CLT',
-          category: 'Cuidados',
-          source: 'Demo',
-          external_url: '',
-          tags: '["cuidador", "idosos", "saúde"]',
-          created_at: new Date().toISOString()
-        }
-      ];
-    }
-    
-    // Processar tags
-    const vagasProcessadas = vagasFinais.map(vaga => ({
-      ...vaga,
-      tags: typeof vaga.tags === 'string' ? JSON.parse(vaga.tags || '[]') : vaga.tags || []
-    }));
-    
-    console.log('🔍 Vagas processadas:', vagasProcessadas.length);
-    console.log('🔍 Primeiro resultado:', vagasProcessadas[0]);
+    console.log('✅ Retornando vagas demo:', vagasDemo.length);
     
     res.json({
       success: true,
-      data: vagasProcessadas,
-      message: `${vagasProcessadas.length} vagas de empregos simples encontradas`,
+      data: vagasDemo,
+      message: `${vagasDemo.length} vagas de empregos simples encontradas`,
       meta: {
-        total: vagasProcessadas.length,
-        source: vagasDoBanco.length > 0 ? 'database' : 'demo'
+        total: vagasDemo.length,
+        source: 'demo'
       }
     });
     
