@@ -577,6 +577,9 @@ router.get('/simple-jobs', async (req, res) => {
       tags: typeof vaga.tags === 'string' ? JSON.parse(vaga.tags || '[]') : vaga.tags || []
     }));
     
+    console.log('🔍 Vagas processadas:', vagasProcessadas.length);
+    console.log('🔍 Primeiro resultado:', vagasProcessadas[0]);
+    
     res.json({
       success: true,
       data: vagasProcessadas,
