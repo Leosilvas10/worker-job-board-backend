@@ -1,17 +1,22 @@
-# CORREÇÕES URGENTES APLICADAS
+# CORREÇÕES URGENTES APLICADAS - ABORDAGEM HARDCODED
 
 ## ✅ Problemas Corrigidos:
 
-1. **Vagas do Backend**: API configurada para `https://worker-job-board-backend.onrender.com`
-2. **Leads no Admin**: Sistema de leads funcionando corretamente
-3. **Build limpo**: Todos os erros de build corrigidos
-4. **Ambiente de produção**: Configurado para Vercel
+1. **Backend URL HARDCODED**: URL `https://worker-job-board-backend.onrender.com` está agora HARDCODED no código
+2. **Não depende mais de variável de ambiente**: Funciona independente da configuração da Vercel
+3. **APIs corrigidas**: `all-jobs-combined.js` e `simple-jobs.js` com URL fixa
+4. **Arquivo de configuração**: Criado `src/config/backend.js` para centralizar configuração
 
 ## 🚀 Deploy Status:
 - Data: ${new Date().toLocaleString('pt-BR')}
-- Commit: PUSH URGENTE para cliente
-- Status: ✅ PRONTO PARA PRODUÇÃO
+- Commit: `1ae90af` - HARDCODED backend URL
+- Status: ✅ PRONTO PARA PRODUÇÃO (SEM DEPENDÊNCIA DE ENV)
 
-## 📋 Próximo passo:
-Configurar variável de ambiente na Vercel:
-- NEXT_PUBLIC_API_URL = https://worker-job-board-backend.onrender.com
+## 🎯 MUDANÇA CRÍTICA:
+**ANTES**: Dependia de `process.env.NEXT_PUBLIC_API_URL`
+**AGORA**: URL hardcoded `https://worker-job-board-backend.onrender.com`
+
+## 📋 Resultado Esperado:
+- ✅ 105 vagas aparecerão no site em produção
+- ✅ Funciona independente de configuração da Vercel
+- ✅ Sem problemas de variável de ambiente
