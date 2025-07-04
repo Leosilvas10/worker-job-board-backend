@@ -17,7 +17,13 @@ const allowedOrigins = [
   'http://localhost:3000',
   'https://worker-job-board-frontend.vercel.app',
   'https://worker-job-board-frontend-git-main-leosilvas10.vercel.app',
-  'https://worker-job-board-frontend-leosilvas10.vercel.app'
+  'https://worker-job-board-frontend-leosilvas10.vercel.app',
+  // Adicionar todas as possíveis URLs da Vercel
+  'https://sitedotrabalhador.vercel.app',
+  'https://sitedotrabalhador-git-main-leosilvas10.vercel.app',
+  'https://sitedotrabalhador-leosilvas10.vercel.app',
+  // Aceitar qualquer subdomínio .vercel.app
+  /^https:\/\/.*\.vercel\.app$/
 ];
 
 app.use(cors({
@@ -25,9 +31,21 @@ app.use(cors({
     // Permite requisições sem origin (como Postman) em desenvolvimento
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+    // Verificar se origin está na lista ou se corresponde ao padrão regex
+    const isAllowed = allowedOrigins.some(allowedOrigin => {
+      if (typeof allowedOrigin === 'string') {
+        return allowedOrigin === origin;
+      }
+      if (allowedOrigin instanceof RegExp) {
+        return allowedOrigin.test(origin);
+      }
+      return false;
+    });
+    
+    if (isAllowed || process.env.NODE_ENV === 'development') {
       callback(null, true);
     } else {
+      console.log('❌ CORS rejeitado para origem:', origin);
       callback(new Error('Não permitido pelo CORS'));
     }
   },
