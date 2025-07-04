@@ -54,6 +54,7 @@ app.get('/', (req, res) => {
 app.use('/api/jobs-stats', jobsStatsRouter);
 app.use('/api/leads', leadsRouter);
 app.use('/api/vagas', vagasRouter);
+app.use('/api', vagasRouter); // Adicionar rota /api/simple-jobs
 app.use('/api/clear-all-data', clearAllDataRouter);
 
 const PORT = process.env.PORT || 3001;
@@ -63,6 +64,7 @@ app.listen(PORT, () => {
   console.log(`💾 Banco SQLite configurado e funcionando!`);
   console.log(`🔄 Rotas disponíveis:`);
   console.log(`   📋 GET  /api/vagas - Listar vagas`);
+  console.log(`   🎯 GET  /api/simple-jobs - Vagas simples (para frontend)`);
   console.log(`   📥 POST /api/vagas - Criar vaga`);
   console.log(`   📥 POST /api/vagas/import-from-frontend - Importar do frontend`);
   console.log(`   👥 GET  /api/leads - Listar leads`);

@@ -493,6 +493,104 @@ router.post('/import-from-frontend', async (req, res) => {
       message: 'Erro ao importar vagas do frontend',
       error: error.message
     });
+});
+
+// NOVA ROTA: /api/simple-jobs - Para compatibilidade com o frontend
+router.get('/simple-jobs', async (req, res) => {
+  try {
+    console.log('🎯 Endpoint /api/simple-jobs chamado pelo frontend');
+    
+    // Buscar todas as vagas do banco
+    const stmt = db.prepare(`
+      SELECT 
+        id, titulo as title, empresa as company, localizacao as location,
+        salario as salary, descricao as description, tipo as type,
+        categoria as category, fonte as source, external_url,
+        tags, created_at
+      FROM vagas 
+      WHERE ativo = 1
+      ORDER BY created_at DESC
+    `);
+    
+    const vagasDoBanco = stmt.all();
+    console.log(`📊 ${vagasDoBanco.length} vagas encontradas no banco`);
+    
+    // Se não há vagas no banco, usar vagas simuladas
+    let vagasFinais = vagasDoBanco;
+    
+    if (vagasDoBanco.length === 0) {
+      console.log('🔄 Banco vazio, gerando vagas simuladas...');
+      
+      // Gerar vagas simuladas para demonstração
+      vagasFinais = [
+        {
+          id: 'demo_1',
+          title: 'Empregada Doméstica',
+          company: 'Família Particular - Zona Sul',
+          location: 'São Paulo, SP',
+          salary: 'R$ 1.320,00',
+          description: 'Limpeza geral da casa, organização, preparo de refeições simples. Experiência comprovada.',
+          type: 'CLT',
+          category: 'Doméstica',
+          source: 'Demo',
+          external_url: '',
+          tags: '["doméstica", "limpeza", "organização"]',
+          created_at: new Date().toISOString()
+        },
+        {
+          id: 'demo_2',
+          title: 'Diarista',
+          company: 'Residencial Particular',
+          location: 'Rio de Janeiro, RJ',
+          salary: 'R$ 120,00/dia',
+          description: 'Limpeza completa de apartamento 2 quartos, 2x por semana.',
+          type: 'Diarista',
+          category: 'Doméstica',
+          source: 'Demo',
+          external_url: '',
+          tags: '["diarista", "limpeza", "apartamento"]',
+          created_at: new Date().toISOString()
+        },
+        {
+          id: 'demo_3',
+          title: 'Faxineira',
+          company: 'Condomínio Residencial Verde',
+          location: 'Belo Horizonte, MG',
+          salary: 'R$ 1.280,00',
+          description: 'Limpeza de áreas comuns do condomínio, salão de festas e academia.',
+          type: 'CLT',
+          category: 'Doméstica',
+          source: 'Demo',
+          external_url: '',
+          tags: '["faxineira", "condomínio", "áreas comuns"]',
+          created_at: new Date().toISOString()
+        }
+      ];
+    }
+    
+    // Processar tags
+    const vagasProcessadas = vagasFinais.map(vaga => ({
+      ...vaga,
+      tags: typeof vaga.tags === 'string' ? JSON.parse(vaga.tags || '[]') : vaga.tags || []
+    }));
+    
+    res.json({
+      success: true,
+      data: vagasProcessadas,
+      message: `${vagasProcessadas.length} vagas de empregos simples encontradas`,
+      meta: {
+        total: vagasProcessadas.length,
+        source: vagasDoBanco.length > 0 ? 'database' : 'demo'
+      }
+    });
+    
+  } catch (error) {
+    console.error('❌ Erro na rota /api/simple-jobs:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao buscar vagas simples',
+      error: error.message
+    });
   }
 });
 
