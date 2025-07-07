@@ -3,31 +3,27 @@ import db from '../database.js';
 
 const router = express.Router();
 
-// Função para garantir encoding UTF-8 correto
-function ensureUTF8(text) {
+// Função para preservar caracteres UTF-8 (incluindo acentos)
+function preserveUTF8(text) {
   if (!text || typeof text !== 'string') return text;
   
   try {
-    // Se o texto já está em UTF-8, retorna como está
-    if (Buffer.from(text, 'utf8').toString('utf8') === text) {
-      return text;
-    }
-    
-    // Tentar corrigir encoding
-    return Buffer.from(text, 'latin1').toString('utf8');
+    // Remove apenas caracteres de controle realmente perigosos (null, backspace, etc)
+    // Preserva TODOS os caracteres acentuados e especiais
+    return text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim();
   } catch (error) {
-    // Se falhar, retorna o texto original
+    console.error('Erro ao processar texto:', error);
     return text;
   }
 }
 
-// Função para sanitizar dados de entrada
+// Função para sanitizar dados de entrada preservando acentos
 function sanitizeLeadData(data) {
   const sanitized = {};
   
   for (const [key, value] of Object.entries(data)) {
     if (typeof value === 'string') {
-      sanitized[key] = ensureUTF8(value);
+      sanitized[key] = preserveUTF8(value);
     } else {
       sanitized[key] = value;
     }
@@ -50,10 +46,10 @@ router.post('/', async (req, res) => {
       observacoes, mensagem, fonte, utm_source, utm_medium, utm_campaign
     } = sanitizedData;
     
-    if (!nome || !email) {
+    if (!nome) {
       return res.status(400).json({ 
         success: false, 
-        message: 'Nome e email são obrigatórios!' 
+        message: 'Nome é obrigatório!' 
       });
     }
 
@@ -68,7 +64,7 @@ router.post('/', async (req, res) => {
     `);
 
     const info = stmt.run([
-      nome, email, telefone || '', empresa || '', vaga_titulo || '', vaga_id || '',
+      nome, email || '', telefone || '', empresa || '', vaga_titulo || '', vaga_id || '',
       trabalhou_antes || '', ultimo_emprego || '', tempo_ultimo_emprego || '',
       motivo_demissao || '', salario_anterior || '', experiencia_anos || 0,
       idade || null, cidade || '', estado || '', disponibilidade || '', pretensao_salarial || '',
@@ -149,6 +145,166 @@ router.get('/:id', async (req, res) => {
       res.json({ 
         success: true, 
         lead: row 
+      });
+    });
+  } catch (error) {
+    console.error('Erro:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Erro interno do servidor' 
+    });
+  }
+});
+
+// PUT /api/leads/:id - Atualizar lead específico
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, contatado, convertido } = req.body;
+    
+    // Verificar se o lead existe
+    db.get('SELECT * FROM leads WHERE id = ?', [id], (err, row) => {
+      if (err) {
+        console.error('Erro ao buscar lead:', err);
+        return res.status(500).json({ 
+          success: false, 
+          message: 'Erro ao buscar lead' 
+        });
+      }
+
+      if (!row) {
+        return res.status(404).json({ 
+          success: false, 
+          message: 'Lead não encontrado' 
+        });
+      }
+
+      // Atualizar o lead
+      const updateFields = [];
+      const updateValues = [];
+      
+      if (status !== undefined) {
+        updateFields.push('status = ?');
+        updateValues.push(status);
+      }
+      
+      if (contatado !== undefined) {
+        updateFields.push('contatado = ?');
+        updateValues.push(contatado ? 1 : 0);
+      }
+      
+      if (convertido !== undefined) {
+        updateFields.push('convertido = ?');
+        updateValues.push(convertido ? 1 : 0);
+      }
+      
+      updateFields.push('data_atualizacao = CURRENT_TIMESTAMP');
+      updateValues.push(id);
+
+      const updateQuery = `UPDATE leads SET ${updateFields.join(', ')} WHERE id = ?`;
+      
+      db.run(updateQuery, updateValues, (err) => {
+        if (err) {
+          console.error('Erro ao atualizar lead:', err);
+          return res.status(500).json({ 
+            success: false, 
+            message: 'Erro ao atualizar lead' 
+          });
+        }
+
+        console.log(`✅ Lead ${id} atualizado com sucesso`);
+        
+        // Buscar o lead atualizado
+        db.get('SELECT * FROM leads WHERE id = ?', [id], (err, updatedRow) => {
+          if (err) {
+            console.error('Erro ao buscar lead atualizado:', err);
+            return res.status(500).json({ 
+              success: false, 
+              message: 'Erro ao buscar lead atualizado' 
+            });
+          }
+
+          res.json({ 
+            success: true, 
+            message: 'Lead atualizado com sucesso!',
+            lead: updatedRow
+          });
+        });
+      });
+    });
+  } catch (error) {
+    console.error('Erro:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Erro interno do servidor' 
+    });
+  }
+});
+
+// DELETE /api/leads/:id - Excluir lead específico
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Verificar se o lead existe
+    db.get('SELECT * FROM leads WHERE id = ?', [id], (err, row) => {
+      if (err) {
+        console.error('Erro ao buscar lead:', err);
+        return res.status(500).json({ 
+          success: false, 
+          message: 'Erro ao buscar lead' 
+        });
+      }
+
+      if (!row) {
+        return res.status(404).json({ 
+          success: false, 
+          message: 'Lead não encontrado' 
+        });
+      }
+
+      // Excluir o lead
+      db.run('DELETE FROM leads WHERE id = ?', [id], (err) => {
+        if (err) {
+          console.error('Erro ao excluir lead:', err);
+          return res.status(500).json({ 
+            success: false, 
+            message: 'Erro ao excluir lead' 
+          });
+        }
+
+        console.log(`✅ Lead ${id} excluído com sucesso`);
+        res.json({ 
+          success: true, 
+          message: 'Lead excluído com sucesso!' 
+        });
+      });
+    });
+  } catch (error) {
+    console.error('Erro:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Erro interno do servidor' 
+    });
+  }
+});
+
+// DELETE /api/leads - Limpar todos os leads
+router.delete('/', async (req, res) => {
+  try {
+    db.run('DELETE FROM leads', (err) => {
+      if (err) {
+        console.error('Erro ao limpar leads:', err);
+        return res.status(500).json({ 
+          success: false, 
+          message: 'Erro ao limpar leads' 
+        });
+      }
+
+      console.log('✅ Todos os leads foram excluídos');
+      res.json({ 
+        success: true, 
+        message: 'Todos os leads foram excluídos com sucesso!' 
       });
     });
   } catch (error) {

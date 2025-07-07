@@ -103,6 +103,7 @@ db.serialize(() => {
       -- Status e controle
       ativa BOOLEAN DEFAULT TRUE,
       destaque BOOLEAN DEFAULT FALSE,
+      featured BOOLEAN DEFAULT FALSE,
       urgente BOOLEAN DEFAULT FALSE,
       aprovada BOOLEAN DEFAULT TRUE,
       
@@ -130,6 +131,31 @@ db.serialize(() => {
       data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
+});
+
+// Verificar e adicionar colunas que podem estar faltando (migração)
+db.serialize(() => {
+  // Tentar adicionar a coluna featured se não existir
+  db.run(`ALTER TABLE vagas ADD COLUMN featured BOOLEAN DEFAULT FALSE`, (err) => {
+    if (err && !err.message.includes('duplicate column name')) {
+      console.log('⚠️ Coluna featured já existe ou erro:', err.message);
+    } else if (!err) {
+      console.log('✅ Coluna featured adicionada à tabela vagas');
+    }
+  });
+  
+  // Tentar adicionar outras colunas se necessário
+  db.run(`ALTER TABLE leads ADD COLUMN utm_source TEXT`, (err) => {
+    if (err && !err.message.includes('duplicate column name')) {
+      // Silenciar erro se coluna já existe
+    }
+  });
+  
+  db.run(`ALTER TABLE leads ADD COLUMN utm_medium TEXT`, (err) => {
+    if (err && !err.message.includes('duplicate column name')) {
+      // Silenciar erro se coluna já existe
+    }
+  });
 });
 
 console.log('✅ Banco de dados SQLite inicializado com estrutura completa!');
