@@ -1,0 +1,91 @@
+
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Configuração do CORS para aceitar os domínios do frontend
+const corsOptions = {
+  origin: [
+    'https://worker-job-board-frontend-leonardosilvas2.replit.app',
+    'https://sitedotrabalhador.com.br',
+    'http://localhost:3000', // Para desenvolvimento local
+  ],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Middleware para logging
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
+});
+
+// Rota de teste
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Backend Worker Job Board rodando!',
+    timestamp: new Date().toISOString(),
+    endpoints: ['/api/leads', '/api/health']
+  });
+});
+
+// Rota de saúde
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
+// Rota para leads (exemplo básico)
+app.get('/api/leads', (req, res) => {
+  res.json({
+    message: 'Endpoint de leads funcionando',
+    leads: [],
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Rota para criar lead
+app.post('/api/leads', (req, res) => {
+  console.log('Dados recebidos:', req.body);
+  res.json({
+    message: 'Lead criado com sucesso',
+    data: req.body,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Middleware de erro
+app.use((err, req, res, next) => {
+  console.error('Erro:', err);
+  res.status(500).json({ 
+    error: 'Erro interno do servidor',
+    message: err.message 
+  });
+});
+
+// Middleware para rotas não encontradas
+app.use('*', (req, res) => {
+  res.status(404).json({ 
+    error: 'Rota não encontrada',
+    path: req.originalUrl 
+  });
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Servidor rodando na porta ${PORT}`);
+  console.log(`📍 URL local: http://0.0.0.0:${PORT}`);
+  console.log(`🌐 URL de produção: https://worker-job-board-backend-leonardosilvas2.replit.app`);
+  console.log(`✅ CORS configurado para:`);
+  console.log(`   - https://worker-job-board-frontend-leonardosilvas2.replit.app`);
+  console.log(`   - https://sitedotrabalhador.com.br`);
+});
