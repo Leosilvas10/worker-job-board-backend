@@ -178,7 +178,14 @@ export default async function handler(req, res) {
       nome: name,
       telefone: whatsapp,
       email: `${name.toLowerCase().replace(/\s+/g, '.')}@temporario.com`, // Email temporário para manter compatibilidade
+      
+      // Campos básicos obrigatórios
       empresa: company || 'Vaga de Emprego',
+      cidade: 'Não informado',
+      estado: 'Não informado',
+      idade: null,
+      
+      // Mensagem detalhada
       mensagem: `PESQUISA TRABALHISTA - ${jobTitle || 'Vaga de Interesse'}
 
 DADOS PESSOAIS:
@@ -204,12 +211,26 @@ Página: ${paginaOrigem || 'Homepage'}
 Timestamp: ${new Date().toISOString()}
 LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
 
-      // Campos estruturados para análise
+      // Campos estruturados para análise (obrigatórios para o backend)
       ultima_empresa: lastCompany || 'Não informado',
       tipo_carteira: workStatus || 'Não informado', 
       recebeu_direitos: receivedRights || 'Não informado',
       situacoes_enfrentadas: Array.isArray(workProblems) ? workProblems.join(', ') : (workProblems || 'Nenhuma'),
       aceita_consultoria: wantConsultation || 'Não informado',
+      
+      // Campos de direitos trabalhistas (estruturados)
+      fgts: receivedRights === 'Sim, recebi tudo certinho' ? 'Sim' : 'Não',
+      ferias: receivedRights === 'Sim, recebi tudo certinho' ? 'Sim' : 'Não',
+      decimo_terceiro: receivedRights === 'Sim, recebi tudo certinho' ? 'Sim' : 'Não',
+      horas_extras: Array.isArray(workProblems) && workProblems.includes('hora-extra') ? 'Não' : 'Sim',
+      verbas_rescisao: receivedRights === 'Sim, recebi tudo certinho' ? 'Sim' : 'Não',
+      
+      // Campos de problemas trabalhistas (estruturados)  
+      assedio: Array.isArray(workProblems) && workProblems.includes('assedio') ? 'Sim' : 'Não',
+      humilhacoes: Array.isArray(workProblems) && workProblems.includes('assedio') ? 'Sim' : 'Não',
+      acumulo_funcoes: Array.isArray(workProblems) && workProblems.includes('acumulo-funcoes') ? 'Sim' : 'Não',
+      sem_registro: workStatus === 'Sem carteira assinada' ? 'Sim' : 'Não',
+      atraso_salario: 'Não informado',
       
       // Dados da vaga
       vaga_id: jobId,
@@ -222,7 +243,14 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
       fonte: fonte || 'Site do Trabalhador',
       pagina_origem: paginaOrigem || 'Homepage',
       lgpd_consent: lgpdConsent,
-      data_submissao: new Date().toISOString()
+      data_submissao: new Date().toISOString(),
+      data_criacao: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      
+      // Status
+      status: 'novo',
+      contatado: false,
+      convertido: false
     }
 
     // Enviar para o backend usando a URL correta

@@ -110,65 +110,76 @@ export default async function handler(req, res) {
         
         console.log('📊 Dados completos do backend:', backendData)
         
-        // Verificar se há leads no array
-        if (backendData.leads && Array.isArray(backendData.leads) && backendData.leads.length > 0) {
-          console.log('✅', backendData.leads.length, 'leads reais encontrados no backend')
+        // Verificar se há leads no array - suportando diferentes formatos de resposta
+        let leadsArray = []
+        
+        if (backendData.leads && Array.isArray(backendData.leads)) {
+          leadsArray = backendData.leads
+        } else if (backendData.data && Array.isArray(backendData.data)) {
+          leadsArray = backendData.data
+        } else if (Array.isArray(backendData)) {
+          leadsArray = backendData
+        }
+        
+        if (leadsArray.length > 0) {
+          console.log('✅', leadsArray.length, 'leads reais encontrados no backend')
           
-          leadsReais = backendData.leads.map(lead => {
+          leadsReais = leadsArray.map((lead, index) => {
             // Aplicar sanitização no lead antes de processar
             const cleanLead = sanitizeLead(lead)
             
             return {
-              id: cleanLead.id,
-              nome: cleanLead.nome,
-              telefone: cleanLead.telefone,
-              email: cleanLead.email,
-              idade: cleanLead.idade,
-              cidade: cleanLead.cidade || 'Não informado',
-              estado: cleanLead.estado || 'Não informado',
+              id: cleanLead.id || `lead_${index + 1}`,
+              nome: cleanLead.nome || cleanLead.name || 'Nome não informado',
+              telefone: cleanLead.telefone || cleanLead.phone || cleanLead.whatsapp || 'Telefone não informado',
+              email: cleanLead.email || 'Email não informado',
+              idade: cleanLead.idade || cleanLead.age || null,
+              cidade: cleanLead.cidade || cleanLead.city || 'Não informado',
+              estado: cleanLead.estado || cleanLead.state || 'Não informado',
               vaga: {
-                id: cleanLead.vaga_id,
-                titulo: cleanLead.vaga_titulo || 'Vaga de Interesse',
-                empresa: cleanLead.empresa || cleanLead.vaga_empresa || 'Empresa não informada',
-                localizacao: cleanLead.vaga_localizacao || `${cleanLead.cidade || 'Não informado'}, ${cleanLead.estado || 'Não informado'}`
+                id: cleanLead.vaga_id || cleanLead.job_id,
+                titulo: cleanLead.vaga_titulo || cleanLead.job_title || 'Vaga de Interesse',
+                empresa: cleanLead.empresa || cleanLead.vaga_empresa || cleanLead.company || 'Empresa não informada',
+                localizacao: cleanLead.vaga_localizacao || cleanLead.location || `${cleanLead.cidade || 'Não informado'}, ${cleanLead.estado || 'Não informado'}`
               },
               // Dados da pesquisa trabalhista do backend
               pesquisaTrabalhista: {
-                ultimaEmpresa: cleanLead.ultima_empresa,
-                tipoCarteira: cleanLead.tipo_carteira,
-                recebeuDireitos: cleanLead.recebeu_direitos,
-                situacoesEnfrentadas: cleanLead.situacoes_enfrentadas,
-                aceitaConsultoria: cleanLead.aceita_consultoria,
+                ultimaEmpresa: cleanLead.ultima_empresa || cleanLead.last_company || 'Não informado',
+                tipoCarteira: cleanLead.tipo_carteira || cleanLead.work_status || 'Não informado',
+                recebeuDireitos: cleanLead.recebeu_direitos || cleanLead.received_rights || 'Não informado',
+                situacoesEnfrentadas: cleanLead.situacoes_enfrentadas || cleanLead.work_problems || 'Não informado',
+                aceitaConsultoria: cleanLead.aceita_consultoria || cleanLead.wants_consultation || 'Não informado',
                 verbas: {
-                  fgts: cleanLead.fgts,
-                  ferias: cleanLead.ferias,
-                  decimoTerceiro: cleanLead.decimo_terceiro,
-                  horasExtras: cleanLead.horas_extras,
-                  verbas_rescisao: cleanLead.verbas_rescisao
+                  fgts: cleanLead.fgts || 'Não informado',
+                  ferias: cleanLead.ferias || 'Não informado',
+                  decimoTerceiro: cleanLead.decimo_terceiro || 'Não informado',
+                  horasExtras: cleanLead.horas_extras || 'Não informado',
+                  verbas_rescisao: cleanLead.verbas_rescisao || 'Não informado'
                 },
                 problemas: {
-                  assedio: cleanLead.assedio,
-                  humilhacoes: cleanLead.humilhacoes,
-                  acumulo_funcoes: cleanLead.acumulo_funcoes,
-                  sem_registro: cleanLead.sem_registro,
-                  atraso_salario: cleanLead.atraso_salario
+                  assedio: cleanLead.assedio || 'Não informado',
+                  humilhacoes: cleanLead.humilhacoes || 'Não informado',
+                  acumulo_funcoes: cleanLead.acumulo_funcoes || 'Não informado',
+                  sem_registro: cleanLead.sem_registro || 'Não informado',
+                  atraso_salario: cleanLead.atraso_salario || 'Não informado'
                 }
               },
-              observacoes: cleanLead.observacoes || cleanLead.mensagem,
-              fonte: cleanLead.fonte || 'site',
+              observacoes: cleanLead.observacoes || cleanLead.mensagem || cleanLead.message || 'Sem observações',
+              fonte: cleanLead.fonte || cleanLead.source || 'site',
               utm: {
                 source: cleanLead.utm_source || '',
                 medium: cleanLead.utm_medium || '',
                 campaign: cleanLead.utm_campaign || ''
               },
               status: cleanLead.status || 'novo',
-              criadoEm: cleanLead.data_criacao || cleanLead.created_at || cleanLead.data_submissao || new Date().toISOString(),
+              criadoEm: cleanLead.data_criacao || cleanLead.created_at || cleanLead.data_submissao || cleanLead.timestamp || new Date().toISOString(),
               contatado: cleanLead.contatado || false,
               convertido: cleanLead.convertido || false
             }
           })
         } else {
           console.log('⚠️ Backend retornou array vazio ou sem leads')
+          console.log('📋 Resposta completa do backend:', JSON.stringify(backendData, null, 2))
         }
       }
     } catch (error) {

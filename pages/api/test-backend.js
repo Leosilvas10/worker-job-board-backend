@@ -31,13 +31,36 @@ export default async function handler(req, res) {
       telefone: '(11) 99999-9999',
       email: 'teste@frontend.com',
       empresa: 'Teste',
+      cidade: 'São Paulo',
+      estado: 'SP',
+      idade: 30,
       mensagem: 'Lead de teste do frontend',
       ultima_empresa: 'Empresa Teste',
       tipo_carteira: 'CLT',
       recebeu_direitos: 'Sim',
       situacoes_enfrentadas: 'Nenhuma',
       aceita_consultoria: 'Sim',
-      fonte: 'Teste Frontend'
+      fonte: 'Teste Frontend',
+      // Campos estruturados adicionais
+      fgts: 'Sim',
+      ferias: 'Sim',
+      decimo_terceiro: 'Sim',
+      horas_extras: 'Não',
+      verbas_rescisao: 'Sim',
+      assedio: 'Não',
+      humilhacoes: 'Não',
+      acumulo_funcoes: 'Não',
+      sem_registro: 'Não',
+      atraso_salario: 'Não',
+      vaga_id: 'test_1',
+      vaga_titulo: 'Vaga de Teste',
+      vaga_empresa: 'Empresa Teste',
+      vaga_localizacao: 'São Paulo, SP',
+      status: 'novo',
+      contatado: false,
+      convertido: false,
+      data_criacao: new Date().toISOString(),
+      created_at: new Date().toISOString()
     }
     
     console.log('📤 Enviando lead de teste...')
