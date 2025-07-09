@@ -99,8 +99,8 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         name: formData.name,
         whatsapp: formData.whatsapp,
         
-        // Email removido conforme solicitado
-        email: 'Não informado', // Email removido do formulário
+        // Email não solicitado no formulário
+        email: null,
         
         // Respostas da pesquisa - TODAS OBRIGATÓRIAS
         lastCompany: formData.lastCompany || 'Não informado',
@@ -146,10 +146,8 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         successMessage += `\n📱 WhatsApp: ${formData.whatsapp}`
         successMessage += `\n💼 Vaga: ${jobData?.title || 'Vaga de Emprego'}`
         
-        const { url, company } = result.redirect || {}
-        
-        if (company) {
-          successMessage += `\n🏢 Empresa: ${company}`
+        if (jobData?.company?.name || jobData?.company) {
+          successMessage += `\n🏢 Empresa: ${jobData.company?.name || jobData.company}`
         }
         
         successMessage += '\n\n🔗 Redirecionando para a vaga original...'
@@ -159,28 +157,32 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         // Fechar modal
         onClose()
         
-        // Redirecionamento único para a vaga original
-        setTimeout(() => {
-          window.open(url, '_blank')
-        }, 1000)
+        // Tentar redirecionar para vaga real
+        const redirectUrl = result.redirect?.url || 
+                           jobData?.url || 
+                           jobData?.link || 
+                           jobData?.apply_url || 
+                           jobData?.original_url ||
+                           jobData?.jobLink
         
-      } else {
-        // Tentar gerar URL manual se possível
-        if (jobData?.title && jobData?.location) {
-          const encodedTitle = encodeURIComponent(jobData.title.replace(/[^\w\s]/gi, '').replace(/\s+/g, '+'))
-          const encodedLocation = encodeURIComponent(jobData.location.split(',')[0].replace(/\s+/g, '+'))
+        if (redirectUrl && redirectUrl !== '#') {
+          // Redirecionamento para vaga real
+          setTimeout(() => {
+            window.open(redirectUrl, '_blank')
+          }, 1000)
+        } else {
+          // Fallback: buscar vaga similar no Indeed
+          const encodedTitle = encodeURIComponent((jobData?.title || 'emprego').replace(/[^\w\s]/gi, '').replace(/\s+/g, '+'))
+          const encodedLocation = encodeURIComponent((jobData?.location || 'Brasil').split(',')[0].replace(/\s+/g, '+'))
           const fallbackUrl = `https://www.indeed.com.br/jobs?q=${encodedTitle}&l=${encodedLocation}`
-          
-          successMessage += '\n\n🔗 Redirecionando para buscar vagas similares...'
-          alert(successMessage)
-          onClose()
           
           setTimeout(() => {
             window.open(fallbackUrl, '_blank')
           }, 1000)
-        } else {
-          alert('❌ Erro: ' + (result.message || 'Erro desconhecido'))
         }
+        
+      } else {
+        alert('❌ Erro: ' + (result.message || 'Erro ao enviar candidatura'))
       }
     } catch (error) {
       console.error('❌ Erro ao enviar candidatura:', error)

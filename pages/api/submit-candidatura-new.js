@@ -45,10 +45,10 @@ export default async function handler(req, res) {
     } = req.body
 
     // Validações básicas
-    if (!nome || !telefone || !email) {
+    if (!nome || !telefone) {
       return res.status(400).json({
         success: false,
-        message: 'Nome, telefone e email são obrigatórios'
+        message: 'Nome e telefone são obrigatórios'
       })
     }
 

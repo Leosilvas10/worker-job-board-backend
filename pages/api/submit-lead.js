@@ -120,3 +120,144 @@ export default async function handler(req, res) {
     })
   }
 }
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ 
+      success: false, 
+      message: 'Método não permitido' 
+    })
+  }
+
+  try {
+    const {
+      // Dados pessoais obrigatórios
+      name,
+      whatsapp,
+      
+      // Dados da pesquisa trabalhista
+      lastCompany,
+      workStatus,
+      receivedRights,
+      workProblems,
+      wantConsultation,
+      
+      // Consentimento
+      lgpdConsent,
+      
+      // Dados da vaga
+      jobId,
+      jobTitle,
+      company,
+      jobLink,
+      originalLocation,
+      
+      // Metadados
+      fonte,
+      paginaOrigem,
+      timestamp,
+      source
+    } = req.body
+
+    // Validações básicas - apenas nome e whatsapp são obrigatórios
+    if (!name || !whatsapp) {
+      return res.status(400).json({
+        success: false,
+        message: 'Nome e WhatsApp são obrigatórios'
+      })
+    }
+
+    if (!lgpdConsent) {
+      return res.status(400).json({
+        success: false,
+        message: 'É necessário aceitar os termos de uso'
+      })
+    }
+
+    // Preparar dados para enviar ao backend
+    const leadData = {
+      nome: name,
+      telefone: whatsapp,
+      email: null, // Email não é obrigatório
+      empresa: company || 'Não especificada',
+      cargo: jobTitle || 'Vaga de Emprego',
+      mensagem: `PESQUISA RÁPIDA SOBRE ÚLTIMO EMPREGO
+
+DADOS PESSOAIS:
+Nome: ${name}
+WhatsApp: ${whatsapp}
+
+VAGA DE INTERESSE:
+Título: ${jobTitle || 'Não especificado'}
+Empresa: ${company || 'Não especificada'}
+Localização: ${originalLocation || 'Não especificada'}
+ID: ${jobId || 'Não especificado'}
+
+PESQUISA TRABALHISTA:
+1. Última empresa: ${lastCompany || 'Não informado'}
+2. Tipo de carteira: ${workStatus || 'Não informado'}
+3. Recebeu certinho: ${receivedRights || 'Não informado'}
+4. Situações enfrentadas: ${Array.isArray(workProblems) ? workProblems.join(', ') : (workProblems || 'Nenhuma')}
+5. Aceita consulta: ${wantConsultation || 'Não informado'}
+
+CONSENTIMENTO LGPD: ${lgpdConsent ? 'Aceito' : 'Não aceito'}
+
+DADOS DE ORIGEM:
+Fonte: ${fonte || source || 'Site do Trabalhador'}
+Página: ${paginaOrigem || 'Não especificada'}
+Timestamp: ${timestamp || new Date().toISOString()}`,
+      
+      // Dados adicionais estruturados
+      ultimaEmpresa: lastCompany,
+      tipoCarteira: workStatus,
+      recebeuCertinho: receivedRights,
+      situacoesEnfrentadas: workProblems,
+      aceitaConsulta: wantConsultation,
+      consentimentoLGPD: lgpdConsent,
+      vagaId: jobId,
+      vagaTitulo: jobTitle,
+      vagaEmpresa: company,
+      vagaLink: jobLink,
+      vagaLocalizacao: originalLocation
+    }
+
+    // Enviar para o backend
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app'
+    console.log('📤 Enviando lead para backend:', backendUrl)
+    
+    const response = await fetch(`${backendUrl}/api/leads`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(leadData)
+    })
+
+    const result = await response.json()
+    console.log('📨 Resposta do backend:', result)
+
+    if (!response.ok) {
+      return res.status(response.status).json({
+        success: false,
+        message: result.message || 'Erro ao salvar candidatura'
+      })
+    }
+
+    // Resposta de sucesso com dados de redirecionamento
+    res.status(200).json({
+      success: true,
+      message: 'Candidatura enviada com sucesso!',
+      redirect: {
+        url: jobLink || `https://www.indeed.com.br/jobs?q=${encodeURIComponent(jobTitle || 'emprego')}&l=${encodeURIComponent((originalLocation || 'Brasil').split(',')[0])}`,
+        company: company,
+        jobTitle: jobTitle
+      }
+    })
+
+  } catch (error) {
+    console.error('❌ Erro ao processar candidatura:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor'
+    })
+  }
+}
