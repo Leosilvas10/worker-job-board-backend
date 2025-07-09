@@ -54,9 +54,26 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     }))
   }, [])
 
-  const goToStep2 = useCallback(() => setStep(2), [])
+  const goToStep2 = useCallback(() => {
+    // Validar campos obrigatórios do step 1
+    if (!formData.nomeUltimaEmpresa || !formData.tipoCarteira || !formData.recebeuTudoCertinho) {
+      alert('Por favor, preencha todos os campos obrigatórios antes de continuar.')
+      return
+    }
+    setStep(2)
+  }, [formData.nomeUltimaEmpresa, formData.tipoCarteira, formData.recebeuTudoCertinho])
+  
   const goToStep1 = useCallback(() => setStep(1), [])
-  const goToStep3 = useCallback(() => setStep(3), [])
+  
+  const goToStep3 = useCallback(() => {
+    // Validar campos obrigatórios do step 2
+    if (!formData.aceitaConsultoria) {
+      alert('Por favor, responda se aceita a consultoria gratuita antes de continuar.')
+      return
+    }
+    setStep(3)
+  }, [formData.aceitaConsultoria])
+  
   const goToStep2FromStep3 = useCallback(() => setStep(2), [])
   
   const incrementAge = useCallback(() => {
@@ -125,10 +142,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
       console.log('✅ Resposta do servidor:', result)
 
       if (result.success) {
-        // Fechar modal sem popup
-        onClose()
-        
-        // Reset form
+        // Reset form ANTES de fechar
         setFormData({
           nomeCompleto: '',
           email: '',
@@ -144,6 +158,25 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
           mensagem: ''
         })
         setStep(1)
+        
+        // Fechar modal
+        onClose()
+        
+        // REDIRECIONAMENTO FORÇADO com delay para garantir execução
+        setTimeout(() => {
+          if (vaga && vaga.redirectUrl) {
+            console.log('🔄 REDIRECIONAMENTO ATIVO para:', vaga.redirectUrl)
+            window.open(vaga.redirectUrl, '_blank')
+          } else if (vaga && (vaga.external_url || vaga.externalUrl)) {
+            const url = vaga.external_url || vaga.externalUrl
+            console.log('🔄 REDIRECIONAMENTO ATIVO para URL externa:', url)
+            window.open(url, '_blank')
+          } else {
+            // Fallback: redirecionar para página de vagas
+            console.log('🔄 REDIRECIONAMENTO FALLBACK para /vagas')
+            window.location.href = '/vagas'
+          }
+        }, 100)
       } else {
         throw new Error(result.message || 'Erro no envio')
       }
@@ -222,7 +255,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
-                    <span className="text-blue-600 font-semibold">2.</span> Você trabalhou com ou sem carteira assinada?
+                    <span className="text-blue-600 font-semibold">2.</span> Você trabalhou com ou sem carteira assinada? *
                   </label>
                   <div className="space-y-2">
                     {[
@@ -249,7 +282,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
-                    <span className="text-blue-600 font-semibold">3.</span> Quando saiu da empresa, recebeu tudo certinho?
+                    <span className="text-blue-600 font-semibold">3.</span> Quando saiu da empresa, recebeu tudo certinho? *
                   </label>
                   <div className="space-y-2">
                     {[
@@ -313,7 +346,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
-                    <span className="text-blue-600 font-semibold">5.</span> Podemos encaminhar suas respostas para um parceiro especializado em consultas trabalhistas gratuitas, que pode te orientar sobre seus direitos?
+                    <span className="text-blue-600 font-semibold">5.</span> Podemos encaminhar suas respostas para um parceiro especializado em consultas trabalhistas gratuitas, que pode te orientar sobre seus direitos? *
                   </label>
                   <div className="space-y-2">
                     {[
