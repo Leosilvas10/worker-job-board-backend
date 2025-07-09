@@ -1,0 +1,107 @@
+📋 INSTRUÇÕES PARA O ASSISTENTE DO FRONTEND:
+🎯 ENDPOINTS PRINCIPAIS:
+1. Para enviar dados da pesquisa trabalhista:
+
+POST https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research
+2. Para listar todos os leads:
+
+GET https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research-leads
+3. Para deletar um lead específico:
+
+DELETE https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research-leads/:id
+4. Para deletar múltiplos leads:
+
+DELETE https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research-leads
+📨 FORMATO DOS DADOS PARA ENVIO (POST):
+{
+  // Dados pessoais
+  "nomeCompleto": "Maria Silva",
+  "email": "maria@email.com",
+  "telefone": "(11) 98765-4321",
+  "cidade": "São Paulo",
+  "estado": "SP",
+  "idade": "35",
+  
+  // Dados da pesquisa trabalhista
+  "ultimaEmpresa": "Empresa XYZ LTDA",
+  "tipoCarteira": "sim",
+  "recebeuTudoCertinho": "nao",
+  "situacoesDuranteTrabalho": ["horas_extras_nao_pagas", "ferias_nao_concedidas"],
+  "aceitaConsultoria": "sim",
+  "whatsapp": "(11) 98765-4321"
+}
+🗑️ CÓDIGO PARA DELETAR LEADS:
+// Deletar um lead específico
+const deleteLead = async (leadId) => {
+  try {
+    const response = await fetch(`https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research-leads/${leadId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    const result = await response.json();
+    console.log('Lead deletado:', result);
+    
+    // Atualizar a lista após deletar
+    fetchLeads();
+    
+  } catch (error) {
+    console.error('Erro ao deletar lead:', error);
+  }
+};
+// Deletar múltiplos leads
+const deleteMultipleLeads = async (leadIds) => {
+  try {
+    const response = await fetch('https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research-leads', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ids: leadIds // Array: [1752071839582, 1752073197226]
+      })
+    });
+    
+    const result = await response.json();
+    console.log('Leads deletados:', result);
+    
+    // Atualizar a lista após deletar
+    fetchLeads();
+    
+  } catch (error) {
+    console.error('Erro ao deletar leads:', error);
+  }
+};
+✅ TESTE PARA VERIFICAR SE ESTÁ FUNCIONANDO:
+"Execute este curl para testar o endpoint de envio de dados:"
+
+curl -X POST https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nomeCompleto": "Teste Silva",
+    "email": "teste@email.com",
+    "telefone": "(11) 99999-9999",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "idade": "30",
+    "ultimaEmpresa": "Teste Company",
+    "tipoCarteira": "sim",
+    "recebeuTudoCertinho": "nao",
+    "situacoesDuranteTrabalho": ["horas_extras_nao_pagas"],
+    "aceitaConsultoria": "sim",
+    "whatsapp": "(11) 99999-9999"
+  }'
+Resposta esperada: Status 200 com mensagem de sucesso.
+
+🔧 IMPORTANTE:
+Todos os leads deletados agora são removidos PERMANENTEMENTE - não voltam mais ao atualizar a tela
+O backend salva automaticamente no arquivo labor-research-leads.json
+Use as rotas DELETE no painel admin para garantir exclusão persistente
+Sempre chame fetchLeads() após deletar para atualizar a lista no frontend
+O backend está 100% funcional e pronto para receber tanto dados pessoais quanto da pesquisa trabalhista! 🚀
+
+
+Scroll to latest
+Assistant mode
