@@ -281,68 +281,60 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
         // REDIRECIONAMENTO PRIORITÁRIO para vaga real
         setTimeout(() => {
           try {
-             // NOVO: Usar URL real da vaga retornada pela API
             console.log('📋 Resposta completa da API:', result);
+            console.log('📋 Dados da vaga recebida:', vaga);
 
-            // 1. URL real da vaga (prioridade MÁXIMA - vem do backend)
+            // 1. PRIORIDADE MÁXIMA: URL real da vaga retornada pela API
             if (result.data && result.data.vagaUrl) {
               console.log('🎯 URL REAL da vaga encontrada no backend:', result.data.vagaUrl);
-              if (typeof window !== 'undefined') {
-                window.open(result.data.vagaUrl, '_blank', 'noopener,noreferrer');
-              }
+              window.open(result.data.vagaUrl, '_blank', 'noopener,noreferrer');
               return;
             }
 
-            // 1. Prioridade: redirectUrl (URL real da vaga)
+            // 2. SEGUNDA PRIORIDADE: URL da vaga que veio do objeto vaga original
+            if (vaga && vaga.url) {
+              console.log('🎯 URL REAL da vaga do objeto:', vaga.url);
+              window.open(vaga.url, '_blank', 'noopener,noreferrer');
+              return;
+            }
+
+            // 3. TERCEIRA PRIORIDADE: redirectUrl da vaga
             if (vaga && vaga.redirectUrl) {
-              console.log('🔄 REDIRECIONAMENTO DIRETO para vaga real:', vaga.redirectUrl)
-              if (typeof window !== 'undefined') {
-                window.open(vaga.redirectUrl, '_blank', 'noopener,noreferrer')
-              }
-              return
+              console.log('🔄 URL de redirecionamento da vaga:', vaga.redirectUrl);
+              window.open(vaga.redirectUrl, '_blank', 'noopener,noreferrer');
+              return;
             }
 
-            // 2. Alternativa: external_url
+            // 4. QUARTA PRIORIDADE: external_url
             if (vaga && (vaga.external_url || vaga.externalUrl)) {
-              const url = vaga.external_url || vaga.externalUrl
-              console.log('🔄 REDIRECIONAMENTO para URL externa:', url)
-              if (typeof window !== 'undefined') {
-                window.open(url, '_blank', 'noopener,noreferrer')
-              }
-              return
+              const url = vaga.external_url || vaga.externalUrl;
+              console.log('🔄 URL externa da vaga:', url);
+              window.open(url, '_blank', 'noopener,noreferrer');
+              return;
             }
 
-            // 3. Construir URL da vaga baseada no título/categoria - MAPEAMENTO ESPECÍFICO
+            // 5. FALLBACK: Construir URL baseada no título apenas se não tiver URL específica
             if (vaga && vaga.title) {
+              console.log('⚠️ Nenhuma URL específica encontrada, usando fallback baseado no título');
               const jobData = {
                 title: vaga.title || vaga.titulo,
-                category: vaga.category, // Assuming there's a category field
+                category: vaga.category,
                 redirectUrl: vaga.redirectUrl
               };
-              // Redirecionar após envio bem-sucedido
               const redirectUrl = generateJobRedirectUrl(jobData);
-              console.log('🔗 Dados da vaga para redirecionamento:', {
-                title: jobData.title,
-                category: jobData.category,
-                redirectUrl: redirectUrl
-              });
-              console.log('🔗 Redirecionando para:', redirectUrl);
+              console.log('🔗 Redirecionando para URL gerada:', redirectUrl);
               window.open(redirectUrl, '_blank');
-              return
+              return;
             }
 
-            // 4. Fallback extremo: Catho geral
-            console.log('🔄 REDIRECIONAMENTO FALLBACK para Catho geral')
-            if (typeof window !== 'undefined') {
-              window.open('https://www.catho.com.br/vagas/', '_blank', 'noopener,noreferrer')
-            }
+            // 6. FALLBACK FINAL: Catho geral
+            console.log('🔄 REDIRECIONAMENTO FALLBACK para Catho geral');
+            window.open('https://www.catho.com.br/vagas/', '_blank', 'noopener,noreferrer');
 
           } catch (error) {
-            console.error('❌ Erro no redirecionamento:', error)
+            console.error('❌ Erro no redirecionamento:', error);
             // Fallback final seguro
-            if (typeof window !== 'undefined') {
-              window.open('https://www.catho.com.br/vagas/', '_blank', 'noopener,noreferrer')
-            }
+            window.open('https://www.catho.com.br/vagas/', '_blank', 'noopener,noreferrer');
           }
         }, 200)
       } else {

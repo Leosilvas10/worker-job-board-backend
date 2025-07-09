@@ -1,4 +1,3 @@
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ 
@@ -18,7 +17,7 @@ export default async function handler(req, res) {
       idade,
       cidade,
       estado,
-      
+
       // Pesquisa trabalhista - 6 questões específicas
       nomeUltimaEmpresa,
       nome_ultima_empresa,
@@ -30,17 +29,17 @@ export default async function handler(req, res) {
       situacoes_enfrentadas,
       aceitaConsultoria,
       aceita_consultoria,
-      
+
       // Campos antigos para compatibilidade
       recebeuFgts,
       recebeuFerias,
       recebeuDecimoTerceiro,
       sofreu_assedio,
       trabalhouSemRegistro,
-      
+
       // Observações
       mensagem,
-      
+
       // Dados da vaga (se houver)
       vaga,
       fonte,
@@ -56,30 +55,30 @@ export default async function handler(req, res) {
       idade: idade || 18,
       cidade: cidade || '',
       estado: estado || '',
-      
+
       // Pesquisa trabalhista - 6 questões específicas
       nome_ultima_empresa: nomeUltimaEmpresa || nome_ultima_empresa || 'Não informado',
       tipo_carteira: tipoCarteira || tipo_carteira || 'Não informado',
       recebeu_tudo_certinho: recebeuTudoCertinho || recebeu_tudo_certinho || 'Não informado',
       situacoes_enfrentadas: situacoesEnfrentadas || situacoes_enfrentadas || 'Não informado',
       aceita_consultoria: aceitaConsultoria || aceita_consultoria || 'Não informado',
-      
+
       // Campos antigos para compatibilidade (se ainda existirem)
       fgts: recebeuFgts || 'Não informado',
       ferias: recebeuFerias || 'Não informado',
       decimo_terceiro: recebeuDecimoTerceiro || 'Não informado',
       assedio: sofreu_assedio || 'Não informado',
       sem_registro: trabalhouSemRegistro || 'Não informado',
-      
+
       // Observações
       mensagem: mensagem || '',
-      
+
       // Dados da vaga (se aplicável)
       vaga_id: vaga?.id || null,
       vaga_titulo: vaga?.titulo || 'Pesquisa Trabalhista Rápida',
       vaga_empresa: vaga?.empresa || '',
       vaga_localizacao: vaga?.localizacao || '',
-      
+
       // Controle e rastreamento
       fonte: fonte || 'modal_pesquisa_trabalhista_rapida',
       status: 'novo',
@@ -128,7 +127,12 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       message: 'Pesquisa trabalhista enviada com sucesso! Entraremos em contato em breve.',
-      data: result,
+      data: {
+        ...result,
+        vagaUrl: vaga?.url || vaga?.redirectUrl, // Retornar URL real da vaga
+        vagaTitulo: vaga?.title || vaga?.titulo,
+        vagaEmpresa: vaga?.company || vaga?.empresa
+      },
       timestamp: new Date().toISOString()
     })
 
