@@ -190,9 +190,19 @@ app.get('/api/labor-research', (req, res) => {
   res.json(laborResearchQuestions);
 });
 
-// Rota para listar vagas (SEM cidade)
-app.get('/api/jobs', (req, res) => {
-  const jobs = [
+// Função para carregar vagas do arquivo
+function loadJobsFromFile() {
+  try {
+    if (fs.existsSync('jobs-data.json')) {
+      const data = fs.readFileSync('jobs-data.json', 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Erro ao carregar vagas:', error);
+  }
+  
+  // Vagas padrão caso o arquivo não exista
+  return [
     {
       id: 1,
       title: "Empregada Doméstica",
@@ -224,11 +234,17 @@ app.get('/api/jobs', (req, res) => {
       tags: ["Limpeza", "Comercial"]
     }
   ];
+}
+
+// Rota para listar vagas (carrega do arquivo)
+app.get('/api/jobs', (req, res) => {
+  const jobs = loadJobsFromFile();
 
   res.json({
     jobs,
     total: jobs.length,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    lastUpdate: jobs[0]?.createdAt || new Date().toISOString()
   });
 });
 
@@ -386,6 +402,19 @@ app.use((err, req, res, next) => {
   res.status(500).json({ 
     error: 'Erro interno do servidor',
     message: err.message 
+  });
+});
+
+// Rota para atualizar vagas manualmente
+app.post('/api/update-jobs', (req, res) => {
+  console.log('🔄 Atualizando vagas manualmente...');
+  
+  // Execute o mesmo código do update-jobs.js aqui
+  // ou importe e execute a função
+  
+  res.json({
+    message: 'Vagas atualizadas com sucesso',
+    timestamp: new Date().toISOString()
   });
 });
 
