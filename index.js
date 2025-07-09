@@ -260,6 +260,181 @@ app.get('/api/jobs', (req, res) => {
   });
 });
 
+// Função para carregar vagas em destaque do arquivo
+function loadFeaturedJobsFromFile() {
+  try {
+    if (fs.existsSync('featured-jobs.json')) {
+      const data = fs.readFileSync('featured-jobs.json', 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Erro ao carregar vagas em destaque:', error);
+  }
+  
+  // Vagas em destaque padrão para a home page
+  return [
+    {
+      id: 'featured-1',
+      title: "Empregada Doméstica",
+      company: "Família Silva - Morumbi",
+      salary: "R$ 1.450,00",
+      type: "CLT",
+      timeAgo: "Há 1 hora",
+      description: "Experiência em limpeza e organização. Meio período. Excelente oportunidade!",
+      tags: ["Empregada", "CLT", "Destaque"],
+      featured: true,
+      priority: 1,
+      url: "https://www.indeed.com.br/viewjob?jk=8a2f5e1b9c7d3a84",
+      location: "São Paulo - SP",
+      schedule: "Meio período"
+    },
+    {
+      id: 'featured-2',
+      title: "Diarista",
+      company: "Residência Jardins",
+      salary: "R$ 150,00/dia",
+      type: "Diarista",
+      timeAgo: "Há 2 horas",
+      description: "2x por semana. Ótima remuneração. Ambiente familiar.",
+      tags: ["Diarista", "Flexível", "Destaque"],
+      featured: true,
+      priority: 2,
+      url: "https://www.indeed.com.br/viewjob?jk=6b4d8f3e2a9c1d75",
+      location: "São Paulo - SP",
+      schedule: "2x por semana"
+    },
+    {
+      id: 'featured-3',
+      title: "Cuidadora de Idosos",
+      company: "Família Particular",
+      salary: "R$ 1.600,00",
+      type: "CLT",
+      timeAgo: "Há 30 min",
+      description: "Cuidados especializados. Período integral. Carteira assinada.",
+      tags: ["Cuidadora", "CLT", "Destaque"],
+      featured: true,
+      priority: 3,
+      url: "https://www.indeed.com.br/viewjob?jk=2d5f9e8a3c6b1h47",
+      location: "São Paulo - SP",
+      schedule: "Período integral"
+    },
+    {
+      id: 'featured-4',
+      title: "Babá",
+      company: "Família Moderna",
+      salary: "R$ 1.500,00",
+      type: "CLT",
+      timeAgo: "Há 1 hora",
+      description: "Cuidados com 2 crianças. Experiência necessária. Benefícios.",
+      tags: ["Babá", "CLT", "Destaque"],
+      featured: true,
+      priority: 4,
+      url: "https://www.indeed.com.br/viewjob?jk=4f8e3d9a2c7b6j91",
+      location: "São Paulo - SP",
+      schedule: "Segunda a Sexta"
+    },
+    {
+      id: 'featured-5',
+      title: "Auxiliar de Limpeza",
+      company: "Empresa Comercial",
+      salary: "R$ 1.400,00",
+      type: "CLT",
+      timeAgo: "Há 45 min",
+      description: "Limpeza comercial. Vale transporte + alimentação.",
+      tags: ["Auxiliar", "CLT", "Destaque"],
+      featured: true,
+      priority: 5,
+      url: "https://www.indeed.com.br/viewjob?jk=5g9d2f7e4a8c1l73",
+      location: "São Paulo - SP",
+      schedule: "Segunda a Sábado"
+    },
+    {
+      id: 'featured-6',
+      title: "Governanta",
+      company: "Residência de Alto Padrão",
+      salary: "R$ 2.200,00",
+      type: "CLT",
+      timeAgo: "Há 15 min",
+      description: "Experiência em casas grandes. Excelente salário + benefícios.",
+      tags: ["Governanta", "CLT", "Destaque"],
+      featured: true,
+      priority: 6,
+      url: "https://www.indeed.com.br/viewjob?jk=3h7e2f9d6a4c8n94",
+      location: "São Paulo - SP",
+      schedule: "Período integral"
+    }
+  ];
+}
+
+// Rota para vagas em destaque da home page
+app.get('/api/featured-jobs', (req, res) => {
+  const featuredJobs = loadFeaturedJobsFromFile();
+
+  res.json({
+    featuredJobs,
+    total: featuredJobs.length,
+    timestamp: new Date().toISOString(),
+    description: "Vagas em destaque para a home page"
+  });
+});
+
+// Rota para atualizar vagas em destaque (admin)
+app.post('/api/featured-jobs', (req, res) => {
+  const { jobs } = req.body;
+
+  if (!Array.isArray(jobs) || jobs.length !== 6) {
+    return res.status(400).json({
+      error: 'Deve fornecer exatamente 6 vagas em destaque',
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  // Validar estrutura das vagas
+  const requiredFields = ['title', 'company', 'salary', 'type', 'description', 'url'];
+  for (const job of jobs) {
+    for (const field of requiredFields) {
+      if (!job[field]) {
+        return res.status(400).json({
+          error: `Campo obrigatório '${field}' não encontrado na vaga: ${job.title || 'Sem título'}`,
+          timestamp: new Date().toISOString()
+        });
+      }
+    }
+  }
+
+  // Adicionar campos necessários para vagas em destaque
+  const featuredJobs = jobs.map((job, index) => ({
+    ...job,
+    id: job.id || `featured-${index + 1}`,
+    featured: true,
+    priority: index + 1,
+    timeAgo: job.timeAgo || "Há poucos minutos",
+    tags: job.tags || [job.title.split(' ')[0], job.type, "Destaque"],
+    location: job.location || "São Paulo - SP",
+    schedule: job.schedule || "A combinar",
+    createdAt: new Date().toISOString()
+  }));
+
+  try {
+    // Salvar vagas em destaque no arquivo
+    fs.writeFileSync('featured-jobs.json', JSON.stringify(featuredJobs, null, 2));
+    console.log(`✅ ${featuredJobs.length} vagas em destaque atualizadas!`);
+    
+    res.json({
+      message: 'Vagas em destaque atualizadas com sucesso!',
+      featuredJobs: featuredJobs,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Erro ao salvar vagas em destaque:', error);
+    res.status(500).json({
+      error: 'Erro ao salvar vagas em destaque',
+      details: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 // Rota para candidaturas às vagas
 app.post('/api/job-applications', (req, res) => {
   console.log('Candidatura recebida:', req.body);
