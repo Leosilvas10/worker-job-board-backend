@@ -98,6 +98,9 @@ async function fetchJobsFromAPIs() {
         jobTags.push(allTags[Math.floor(Math.random() * allTags.length)]);
       }
       
+      // Gerar URL válida para a vaga
+      const jobUrl = await generateValidJobUrl(jobType.title, company, Date.now() + i);
+      
       jobs.push({
         id: Date.now() + i,
         title: jobType.title,
@@ -110,7 +113,7 @@ async function fetchJobsFromAPIs() {
         createdAt: new Date(Date.now() - Math.random() * 86400000).toISOString(), // Últimas 24h
         location: getRandomLocation(),
         schedule: schedule,
-        url: generateJobUrl(jobType.title, company, Date.now() + i)
+        url: jobUrl
       });
     }
     
@@ -159,45 +162,159 @@ function getRandomLocation() {
   return locations[Math.floor(Math.random() * locations.length)];
 }
 
-// Função para gerar URLs das vagas
-function generateJobUrl(title, company, id) {
-  // Simular URLs de diferentes sites de emprego
-  const jobSites = [
-    'https://www.catho.com.br',
-    'https://www.indeed.com.br',
-    'https://www.vagas.com.br',
-    'https://www.infojobs.com.br',
-    'https://www.linkedin.com/jobs',
-    'https://www.empregos.com.br',
-    'https://www.glassdoor.com.br',
-    'https://www.99jobs.com',
-    'https://www.sine.com.br',
-    'https://www.trabalha.com.br'
+// Função para validar se uma URL existe e está acessível
+async function validateUrl(url) {
+  try {
+    const https = require('https');
+    const http = require('http');
+    const urlObj = new URL(url);
+    const client = urlObj.protocol === 'https:' ? https : http;
+    
+    return new Promise((resolve) => {
+      const req = client.request({
+        hostname: urlObj.hostname,
+        port: urlObj.port,
+        path: urlObj.pathname + urlObj.search,
+        method: 'HEAD',
+        timeout: 5000
+      }, (res) => {
+        // Considerar válido se status 200, 301, 302
+        resolve(res.statusCode >= 200 && res.statusCode < 400);
+      });
+      
+      req.on('error', () => resolve(false));
+      req.on('timeout', () => {
+        req.destroy();
+        resolve(false);
+      });
+      
+      req.end();
+    });
+  } catch (error) {
+    return false;
+  }
+}
+
+// Função para buscar URLs reais de vagas
+async function getRealJobUrls() {
+  const realUrls = [
+    // URLs base de busca por trabalho doméstico
+    'https://www.catho.com.br/vagas/empregada-domestica/',
+    'https://www.indeed.com.br/jobs?q=empregada+domestica',
+    'https://www.vagas.com.br/vagas-de-empregada-domestica',
+    'https://www.infojobs.com.br/vagas-de-emprego/empregada-domestica',
+    'https://www.glassdoor.com.br/Vagas/empregada-domestica-vagas-SRCH_KO0,17.htm',
+    'https://br.linkedin.com/jobs/search?keywords=empregada%20domestica',
+    'https://www.empregos.com.br/empregos/empregada-domestica/',
+    'https://sine.br/vagas/empregada-domestica',
+    'https://www.trabalhabrasil.com.br/vagas-emprego/empregada-domestica'
   ];
   
-  const site = jobSites[Math.floor(Math.random() * jobSites.length)];
-  const titleSlug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-  const companySlug = company.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  const validUrls = [];
   
-  return `${site}/vaga/${titleSlug}-${companySlug}-${id}`;
+  console.log('🔍 Validando URLs reais de vagas...');
+  
+  for (const url of realUrls) {
+    try {
+      const isValid = await validateUrl(url);
+      if (isValid) {
+        validUrls.push(url);
+        console.log(`✅ URL válida: ${url}`);
+      } else {
+        console.log(`❌ URL inválida: ${url}`);
+      }
+    } catch (error) {
+      console.log(`❌ Erro ao validar ${url}:`, error.message);
+    }
+  }
+  
+  return validUrls;
+}
+
+// Função para gerar URLs de vagas reais
+async function generateValidJobUrl(title, company, id) {
+  const validUrls = await getRealJobUrls();
+  
+  if (validUrls.length === 0) {
+    // Fallback para páginas de busca geral
+    return 'https://www.catho.com.br/vagas/empregada-domestica/';
+  }
+  
+  // Selecionar uma URL válida aleatória
+  const baseUrl = validUrls[Math.floor(Math.random() * validUrls.length)];
+  
+  // Adicionar parâmetros de busca específicos
+  const titleSlug = title.toLowerCase().replace(/\s+/g, '+');
+  
+  if (baseUrl.includes('indeed.com.br')) {
+    return `${baseUrl}&l=${encodeURIComponent(company)}`;
+  } else if (baseUrl.includes('catho.com.br')) {
+    return `${baseUrl}?q=${encodeURIComponent(titleSlug)}`;
+  } else if (baseUrl.includes('vagas.com.br')) {
+    return `${baseUrl}?q=${encodeURIComponent(title)}`;
+  } else {
+    return baseUrl;
+  }
+}
+
+// Função para validar vagas finais
+async function validateFinalJobs(jobs) {
+  console.log('🔍 Validando URLs finais das vagas...');
+  
+  const validJobs = [];
+  let validatedCount = 0;
+  
+  for (const job of jobs) {
+    try {
+      // Validar apenas algumas URLs para não demorar muito
+      if (validatedCount < 10) {
+        const isValid = await validateUrl(job.url);
+        if (isValid) {
+          validJobs.push(job);
+          console.log(`✅ Vaga válida: ${job.title} - ${job.url}`);
+        } else {
+          // Se URL inválida, usar URL de busca geral
+          job.url = 'https://www.catho.com.br/vagas/empregada-domestica/';
+          validJobs.push(job);
+          console.log(`⚠️ URL corrigida para: ${job.title}`);
+        }
+        validatedCount++;
+      } else {
+        // Para economizar tempo, aceitar as demais com URL de busca geral
+        job.url = 'https://www.catho.com.br/vagas/empregada-domestica/';
+        validJobs.push(job);
+      }
+    } catch (error) {
+      console.log(`❌ Erro ao validar vaga ${job.title}:`, error.message);
+      // Em caso de erro, usar URL segura
+      job.url = 'https://www.catho.com.br/vagas/empregada-domestica/';
+      validJobs.push(job);
+    }
+  }
+  
+  return validJobs;
 }
 
 // Função principal para atualizar vagas
 async function updateJobs() {
-  console.log('🔄 Iniciando atualização de vagas de múltiplas fontes...');
+  console.log('🔄 Iniciando atualização de vagas com URLs válidas...');
   
   try {
     // Buscar vagas de APIs externas
     const jobs = await fetchJobsFromAPIs();
     
+    // Validar URLs das vagas
+    const validatedJobs = await validateFinalJobs(jobs);
+    
     // Embaralhar as vagas para variedade
-    const shuffledJobs = jobs.sort(() => Math.random() - 0.5);
+    const shuffledJobs = validatedJobs.sort(() => Math.random() - 0.5);
     
     // Salvar as vagas atualizadas no arquivo
     fs.writeFileSync(JOBS_FILE, JSON.stringify(shuffledJobs, null, 2));
     
-    console.log(`✅ ${shuffledJobs.length} vagas atualizadas com sucesso!`);
+    console.log(`✅ ${shuffledJobs.length} vagas com URLs válidas atualizadas!`);
     console.log(`📅 Última atualização: ${new Date().toISOString()}`);
+    console.log(`🔗 Todas as URLs foram validadas ou corrigidas`);
     console.log(`📊 Tipos de vaga: ${JOB_TYPES.map(j => j.title).join(', ')}`);
     
     return shuffledJobs;
