@@ -16,21 +16,22 @@ export default function Home() {
   // Debug logs para produção
   useEffect(() => {
     console.log('🏠 Homepage State:', { 
-      jobsCount: jobs.length, 
+      featuredJobsCount: jobs.length, 
       loading, 
       showModal,
-      environment: process.env.NODE_ENV 
+      environment: process.env.NODE_ENV,
+      source: 'featured-jobs-endpoint'
     })
   }, [jobs, loading, showModal])
 
-  // Buscar vagas em destaque - mesma estrutura da página de vagas
+  // Buscar vagas em destaque do endpoint específico
   useEffect(() => {
     let mounted = true
     let timeoutId = null
 
-    const loadJobs = async () => {
+    const loadFeaturedJobs = async () => {
       try {
-        console.log('🔍 Buscando vagas para destaque na homepage...')
+        console.log('🔍 Buscando vagas em destaque do endpoint específico...')
         setLoading(true)
 
         // Timeout de segurança para garantir que o loading seja removido
@@ -41,8 +42,12 @@ export default function Home() {
           }
         }, 10000) // 10 segundos máximo
 
-        const response = await fetch('/api/all-jobs-combined', {
+        const BACKEND_URL = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
+        const response = await fetch(`${BACKEND_URL}/api/featured-jobs`, {
+          method: 'GET',
           headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache'
           }
@@ -55,45 +60,106 @@ export default function Home() {
 
         if (response.ok && mounted) {
           const data = await response.json()
-          console.log('📊 Dados recebidos da API:', { 
+          console.log('📊 Dados das vagas em destaque recebidos:', { 
             success: data.success, 
-            jobsLength: data.jobs?.length,
-            dataLength: data.data?.length,
-            total: data.total 
+            featuredJobsLength: data.featuredJobs?.length,
+            lastUpdate: data.lastUpdate
           })
 
-          // Verificar múltiplas propriedades para garantir compatibilidade
-          const jobsArray = data.jobs || data.data || []
-          
-          if (jobsArray && Array.isArray(jobsArray) && jobsArray.length > 0) {
-            console.log(`✅ Total de ${jobsArray.length} vagas disponíveis`)
-
-            // Selecionar 6 vagas aleatórias para destaque
-            const shuffled = [...jobsArray].sort(() => 0.5 - Math.random())
-            const featured = shuffled.slice(0, 6)
+          if (data.success && data.featuredJobs && Array.isArray(data.featuredJobs) && data.featuredJobs.length > 0) {
+            console.log(`✅ ${data.featuredJobs.length} vagas em destaque carregadas`)
+            console.log('🔥 Última atualização:', data.lastUpdate)
 
             if (mounted) {
-              setJobs(featured)
-              setLoading(false) // Garantir que loading seja removido
-              console.log('🔥 6 vagas selecionadas para destaque:', featured.map(j => j.title))
+              setJobs(data.featuredJobs)
+              setLoading(false)
+              console.log('🎯 Vagas em destaque definidas:', data.featuredJobs.map(j => j.title))
             }
           } else {
+            console.log('⚠️ Nenhuma vaga em destaque encontrada, fazendo fallback...')
+            
+            // Fallback: buscar algumas vagas do endpoint geral
+            const fallbackResponse = await fetch('/api/all-jobs-combined', {
+              headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+              }
+            })
+
+            if (fallbackResponse.ok && mounted) {
+              const fallbackData = await fallbackResponse.json()
+              const jobsArray = fallbackData.jobs || fallbackData.data || []
+              
+              if (jobsArray.length > 0) {
+                const shuffled = [...jobsArray].sort(() => 0.5 - Math.random())
+                const featured = shuffled.slice(0, 6)
+                
+                if (mounted) {
+                  setJobs(featured)
+                  setLoading(false)
+                  console.log('🔄 Fallback: 6 vagas selecionadas aleatoriamente')
+                }
+              }
+            }
+          }
+        } else if (mounted) {
+          console.error('❌ Erro na resposta da API featured-jobs:', response.status)
+          
+          // Fallback em caso de erro
+          try {
+            const fallbackResponse = await fetch('/api/all-jobs-combined')
+            if (fallbackResponse.ok) {
+              const fallbackData = await fallbackResponse.json()
+              const jobsArray = fallbackData.jobs || fallbackData.data || []
+              
+              if (jobsArray.length > 0) {
+                const shuffled = [...jobsArray].sort(() => 0.5 - Math.random())
+                const featured = shuffled.slice(0, 6)
+                
+                if (mounted) {
+                  setJobs(featured)
+                  setLoading(false)
+                  console.log('🔄 Fallback por erro: 6 vagas selecionadas')
+                }
+              }
+            }
+          } catch (fallbackError) {
             if (mounted) {
-              console.log('⚠️ Nenhuma vaga encontrada, dados recebidos:', data)
+              console.error('❌ Erro no fallback:', fallbackError)
               setJobs([])
               setLoading(false)
             }
           }
-        } else if (mounted) {
-          console.error('❌ Erro na resposta da API:', response.status)
-          setJobs([])
-          setLoading(false)
         }
       } catch (error) {
         if (mounted) {
-          console.error('❌ Erro ao carregar vagas:', error)
-          setJobs([])
-          setLoading(false)
+          console.error('❌ Erro ao carregar vagas em destaque:', error)
+          
+          // Fallback final
+          try {
+            const fallbackResponse = await fetch('/api/all-jobs-combined')
+            if (fallbackResponse.ok) {
+              const fallbackData = await fallbackResponse.json()
+              const jobsArray = fallbackData.jobs || fallbackData.data || []
+              
+              if (jobsArray.length > 0) {
+                const shuffled = [...jobsArray].sort(() => 0.5 - Math.random())
+                const featured = shuffled.slice(0, 6)
+                
+                if (mounted) {
+                  setJobs(featured)
+                  setLoading(false)
+                  console.log('🔄 Fallback final: 6 vagas selecionadas')
+                }
+              }
+            }
+          } catch (finalError) {
+            if (mounted) {
+              console.error('❌ Erro no fallback final:', finalError)
+              setJobs([])
+              setLoading(false)
+            }
+          }
         }
         if (timeoutId) {
           clearTimeout(timeoutId)
@@ -102,7 +168,7 @@ export default function Home() {
     }
 
     // Carregar imediatamente
-    loadJobs()
+    loadFeaturedJobs()
 
     return () => {
       mounted = false
@@ -194,8 +260,8 @@ export default function Home() {
             ) : (
               <div className="text-center py-12">
                 <div className="text-6xl mb-4">⚠️</div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">Carregando vagas...</h3>
-                <p className="text-gray-600">Aguarde um momento enquanto buscamos as melhores oportunidades</p>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">Carregando vagas em destaque...</h3>
+                <p className="text-gray-600">Aguarde um momento enquanto buscamos as oportunidades mais atrativas (atualizadas diariamente)</p>
                 <div className="mt-4">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
                 </div>
