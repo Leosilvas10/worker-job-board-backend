@@ -124,8 +124,9 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
       console.log('✅ Resposta do servidor:', result)
 
       if (result.success) {
-        alert('✅ Pesquisa trabalhista enviada com sucesso!')
+        // Fechar modal sem popup
         onClose()
+        
         // Reset form
         setFormData({
           nomeCompleto: '',
@@ -141,12 +142,29 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
           mensagem: ''
         })
         setStep(1)
+        
+        // Redirecionar para página de vagas após 500ms
+        setTimeout(() => {
+          window.location.href = '/vagas'
+        }, 500)
       } else {
         throw new Error(result.message || 'Erro no envio')
       }
     } catch (error) {
       console.error('❌ Erro no envio:', error)
-      alert('❌ Erro ao enviar. Tente novamente.')
+      // Mostrar mensagem de erro de forma mais sutil
+      const errorDiv = document.createElement('div')
+      errorDiv.innerHTML = `
+        <div style="position: fixed; top: 20px; right: 20px; background: #fee; border: 1px solid #fcc; color: #c00; padding: 15px; border-radius: 5px; z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          ❌ Erro ao enviar. Tente novamente.
+        </div>
+      `
+      document.body.appendChild(errorDiv)
+      
+      // Remover mensagem após 3 segundos
+      setTimeout(() => {
+        document.body.removeChild(errorDiv)
+      }, 3000)
     } finally {
       setIsSubmitting(false)
     }
