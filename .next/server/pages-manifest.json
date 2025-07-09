@@ -2,6 +2,10 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/": "pages/index.js",
+  "/api/get-leads": "pages/api/get-leads.js",
+  "/admin": "pages/admin.js",
   "/admin/leads": "pages/admin/leads.js",
-  "/api/get-leads": "pages/api/get-leads.js"
+  "/api/jobs-stats": "pages/api/jobs-stats.js",
+  "/api/all-jobs-combined": "pages/api/all-jobs-combined.js"
 }
