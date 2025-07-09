@@ -18,63 +18,49 @@ export default function AdminLeads() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch lead stats
+        console.log('🔍 Carregando leads do painel admin...')
         const response = await fetch('/api/get-leads')
         const data = await response.json()
         
-        if (data.success && data.leads) {
+        console.log('📊 Resposta da API:', data)
+        
+        // SEMPRE usar os dados retornados pela API (que agora sempre funciona)
+        if (data && data.leads && Array.isArray(data.leads)) {
           setLeads(data.leads)
           setStats({
             totalLeads: data.leads.length,
             leadsHoje: data.leads.filter(lead => {
               const today = new Date().toDateString()
-              return new Date(lead.createdAt || lead.timestamp).toDateString() === today
+              const leadDate = new Date(lead.criadoEm || lead.createdAt || lead.timestamp).toDateString()
+              return leadDate === today
             }).length,
             conversion: '12%',
-            pendentes: data.leads.filter(lead => lead.status === 'pending').length
+            pendentes: data.leads.filter(lead => 
+              lead.status === 'novo' || 
+              lead.status === 'pending' || 
+              !lead.contatado
+            ).length
           })
+          console.log('✅ Leads carregados com sucesso:', data.leads.length)
         } else {
-          // Dados de exemplo se a API falhar
-          const mockLeads = [
-            {
-              id: 1,
-              name: 'João Silva',
-              email: 'joao@email.com',
-              phone: '(11) 99999-9999',
-              interesse: 'Calculadora Trabalhista',
-              status: 'pending',
-              source: 'Site',
-              createdAt: new Date().toISOString()
-            },
-            {
-              id: 2,
-              name: 'Maria Santos',
-              email: 'maria@email.com',
-              phone: '(11) 88888-8888',
-              interesse: 'Vagas de Emprego',
-              status: 'contacted',
-              source: 'Facebook',
-              createdAt: new Date(Date.now() - 86400000).toISOString()
-            }
-          ]
-          setLeads(mockLeads)
+          console.log('⚠️ Dados inválidos, usando fallback')
+          setLeads([])
+          setStats({
+            totalLeads: 0,
+            leadsHoje: 0,
+            conversion: '0%',
+            pendentes: 0
+          })
         }
       } catch (error) {
-        console.error('Erro ao carregar leads:', error)
-        // Dados de exemplo em caso de erro
-        const mockLeads = [
-          {
-            id: 1,
-            name: 'João Silva',
-            email: 'joao@email.com',
-            phone: '(11) 99999-9999',
-            interesse: 'Calculadora Trabalhista',
-            status: 'pending',
-            source: 'Site',
-            createdAt: new Date().toISOString()
-          }
-        ]
-        setLeads(mockLeads)
+        console.error('❌ Erro ao carregar leads:', error)
+        setLeads([])
+        setStats({
+          totalLeads: 0,
+          leadsHoje: 0,
+          conversion: '0%',
+          pendentes: 0
+        })
       } finally {
         setLoading(false)
       }
