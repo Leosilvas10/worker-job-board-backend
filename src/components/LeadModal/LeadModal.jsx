@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 
 const LeadModal = ({ isOpen, onClose, jobData }) => {
@@ -95,31 +96,29 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
 
       // Preparar dados para envio
       const submissionData = {
-        // Dados pessoais - campo "nome" com dados completos
+        // Dados pessoais
         name: formData.name,
         whatsapp: formData.whatsapp,
-
-        // Email não solicitado no formulário
         email: null,
 
-        // Respostas da pesquisa - TODAS OBRIGATÓRIAS
+        // Respostas da pesquisa
         lastCompany: formData.lastCompany || 'Não informado',
         workStatus: formData.workStatus || 'Não informado',
         receivedRights: formData.receivedRights || 'Não informado',
         workProblems: formData.workProblems || [],
         wantConsultation: formData.wantConsultation || 'Não informado',
 
-        // Consentimento LGPD - SEMPRE OBRIGATÓRIO
+        // Consentimento LGPD
         lgpdConsent: formData.lgpdConsent,
 
-        // Dados da vaga para redirecionamento  
+        // Dados da vaga
         jobId: jobData?.id || jobData?.jobId,
         jobTitle: jobData?.title || jobData?.jobTitle || 'Vaga não especificada',
         company: jobData?.company?.name || jobData?.company || 'Empresa não especificada',
         jobLink: jobData?.url || jobData?.link || jobData?.apply_url || jobData?.original_url || '#',
         originalLocation: jobData?.originalLocation || jobData?.location || 'Brasil',
 
-        // Metadados adicionais
+        // Metadados
         fonte: 'Site do Trabalhador - Pesquisa Trabalhista',
         paginaOrigem: window.location.href,
         timestamp: new Date().toISOString(),
@@ -128,35 +127,12 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
 
       console.log('📤 Enviando dados do formulário:', submissionData)
 
-      try {
       const response = await fetch('/api/submit-lead', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          name: formData.nomeCompleto,
-          whatsapp: formData.whatsapp,
-          lastCompany: formData.ultimaEmpresa,
-          workStatus: formData.tipoCarteira,
-          receivedRights: formData.recebeuCertinho,
-          workProblems: formData.situacoes,
-          wantConsultation: formData.consultaGratuita,
-          jobId: jobData?.id,
-          jobTitle: jobData?.title,
-          company: jobData?.company,
-          jobLink: jobData?.link,
-          originalLocation: jobData?.location,
-          lgpdConsent: formData.aceitoTratamento,
-          fonte: 'Site do Trabalhador',
-          timestamp: new Date().toISOString(),
-          // Dados estruturados para o backend
-          ultima_empresa: formData.ultimaEmpresa,
-          tipo_carteira: formData.tipoCarteira,
-          recebeu_direitos: formData.recebeuCertinho,
-          situacoes_enfrentadas: formData.situacoes.join(', '),
-          aceita_consultoria: formData.consultaGratuita
-        })
+        body: JSON.stringify(submissionData)
       })
 
       const result = await response.json()
