@@ -2,9 +2,11 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/admin/leads": "pages/admin/leads.js",
   "/": "pages/index.js",
+  "/api/jobs-stats": "pages/api/jobs-stats.js",
+  "/api/all-jobs-combined": "pages/api/all-jobs-combined.js",
   "/api/submit-lead": "pages/api/submit-lead.js",
   "/admin": "pages/admin.js",
-  "/api/get-leads": "pages/api/get-leads.js",
-  "/admin/leads": "pages/admin/leads.js"
+  "/api/get-leads": "pages/api/get-leads.js"
 }
