@@ -7,8 +7,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     // Dados pessoais
     nomeCompleto: '',
     whatsapp: '',
-    email: '',
-    idade: '',
+    idade: 18,
     cidade: '',
     estado: '',
     
@@ -41,6 +40,20 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     mensagem: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Cidades por estado
+  const cidadesPorEstado = {
+    'SP': ['São Paulo', 'Campinas', 'Santos', 'São Bernardo do Campo', 'Santo André', 'Osasco', 'Ribeirão Preto', 'Sorocaba', 'Mauá', 'São José dos Campos'],
+    'RJ': ['Rio de Janeiro', 'Niterói', 'Nova Iguaçu', 'Duque de Caxias', 'São Gonçalo', 'Volta Redonda', 'Petrópolis', 'Magé', 'Itaboraí', 'Cabo Frio'],
+    'MG': ['Belo Horizonte', 'Uberlândia', 'Contagem', 'Juiz de Fora', 'Betim', 'Montes Claros', 'Ribeirão das Neves', 'Uberaba', 'Governador Valadares', 'Ipatinga'],
+    'RS': ['Porto Alegre', 'Caxias do Sul', 'Pelotas', 'Canoas', 'Santa Maria', 'Gravataí', 'Viamão', 'Novo Hamburgo', 'São Leopoldo', 'Rio Grande'],
+    'PR': ['Curitiba', 'Londrina', 'Maringá', 'Ponta Grossa', 'Cascavel', 'São José dos Pinhais', 'Foz do Iguaçu', 'Colombo', 'Guarapuava', 'Paranaguá'],
+    'SC': ['Florianópolis', 'Joinville', 'Blumenau', 'São José', 'Criciúma', 'Chapecó', 'Itajaí', 'Lages', 'Jaraguá do Sul', 'Palhoça'],
+    'BA': ['Salvador', 'Feira de Santana', 'Vitória da Conquista', 'Camaçari', 'Itabuna', 'Juazeiro', 'Lauro de Freitas', 'Ilhéus', 'Jequié', 'Teixeira de Freitas'],
+    'GO': ['Goiânia', 'Aparecida de Goiânia', 'Anápolis', 'Rio Verde', 'Luziânia', 'Águas Lindas de Goiás', 'Valparaíso de Goiás', 'Trindade', 'Formosa', 'Novo Gama'],
+    'PE': ['Recife', 'Jaboatão dos Guararapes', 'Olinda', 'Caruaru', 'Petrolina', 'Paulista', 'Cabo de Santo Agostinho', 'Camaragibe', 'Garanhuns', 'Vitória de Santo Antão'],
+    'CE': ['Fortaleza', 'Caucaia', 'Juazeiro do Norte', 'Maracanaú', 'Sobral', 'Crato', 'Itapipoca', 'Maranguape', 'Iguatu', 'Quixadá']
+  }
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
@@ -84,8 +97,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
         setFormData({
           nomeCompleto: '',
           whatsapp: '',
-          email: '',
-          idade: '',
+          idade: 18,
           cidade: '',
           estado: '',
           ultimaEmpresa: '',
@@ -169,69 +181,80 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      WhatsApp *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={formData.whatsapp}
-                      onChange={(e) => handleInputChange('whatsapp', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="(11) 99999-9999"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="seu@email.com"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    WhatsApp *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.whatsapp}
+                    onChange={(e) => handleInputChange('whatsapp', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="(11) 99999-9999"
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Idade
+                      Idade *
                     </label>
-                    <input
-                      type="number"
-                      value={formData.idade}
-                      onChange={(e) => handleInputChange('idade', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="30"
-                    />
+                    <div className="relative">
+                      <input
+                        type="number"
+                        required
+                        min="18"
+                        max="100"
+                        value={formData.idade}
+                        onChange={(e) => {
+                          const valor = parseInt(e.target.value) || 18;
+                          if (valor >= 18) {
+                            handleInputChange('idade', valor);
+                          }
+                        }}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="18"
+                      />
+                      <div className="absolute right-1 top-1 flex flex-col">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const novaIdade = Math.min(100, (formData.idade || 18) + 1);
+                            handleInputChange('idade', novaIdade);
+                          }}
+                          className="text-xs px-1 py-0 text-gray-600 hover:text-blue-600"
+                        >
+                          ▲
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const novaIdade = Math.max(18, (formData.idade || 18) - 1);
+                            handleInputChange('idade', novaIdade);
+                          }}
+                          className="text-xs px-1 py-0 text-gray-600 hover:text-blue-600"
+                        >
+                          ▼
+                        </button>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">Mínimo: 18 anos</p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Cidade
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.cidade}
-                      onChange={(e) => handleInputChange('cidade', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="São Paulo"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Estado
+                      Estado *
                     </label>
                     <select
+                      required
                       value={formData.estado}
-                      onChange={(e) => handleInputChange('estado', e.target.value)}
+                      onChange={(e) => {
+                        handleInputChange('estado', e.target.value);
+                        handleInputChange('cidade', ''); // Reset cidade quando mudar estado
+                      }}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                      <option value="">Selecione</option>
+                      <option value="">Selecione o Estado</option>
                       <option value="SP">São Paulo</option>
                       <option value="RJ">Rio de Janeiro</option>
                       <option value="MG">Minas Gerais</option>
@@ -242,6 +265,27 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
                       <option value="GO">Goiás</option>
                       <option value="PE">Pernambuco</option>
                       <option value="CE">Ceará</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Cidade *
+                    </label>
+                    <select
+                      required
+                      value={formData.cidade}
+                      onChange={(e) => handleInputChange('cidade', e.target.value)}
+                      disabled={!formData.estado}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                    >
+                      <option value="">
+                        {formData.estado ? 'Selecione a Cidade' : 'Primeiro selecione o Estado'}
+                      </option>
+                      {formData.estado && cidadesPorEstado[formData.estado]?.map(cidade => (
+                        <option key={cidade} value={cidade}>
+                          {cidade}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
