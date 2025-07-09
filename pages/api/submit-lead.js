@@ -87,12 +87,13 @@ export default async function handler(req, res) {
     
     console.log('📨 Resposta do backend:', backendResponse.status, backendResult)
 
-    if (backendResponse.ok && backendResult.success) {
+    // Backend retorna message sem success, então validamos pela presença dos dados
+    if (backendResponse.ok && (backendResult.data || backendResult.message?.includes('sucesso'))) {
       console.log('✅ Lead enviado com sucesso!')
       return res.status(200).json({
         success: true,
         message: 'Candidatura enviada com sucesso!',
-        data: backendResult.data
+        data: backendResult.data || backendResult
       })
     } else {
       console.log('❌ Erro no backend:', backendResult)
