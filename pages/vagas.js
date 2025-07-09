@@ -753,12 +753,14 @@ const Vagas = () => {
           {/* Espaço em branco intencional */}
         </div>
 
-        {/* Modal de Lead Unificado */}
-        <LeadModal 
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          jobData={selectedJob}
-        />
+        {/* Modal de Candidatura */}
+        {isModalOpen && selectedJob && (
+          <LeadModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            jobData={selectedJob}
+          />
+        )}
       </div>
     )
 }
