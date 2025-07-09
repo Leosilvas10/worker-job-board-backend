@@ -1,12 +1,39 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Arquivo para persistir os dados
+const DATA_FILE = 'labor-research-leads.json';
+
+// Função para carregar dados do arquivo
+function loadLeadsFromFile() {
+  try {
+    if (fs.existsSync(DATA_FILE)) {
+      const data = fs.readFileSync(DATA_FILE, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Erro ao carregar dados:', error);
+  }
+  return [];
+}
+
+// Função para salvar dados no arquivo
+function saveLeadsToFile(leads) {
+  try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(leads, null, 2));
+    console.log(`💾 Dados salvos no arquivo: ${leads.length} leads`);
+  } catch (error) {
+    console.error('Erro ao salvar dados:', error);
+  }
+}
+
 // Array para armazenar dados da pesquisa trabalhista
-let laborResearchLeads = [];
+let laborResearchLeads = loadLeadsFromFile();
 
 // Configuração do CORS para aceitar os domínios do frontend
 const corsOptions = {
@@ -218,6 +245,9 @@ app.post('/api/labor-research', (req, res) => {
   
   laborResearchLeads.push(leadData);
   
+  // SALVAR NO ARQUIVO PARA PERSISTÊNCIA
+  saveLeadsToFile(laborResearchLeads);
+  
   console.log(`✅ Lead salvo! Total de leads: ${laborResearchLeads.length}`);
 
   res.json({
@@ -261,4 +291,5 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ CORS configurado para:`);
   console.log(`   - https://worker-job-board-frontend-leonardosilvas2.replit.app`);
   console.log(`   - https://sitedotrabalhador.com.br`);
+  console.log(`💾 Dados carregados: ${laborResearchLeads.length} leads salvos`);
 });
