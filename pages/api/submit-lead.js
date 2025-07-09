@@ -91,22 +91,6 @@ export default async function handler(req, res) {
     const result = await response.json()
     console.log('✅ SUCESSO! Lead salvo:', result)
 
-    // Função para validar se URL existe
-    async function isUrlValid(url) {
-      if (!url) return false;
-      
-      try {
-        const response = await fetch(url, { 
-          method: 'HEAD',
-          timeout: 5000 // 5 segundos timeout
-        });
-        return response.ok;
-      } catch (error) {
-        console.log('❌ URL inválida:', url, error.message);
-        return false;
-      }
-    }
-
     // Extrair URL real da vaga para redirecionamento
     let vagaUrl = null
 
@@ -139,22 +123,6 @@ export default async function handler(req, res) {
     }
 
     console.log('🔗 URL da vaga identificada:', vagaUrl)
-
-    // Validar se a URL funciona
-    if (vagaUrl) {
-      console.log('🔍 Validando URL:', vagaUrl);
-      const isValid = await isUrlValid(vagaUrl);
-      
-      if (!isValid) {
-        console.log('❌ URL inválida, usando fallback para Catho');
-        vagaUrl = 'https://www.catho.com.br/vagas/';
-      } else {
-        console.log('✅ URL validada com sucesso');
-      }
-    } else {
-      console.log('⚠️ Nenhuma URL encontrada, usando Catho como fallback');
-      vagaUrl = 'https://www.catho.com.br/vagas/';
-    }
 
     return res.status(200).json({
       success: true,
