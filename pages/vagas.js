@@ -163,7 +163,7 @@ const Vagas = () => {
     setJobs(vagasFixas)
     setFilteredJobs(vagasFixas)
     setLoading(false)
-    
+
     // Buscar vagas da API em paralelo (opcional)
     const fetchAPIJobs = async () => {
       try {
@@ -174,19 +174,19 @@ const Vagas = () => {
             'Pragma': 'no-cache'
           }
         })
-        
+
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`)
         }
-        
+
         const data = await response.json()
         console.log('📋 Dados recebidos da API:', data)
-        
+
         // Só atualizar se realmente tiver vagas da API
         if (data.success && ((data.jobs && data.jobs.length > 0) || (data.data && data.data.length > 0))) {
           const vagasAPI = data.jobs || data.data || []
           console.log(`🔄 Substituindo vagas fixas por ${vagasAPI.length} vagas da API`)
-          
+
           // Usar apenas vagas da API (não mesclar com fixas)
           setJobs(vagasAPI)
           setFilteredJobs(vagasAPI)
@@ -198,7 +198,7 @@ const Vagas = () => {
         // Manter vagas fixas em caso de erro
       }
     }
-    
+
     fetchAPIJobs()
   }, [])
 
@@ -405,7 +405,7 @@ const Vagas = () => {
               <p className="text-lg text-blue-100 mb-8 max-w-4xl mx-auto">
                 Seu próximo emprego está a um clique! Aqui, você encontra as melhores <strong>vagas para trabalhos simples</strong> em todo o <strong>Brasil</strong>, atualizadas diariamente. Use nossos filtros inteligentes para achar a oportunidade que realmente combina com você e seu perfil e dê o próximo passo em sua carreira!
               </p>
-              
+
               {/* Bloco de Contagem de Vagas e Última Atualização */}
               <div className="bg-blue-800 bg-opacity-40 rounded-lg p-6 mb-6 max-w-2xl mx-auto">
                 <p className="text-xl text-blue-100 mb-2">
@@ -433,7 +433,7 @@ const Vagas = () => {
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="bg-white rounded-xl p-6 shadow-lg border border-govgray-200 mb-8">
               <h2 className="text-xl font-semibold text-govgray-800 mb-4">🔍 Filtre suas vagas</h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                 {/* Busca por palavra-chave */}
                 <div>
@@ -559,7 +559,7 @@ const Vagas = () => {
         {/* Lista de Vagas com Paginação */}
         {!loading && !error && filteredJobs.length > 0 && (
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-            
+
             {/* Conteúdo específico por categoria */}
             {filters.category && getCategoryContent(filters.category) && (
               <div className="bg-govblue-50 border-l-4 border-govblue-600 p-6 mb-8 rounded-r-lg">
@@ -599,7 +599,7 @@ const Vagas = () => {
                 >
                   ← Anterior
                 </button>
-                
+
                 {[...Array(totalPages)].map((_, i) => (
                   <button
                     key={i + 1}
@@ -613,7 +613,7 @@ const Vagas = () => {
                     {i + 1}
                   </button>
                 ))}
-                
+
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
