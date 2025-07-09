@@ -5,6 +5,9 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Array para armazenar dados da pesquisa trabalhista
+let laborResearchLeads = [];
+
 // Configuração do CORS para aceitar os domínios do frontend
 const corsOptions = {
   origin: [
@@ -206,14 +209,30 @@ app.get('/api/jobs', (req, res) => {
 app.post('/api/labor-research', (req, res) => {
   console.log('Dados da pesquisa trabalhista recebidos:', req.body);
 
-  // Dados esperados do formulário:
-  // ultimaEmpresa, tipoCarteira, recebeuTudoCertinho, situacoesDuranteTrabalho, 
-  // aceitaConsultoria, nomeCompleto, whatsapp
+  // Salvar dados no array com ID único
+  const leadData = {
+    id: Date.now(),
+    ...req.body,
+    createdAt: new Date().toISOString()
+  };
+  
+  laborResearchLeads.push(leadData);
+  
+  console.log(`✅ Lead salvo! Total de leads: ${laborResearchLeads.length}`);
 
   res.json({
     message: 'Pesquisa trabalhista recebida com sucesso',
-    data: req.body,
+    data: leadData,
     status: 'success',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Rota para listar todos os leads da pesquisa trabalhista
+app.get('/api/labor-research-leads', (req, res) => {
+  res.json({
+    leads: laborResearchLeads,
+    total: laborResearchLeads.length,
     timestamp: new Date().toISOString()
   });
 });
