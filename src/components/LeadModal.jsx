@@ -106,7 +106,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     return limitedNumbers
   }
 
-  // Função para gerar URL de redirecionamento baseada na vaga - MAPEAMENTO ULTRA ESPECÍFICO
+  // Função para gerar URL de redirecionamento baseada na vaga - MAPEAMENTO ULTRA ESPECÍFICO E PRECISO
   const generateJobRedirectUrl = (jobData) => {
     if (jobData.redirectUrl) {
       return jobData.redirectUrl;
@@ -125,84 +125,88 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
       description: description.substring(0, 100)
     });
 
-    // SEGURANÇA / VIGILANTE / PORTEIRO - PRIMEIRA PRIORIDADE
-    if (title.includes('segurança') || title.includes('vigilante') || title.includes('porteiro') || 
-        title.includes('portaria') || category.includes('segurança') || category.includes('portaria')) {
-      console.log('✅ REDIRECIONANDO PARA: Segurança/Vigilante');
-      return 'https://www.catho.com.br/vagas/vigilante/';
-    }
+    // 🚨 MAPEAMENTO RIGOROSO - ORDEM SUPER IMPORTANTE 🚨
 
-    // DOMÉSTICA / EMPREGADA DOMÉSTICA
-    if (title.includes('doméstica') || title.includes('empregada') || category.includes('doméstica')) {
-      console.log('✅ REDIRECIONANDO PARA: Empregada Doméstica');
-      return 'https://www.catho.com.br/vagas/empregada-domestica/';
-    }
-
-    // DIARISTA
-    if (title.includes('diarista')) {
-      console.log('✅ REDIRECIONANDO PARA: Diarista');
-      return 'https://www.catho.com.br/vagas/diarista/';
-    }
-
-    // CUIDADOR DE IDOSOS
-    if (title.includes('cuidador') || category.includes('cuidados')) {
-      console.log('✅ REDIRECIONANDO PARA: Cuidador');
-      return 'https://www.catho.com.br/vagas/cuidador/';
-    }
-
-    // LIMPEZA E CONSERVAÇÃO
-    if (title.includes('limpeza') || title.includes('auxiliar de limpeza') || title.includes('zelador') || 
-        title.includes('faxineira') || category.includes('limpeza')) {
-      console.log('✅ REDIRECIONANDO PARA: Auxiliar de Limpeza');
-      return 'https://www.catho.com.br/vagas/auxiliar-limpeza/';
-    }
-
-    // BABÁ
-    if (title.includes('babá') || title.includes('baba')) {
-      console.log('✅ REDIRECIONANDO PARA: Babá');
+    // 1. BABÁ - PRIMEIRA PRIORIDADE (NÃO PODE IR PARA VENDAS!)
+    if (title.includes('babá') || title.includes('baba') || title.includes('cuidar') && title.includes('criança')) {
+      console.log('✅ REDIRECIONANDO PARA: Babá - https://www.catho.com.br/vagas/baba/');
       return 'https://www.catho.com.br/vagas/baba/';
     }
 
-    // JARDINEIRO
+    // 2. CUIDADOR DE IDOSOS - SEGUNDA PRIORIDADE
+    if (title.includes('cuidador') || (title.includes('cuidar') && title.includes('idoso')) || category.includes('cuidados')) {
+      console.log('✅ REDIRECIONANDO PARA: Cuidador - https://www.catho.com.br/vagas/cuidador/');
+      return 'https://www.catho.com.br/vagas/cuidador/';
+    }
+
+    // 3. DOMÉSTICA / EMPREGADA DOMÉSTICA
+    if (title.includes('doméstica') || title.includes('empregada') || category.includes('doméstica')) {
+      console.log('✅ REDIRECIONANDO PARA: Empregada Doméstica - https://www.catho.com.br/vagas/empregada-domestica/');
+      return 'https://www.catho.com.br/vagas/empregada-domestica/';
+    }
+
+    // 4. DIARISTA
+    if (title.includes('diarista')) {
+      console.log('✅ REDIRECIONANDO PARA: Diarista - https://www.catho.com.br/vagas/diarista/');
+      return 'https://www.catho.com.br/vagas/diarista/';
+    }
+
+    // 5. SEGURANÇA / VIGILANTE / PORTEIRO
+    if (title.includes('segurança') || title.includes('vigilante') || title.includes('porteiro') || 
+        title.includes('portaria') || category.includes('segurança') || category.includes('portaria')) {
+      console.log('✅ REDIRECIONANDO PARA: Segurança/Vigilante - https://www.catho.com.br/vagas/vigilante/');
+      return 'https://www.catho.com.br/vagas/vigilante/';
+    }
+
+    // 6. LIMPEZA E CONSERVAÇÃO
+    if (title.includes('limpeza') || title.includes('auxiliar de limpeza') || title.includes('zelador') || 
+        title.includes('faxineira') || category.includes('limpeza')) {
+      console.log('✅ REDIRECIONANDO PARA: Auxiliar de Limpeza - https://www.catho.com.br/vagas/auxiliar-limpeza/');
+      return 'https://www.catho.com.br/vagas/auxiliar-limpeza/';
+    }
+
+    // 7. JARDINEIRO
     if (title.includes('jardineiro') || category.includes('jardinagem')) {
-      console.log('✅ REDIRECIONANDO PARA: Jardineiro');
+      console.log('✅ REDIRECIONANDO PARA: Jardineiro - https://www.catho.com.br/vagas/jardineiro/');
       return 'https://www.catho.com.br/vagas/jardineiro/';
     }
 
-    // MOTORISTA
+    // 8. MOTORISTA
     if (title.includes('motorista') || category.includes('transporte')) {
-      console.log('✅ REDIRECIONANDO PARA: Motorista');
+      console.log('✅ REDIRECIONANDO PARA: Motorista - https://www.catho.com.br/vagas/motorista/');
       return 'https://www.catho.com.br/vagas/motorista/';
     }
 
-    // RECEPCIONISTA
+    // 9. RECEPCIONISTA
     if (title.includes('recepcionista') || category.includes('atendimento')) {
-      console.log('✅ REDIRECIONANDO PARA: Recepcionista');
+      console.log('✅ REDIRECIONANDO PARA: Recepcionista - https://www.catho.com.br/vagas/recepcionista/');
       return 'https://www.catho.com.br/vagas/recepcionista/';
     }
 
-    // AUXILIAR DE COZINHA / COZINHEIRO
+    // 10. AUXILIAR DE COZINHA / COZINHEIRO
     if (title.includes('cozinha') || title.includes('cozinheiro') || category.includes('alimentação')) {
-      console.log('✅ REDIRECIONANDO PARA: Auxiliar de Cozinha');
+      console.log('✅ REDIRECIONANDO PARA: Auxiliar de Cozinha - https://www.catho.com.br/vagas/auxiliar-cozinha/');
       return 'https://www.catho.com.br/vagas/auxiliar-cozinha/';
     }
 
-    // ⚠️ VENDEDOR - APENAS SE FOR CLARAMENTE VENDAS (NÃO CORRETOR)
+    // 🚫 BLOQUEIO TOTAL PARA CORRETOR/VENDAS IMOBILIÁRIAS - NUNCA REDIRECIONAR PARA ESTES!
+    if (title.includes('corretor') || title.includes('imobiliário') || title.includes('imóveis') || 
+        title.includes('vendas imobiliárias') || title.includes('corretagem')) {
+      console.log('🚫 BLOQUEANDO CORRETOR - Redirecionando para empregos domésticos seguros');
+      return 'https://www.catho.com.br/vagas/empregada-domestica/';
+    }
+
+    // 11. ⚠️ VENDEDOR - APENAS SE FOR CLARAMENTE VENDAS SIMPLES (NÃO CORRETOR)
     if ((title.includes('vendedor') || title.includes('vendas')) && 
-        !title.includes('corretor') && !title.includes('imobiliário') && category.includes('vendas')) {
-      console.log('✅ REDIRECIONANDO PARA: Vendedor');
+        !title.includes('corretor') && !title.includes('imobiliário') && 
+        !title.includes('imóveis') && category.includes('vendas')) {
+      console.log('✅ REDIRECIONANDO PARA: Vendedor Simples - https://www.catho.com.br/vagas/vendedor/');
       return 'https://www.catho.com.br/vagas/vendedor/';
     }
 
-    // 🚫 BLOQUEIO PARA CORRETOR/VENDAS IMOBILIÁRIAS
-    if (title.includes('corretor') || title.includes('imobiliário') || title.includes('imóveis')) {
-      console.log('⚠️ BLOQUEANDO CORRETOR - Redirecionando para empregos simples');
-      return 'https://www.catho.com.br/vagas/emprego-sem-experiencia/';
-    }
-
-    // URL padrão para empregos simples e seguros
-    console.log('✅ REDIRECIONAMENTO PADRÃO: Empregos sem experiência');
-    return 'https://www.catho.com.br/vagas/emprego-sem-experiencia/';
+    // URL padrão para empregos domésticos seguros (NÃO VENDAS!)
+    console.log('✅ REDIRECIONAMENTO SEGURO PADRÃO: Empregada Doméstica');
+    return 'https://www.catho.com.br/vagas/empregada-domestica/';
   };
 
   // Função para validar email

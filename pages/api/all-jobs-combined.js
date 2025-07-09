@@ -124,11 +124,13 @@ export default async function handler(req, res) {
               let redirectUrl = 'https://www.catho.com.br/vagas/';
               const title = jobTemplate.title.toLowerCase();
               
-              if (title.includes('doméstica') || title.includes('diarista')) {
+              if (title.includes('babá') || title.includes('baba')) {
+                redirectUrl = 'https://www.catho.com.br/vagas/baba/';
+              } else if (title.includes('doméstica') || title.includes('diarista')) {
                 redirectUrl = 'https://www.catho.com.br/vagas/empregada-domestica/';
               } else if (title.includes('porteiro') || title.includes('vigilante')) {
                 redirectUrl = 'https://www.catho.com.br/vagas/porteiro/';
-              } else if (title.includes('cuidador') || title.includes('babá')) {
+              } else if (title.includes('cuidador')) {
                 redirectUrl = 'https://www.catho.com.br/vagas/cuidador/';
               } else if (title.includes('motorista')) {
                 redirectUrl = 'https://www.catho.com.br/vagas/motorista/';
