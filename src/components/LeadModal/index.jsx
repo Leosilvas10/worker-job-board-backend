@@ -146,13 +146,18 @@ WhatsApp: ${formData.whatsapp}`,
     const numbers = value.replace(/\D/g, '')
     
     // Aplica máscara (11) 99999-9999
-    if (numbers.length <= 11) {
-      return numbers.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
-        .replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3')
-        .replace(/(\d{2})(\d{0,5})/, '($1) $2')
-        .replace(/(\d{0,2})/, '($1')
+    if (numbers.length === 0) {
+      return ''
+    } else if (numbers.length <= 2) {
+      return `(${numbers}`
+    } else if (numbers.length <= 7) {
+      return `(${numbers.substring(0, 2)}) ${numbers.substring(2)}`
+    } else if (numbers.length <= 11) {
+      return `(${numbers.substring(0, 2)}) ${numbers.substring(2, 7)}-${numbers.substring(7)}`
+    } else {
+      // Limita a 11 dígitos
+      return `(${numbers.substring(0, 2)}) ${numbers.substring(2, 7)}-${numbers.substring(7, 11)}`
     }
-    return value
   }
 
   const handleWhatsAppChange = (e) => {

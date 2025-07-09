@@ -61,15 +61,18 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
     const onlyNumbers = value.replace(/\D/g, '')
     
     // Aplica formatação brasileira
-    if (onlyNumbers.length <= 2) {
+    if (onlyNumbers.length === 0) {
+      return ''
+    } else if (onlyNumbers.length <= 2) {
       return `(${onlyNumbers}`
     } else if (onlyNumbers.length <= 7) {
       return `(${onlyNumbers.substring(0, 2)}) ${onlyNumbers.substring(2)}`
     } else if (onlyNumbers.length <= 11) {
       return `(${onlyNumbers.substring(0, 2)}) ${onlyNumbers.substring(2, 7)}-${onlyNumbers.substring(7)}`
+    } else {
+      // Limita a 11 dígitos
+      return `(${onlyNumbers.substring(0, 2)}) ${onlyNumbers.substring(2, 7)}-${onlyNumbers.substring(7, 11)}`
     }
-    
-    return `(${onlyNumbers.substring(0, 2)}) ${onlyNumbers.substring(2, 7)}-${onlyNumbers.substring(7, 11)}`
   }
 
   const handleSubmit = async (e) => {
