@@ -93,30 +93,25 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         return
       }
 
-      // Preparar dados para envio no formato que o /api/submit-lead espera
+      // Preparar dados no formato que o backend /api/labor-research espera
       const leadData = {
-        name: formData.name,
-        whatsapp: formData.whatsapp,
-        lastCompany: formData.lastCompany,
-        workStatus: formData.workStatus,
-        receivedRights: formData.receivedRights,
-        workProblems: formData.workProblems || [],
-        wantConsultation: formData.wantConsultation,
-        lgpdConsent: formData.lgpdConsent,
-        jobId: jobData?.id,
-        jobTitle: jobData?.title,
-        company: jobData?.company?.name || jobData?.company,
-        jobLink: jobData?.url || jobData?.link || jobData?.apply_url,
-        originalLocation: jobData?.location,
-        fonte: 'Site do Trabalhador',
-        paginaOrigem: window.location.pathname
+        ultimaEmpresa: formData.lastCompany,
+        tipoCarteira: formData.workStatus === 'Com carteira assinada' ? 'sim' : 
+                     formData.workStatus === 'Sem carteira assinada' ? 'nao' : 'parcial',
+        recebeuTudoCertinho: formData.receivedRights === 'Sim, recebi tudo certinho' ? 'sim' : 
+                           formData.receivedRights === 'Não recebi nada' ? 'nao' : 'parcial',
+        situacoesDuranteTrabalho: formData.workProblems || [],
+        aceitaConsultoria: formData.wantConsultation === 'Sim, quero saber meus direitos' ? 'sim' : 'nao',
+        nomeCompleto: formData.name,
+        whatsapp: formData.whatsapp
       }
 
       console.log('📤 DADOS DO FORMULÁRIO ANTES DO ENVIO:', formData)
       console.log('📋 DADOS DA VAGA:', jobData)
-      console.log('🚀 DADOS FORMATADOS PARA ENVIO:', leadData)
+      console.log('🚀 DADOS FORMATADOS PARA BACKEND:', leadData)
 
-      const response = await fetch('/api/submit-lead', {
+      // Enviar direto para o backend
+      const response = await fetch('https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -126,16 +121,17 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
 
       const result = await response.json()
 
-      if (result.success) {
+      if (response.ok && result.status === 'success') {
         // Preparar mensagem de sucesso
-        let successMessage = `✅ Candidatura enviada com sucesso!`
+        let successMessage = `✅ Pesquisa trabalhista enviada com sucesso!`
         successMessage += `\n\n📋 Dados registrados:`
         successMessage += `\n👤 Nome: ${formData.name}`
         successMessage += `\n📱 WhatsApp: ${formData.whatsapp}`
+        successMessage += `\n🏢 Última empresa: ${formData.lastCompany}`
         successMessage += `\n💼 Vaga: ${jobData?.title || 'Vaga de Emprego'}`
 
         if (jobData?.company?.name || jobData?.company) {
-          successMessage += `\n🏢 Empresa: ${jobData.company?.name || jobData.company}`
+          successMessage += `\n🏢 Empresa da vaga: ${jobData.company?.name || jobData.company}`
         }
 
         successMessage += '\n\n🔗 Redirecionando para a vaga original...'
@@ -146,8 +142,7 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         onClose()
 
         // Tentar redirecionar para vaga real
-        const redirectUrl = result.redirect?.url || 
-                           jobData?.url || 
+        const redirectUrl = jobData?.url || 
                            jobData?.link || 
                            jobData?.apply_url || 
                            jobData?.original_url ||
@@ -170,7 +165,7 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         }
 
       } else {
-        alert('❌ Erro: ' + (result.message || 'Erro ao enviar candidatura'))
+        alert('❌ Erro: ' + (result.message || 'Erro ao enviar pesquisa trabalhista'))
       }
     } catch (error) {
       console.error('❌ Erro ao enviar candidatura:', error)
