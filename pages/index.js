@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useSiteContext } from '../src/contexts/SiteContext'
 import HeroSection from '../src/components/HeroSection/HeroSection'
-import LeadModal from '../src/components/LeadModal/index'
+import LeadModal from '../src/components/LeadModal/LeadModal'
 import JobCard from '../src/components/JobCard/JobCard'
 
 export default function Home() {

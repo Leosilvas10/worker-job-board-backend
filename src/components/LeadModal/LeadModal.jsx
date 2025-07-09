@@ -145,13 +145,13 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
       console.log('- Consultoria:', leadData.aceitaConsultoria)
 
       // Enviar DIRETAMENTE para o backend, sem passar pela API local
-      const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research'
-      console.log('🎯 ENVIANDO DIRETAMENTE PARA BACKEND:', backendUrl)
+      const apiUrl = '/api/submit-lead'
+      console.log('🎯 ENVIANDO PARA API LOCAL:', apiUrl)
       console.log('📋 PAYLOAD COMPLETO:', JSON.stringify(leadData, null, 2))
 
-      // Enviar DIRETAMENTE para o backend onde o painel admin busca
-      console.log('⏳ INICIANDO REQUISIÇÃO DIRETA...')
-      const response = await fetch(backendUrl, {
+      // Enviar através da API local que repassa para o backend correto
+      console.log('⏳ INICIANDO REQUISIÇÃO...')
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
