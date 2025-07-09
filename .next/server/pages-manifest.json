@@ -3,8 +3,8 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/admin/leads": "pages/admin/leads.js",
+  "/api/get-leads": "pages/api/get-leads.js",
   "/": "pages/index.js",
-  "/api/submit-candidatura-new": "pages/api/submit-candidatura-new.js",
-  "/admin": "pages/admin.js",
-  "/api/get-leads": "pages/api/get-leads.js"
+  "/api/jobs-stats": "pages/api/jobs-stats.js",
+  "/api/all-jobs-combined": "pages/api/all-jobs-combined.js"
 }
