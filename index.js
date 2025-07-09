@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
   res.json({ 
     message: 'Backend Worker Job Board rodando!',
     timestamp: new Date().toISOString(),
-    endpoints: ['/api/leads', '/api/health', '/api/jobs-stats', '/api/jobs']
+    endpoints: ['/api/leads', '/api/health', '/api/jobs-stats', '/api/jobs', '/api/labor-research']
   });
 });
 
@@ -71,6 +71,84 @@ app.get('/api/jobs-stats', (req, res) => {
     activeJobs: 95,
     timestamp: new Date().toISOString()
   });
+});
+
+// Rota para dados de pesquisa trabalhista
+app.get('/api/labor-research', (req, res) => {
+  const laborResearchData = {
+    salaryRanges: {
+      "Empregada Doméstica": {
+        min: 1320,
+        max: 2500,
+        average: 1850,
+        currency: "BRL"
+      },
+      "Diarista": {
+        min: 80,
+        max: 150,
+        average: 120,
+        currency: "BRL",
+        unit: "day"
+      },
+      "Auxiliar de Limpeza": {
+        min: 1400,
+        max: 2200,
+        average: 1650,
+        currency: "BRL"
+      },
+      "Cuidadora de Idosos": {
+        min: 1500,
+        max: 3000,
+        average: 2100,
+        currency: "BRL"
+      }
+    },
+    marketTrends: {
+      mostDemandedJobs: [
+        { position: "Empregada Doméstica", demand: 85, growth: "+12%" },
+        { position: "Diarista", demand: 78, growth: "+8%" },
+        { position: "Cuidadora de Idosos", demand: 72, growth: "+15%" },
+        { position: "Auxiliar de Limpeza", demand: 65, growth: "+5%" }
+      ],
+      regionalData: {
+        "São Paulo": { averageSalary: 1950, jobOpenings: 1250 },
+        "Rio de Janeiro": { averageSalary: 1800, jobOpenings: 890 },
+        "Belo Horizonte": { averageSalary: 1650, jobOpenings: 450 },
+        "Brasília": { averageSalary: 2100, jobOpenings: 320 }
+      }
+    },
+    benefits: {
+      common: [
+        "Vale Transporte",
+        "Vale Alimentação", 
+        "13º Salário",
+        "Férias Remuneradas",
+        "FGTS"
+      ],
+      optional: [
+        "Plano de Saúde",
+        "Vale Refeição",
+        "Auxílio Creche",
+        "Cesta Básica"
+      ]
+    },
+    workingHours: {
+      "Empregada Doméstica": "44h/semana",
+      "Diarista": "8h/dia",
+      "Auxiliar de Limpeza": "44h/semana",
+      "Cuidadora de Idosos": "12x36h ou 44h/semana"
+    },
+    statistics: {
+      totalWorkers: 6200000,
+      formalJobs: 3850000,
+      informalJobs: 2350000,
+      unemploymentRate: 8.5,
+      lastUpdated: new Date().toISOString()
+    },
+    timestamp: new Date().toISOString()
+  };
+
+  res.json(laborResearchData);
 });
 
 // Rota para listar vagas (SEM cidade)
