@@ -106,108 +106,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     return limitedNumbers
   }
 
-  // Função para gerar URL de redirecionamento baseada na vaga - MAPEAMENTO ULTRA ESPECÍFICO E PRECISO
-  const generateJobRedirectUrl = (jobData) => {
-    if (jobData.redirectUrl) {
-      return jobData.redirectUrl;
-    }
-
-    // URLs específicas baseadas no título da vaga - MAPEAMENTO PRECISO E SEGURO
-    const title = jobData.title?.toLowerCase() || '';
-    const company = jobData.company?.toLowerCase() || '';
-    const description = jobData.description?.toLowerCase() || '';
-    const category = jobData.category?.toLowerCase() || '';
-
-    console.log('🔍 ANALISANDO VAGA PARA REDIRECIONAMENTO:', {
-      title,
-      company,
-      category,
-      description: description.substring(0, 100)
-    });
-
-    // 🚨 MAPEAMENTO RIGOROSO - ORDEM SUPER IMPORTANTE 🚨
-
-    // 1. BABÁ - PRIMEIRA PRIORIDADE (NÃO PODE IR PARA VENDAS!)
-    if (title.includes('babá') || title.includes('baba') || title.includes('cuidar') && title.includes('criança')) {
-      console.log('✅ REDIRECIONANDO PARA: Babá - https://www.catho.com.br/vagas/baba/');
-      return 'https://www.catho.com.br/vagas/baba/';
-    }
-
-    // 2. CUIDADOR DE IDOSOS - SEGUNDA PRIORIDADE
-    if (title.includes('cuidador') || (title.includes('cuidar') && title.includes('idoso')) || category.includes('cuidados')) {
-      console.log('✅ REDIRECIONANDO PARA: Cuidador - https://www.catho.com.br/vagas/cuidador/');
-      return 'https://www.catho.com.br/vagas/cuidador/';
-    }
-
-    // 3. DOMÉSTICA / EMPREGADA DOMÉSTICA
-    if (title.includes('doméstica') || title.includes('empregada') || category.includes('doméstica')) {
-      console.log('✅ REDIRECIONANDO PARA: Empregada Doméstica - https://www.catho.com.br/vagas/empregada-domestica/');
-      return 'https://www.catho.com.br/vagas/empregada-domestica/';
-    }
-
-    // 4. DIARISTA
-    if (title.includes('diarista')) {
-      console.log('✅ REDIRECIONANDO PARA: Diarista - https://www.catho.com.br/vagas/diarista/');
-      return 'https://www.catho.com.br/vagas/diarista/';
-    }
-
-    // 5. SEGURANÇA / VIGILANTE / PORTEIRO
-    if (title.includes('segurança') || title.includes('vigilante') || title.includes('porteiro') || 
-        title.includes('portaria') || category.includes('segurança') || category.includes('portaria')) {
-      console.log('✅ REDIRECIONANDO PARA: Segurança/Vigilante - https://www.catho.com.br/vagas/vigilante/');
-      return 'https://www.catho.com.br/vagas/vigilante/';
-    }
-
-    // 6. LIMPEZA E CONSERVAÇÃO
-    if (title.includes('limpeza') || title.includes('auxiliar de limpeza') || title.includes('zelador') || 
-        title.includes('faxineira') || category.includes('limpeza')) {
-      console.log('✅ REDIRECIONANDO PARA: Auxiliar de Limpeza - https://www.catho.com.br/vagas/auxiliar-limpeza/');
-      return 'https://www.catho.com.br/vagas/auxiliar-limpeza/';
-    }
-
-    // 7. JARDINEIRO
-    if (title.includes('jardineiro') || category.includes('jardinagem')) {
-      console.log('✅ REDIRECIONANDO PARA: Jardineiro - https://www.catho.com.br/vagas/jardineiro/');
-      return 'https://www.catho.com.br/vagas/jardineiro/';
-    }
-
-    // 8. MOTORISTA
-    if (title.includes('motorista') || category.includes('transporte')) {
-      console.log('✅ REDIRECIONANDO PARA: Motorista - https://www.catho.com.br/vagas/motorista/');
-      return 'https://www.catho.com.br/vagas/motorista/';
-    }
-
-    // 9. RECEPCIONISTA
-    if (title.includes('recepcionista') || category.includes('atendimento')) {
-      console.log('✅ REDIRECIONANDO PARA: Recepcionista - https://www.catho.com.br/vagas/recepcionista/');
-      return 'https://www.catho.com.br/vagas/recepcionista/';
-    }
-
-    // 10. AUXILIAR DE COZINHA / COZINHEIRO
-    if (title.includes('cozinha') || title.includes('cozinheiro') || category.includes('alimentação')) {
-      console.log('✅ REDIRECIONANDO PARA: Auxiliar de Cozinha - https://www.catho.com.br/vagas/auxiliar-cozinha/');
-      return 'https://www.catho.com.br/vagas/auxiliar-cozinha/';
-    }
-
-    // 🚫 BLOQUEIO TOTAL PARA CORRETOR/VENDAS IMOBILIÁRIAS - NUNCA REDIRECIONAR PARA ESTES!
-    if (title.includes('corretor') || title.includes('imobiliário') || title.includes('imóveis') || 
-        title.includes('vendas imobiliárias') || title.includes('corretagem')) {
-      console.log('🚫 BLOQUEANDO CORRETOR - Redirecionando para empregos domésticos seguros');
-      return 'https://www.catho.com.br/vagas/empregada-domestica/';
-    }
-
-    // 11. ⚠️ VENDEDOR - APENAS SE FOR CLARAMENTE VENDAS SIMPLES (NÃO CORRETOR)
-    if ((title.includes('vendedor') || title.includes('vendas')) && 
-        !title.includes('corretor') && !title.includes('imobiliário') && 
-        !title.includes('imóveis') && category.includes('vendas')) {
-      console.log('✅ REDIRECIONANDO PARA: Vendedor Simples - https://www.catho.com.br/vagas/vendedor/');
-      return 'https://www.catho.com.br/vagas/vendedor/';
-    }
-
-    // URL padrão para empregos domésticos seguros (NÃO VENDAS!)
-    console.log('✅ REDIRECIONAMENTO SEGURO PADRÃO: Empregada Doméstica');
-    return 'https://www.catho.com.br/vagas/empregada-domestica/';
-  };
+  // Função removida - agora usamos URLs reais das vagas
 
   // Função para validar email
   const isValidEmail = (email) => {
@@ -278,65 +177,51 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
         // Fechar modal
         onClose()
 
-        // REDIRECIONAMENTO PRIORITÁRIO para vaga real
+        // REDIRECIONAMENTO DIRETO para URL real da vaga
         setTimeout(() => {
           try {
-            console.log('📋 Resposta completa da API:', result);
-            console.log('📋 Dados da vaga recebida:', vaga);
+            console.log('🎯 Iniciando redirecionamento...');
+            console.log('📋 Resposta da API:', result?.data);
+            console.log('📋 Dados da vaga:', vaga);
 
-            // 1. PRIORIDADE MÁXIMA: URL real da vaga retornada pela API
-            if (result.data && result.data.vagaUrl) {
-              console.log('🎯 URL REAL da vaga encontrada no backend:', result.data.vagaUrl);
+            // 1. URL retornada pela API
+            if (result?.data?.vagaUrl) {
+              console.log('✅ Redirecionando para URL da API:', result.data.vagaUrl);
               window.open(result.data.vagaUrl, '_blank', 'noopener,noreferrer');
               return;
             }
 
-            // 2. SEGUNDA PRIORIDADE: URL da vaga que veio do objeto vaga original
-            if (vaga && vaga.url) {
-              console.log('🎯 URL REAL da vaga do objeto:', vaga.url);
+            // 2. URL direta da vaga
+            if (vaga?.url) {
+              console.log('✅ Redirecionando para URL da vaga:', vaga.url);
               window.open(vaga.url, '_blank', 'noopener,noreferrer');
               return;
             }
 
-            // 3. TERCEIRA PRIORIDADE: redirectUrl da vaga
-            if (vaga && vaga.redirectUrl) {
-              console.log('🔄 URL de redirecionamento da vaga:', vaga.redirectUrl);
+            // 3. redirectUrl da vaga
+            if (vaga?.redirectUrl) {
+              console.log('✅ Redirecionando para redirectUrl:', vaga.redirectUrl);
               window.open(vaga.redirectUrl, '_blank', 'noopener,noreferrer');
               return;
             }
 
-            // 4. QUARTA PRIORIDADE: external_url
-            if (vaga && (vaga.external_url || vaga.externalUrl)) {
+            // 4. external_url da vaga
+            if (vaga?.external_url || vaga?.externalUrl) {
               const url = vaga.external_url || vaga.externalUrl;
-              console.log('🔄 URL externa da vaga:', url);
+              console.log('✅ Redirecionando para URL externa:', url);
               window.open(url, '_blank', 'noopener,noreferrer');
               return;
             }
 
-            // 5. FALLBACK: Construir URL baseada no título apenas se não tiver URL específica
-            if (vaga && vaga.title) {
-              console.log('⚠️ Nenhuma URL específica encontrada, usando fallback baseado no título');
-              const jobData = {
-                title: vaga.title || vaga.titulo,
-                category: vaga.category,
-                redirectUrl: vaga.redirectUrl
-              };
-              const redirectUrl = generateJobRedirectUrl(jobData);
-              console.log('🔗 Redirecionando para URL gerada:', redirectUrl);
-              window.open(redirectUrl, '_blank');
-              return;
-            }
-
-            // 6. FALLBACK FINAL: Catho geral
-            console.log('🔄 REDIRECIONAMENTO FALLBACK para Catho geral');
+            // Fallback seguro
+            console.log('⚠️ Nenhuma URL específica encontrada, usando Catho');
             window.open('https://www.catho.com.br/vagas/', '_blank', 'noopener,noreferrer');
 
           } catch (error) {
             console.error('❌ Erro no redirecionamento:', error);
-            // Fallback final seguro
             window.open('https://www.catho.com.br/vagas/', '_blank', 'noopener,noreferrer');
           }
-        }, 200)
+        }, 300)
       } else {
         throw new Error(result.message || 'Erro no envio')
       }

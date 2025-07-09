@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    console.log('🎯 PESQUISA TRABALHISTA COMPLETA - Dados recebidos:', req.body)
+    console.log('🎯 PESQUISA TRABALHISTA - Dados recebidos:', req.body)
 
     const {
       // Dados pessoais
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       cidade,
       estado,
 
-      // Pesquisa trabalhista - 6 questões específicas
+      // Pesquisa trabalhista
       nomeUltimaEmpresa,
       nome_ultima_empresa,
       tipoCarteira,
@@ -30,25 +30,17 @@ export default async function handler(req, res) {
       aceitaConsultoria,
       aceita_consultoria,
 
-      // Campos antigos para compatibilidade
-      recebeuFgts,
-      recebeuFerias,
-      recebeuDecimoTerceiro,
-      sofreu_assedio,
-      trabalhouSemRegistro,
-
       // Observações
       mensagem,
 
-      // Dados da vaga (se houver)
+      // Dados da vaga
       vaga,
       fonte,
       timestamp
     } = req.body
 
-    // Preparar dados completos para envio ao backend
+    // Preparar dados para o backend
     const leadData = {
-      // Dados pessoais
       nome: nomeCompleto,
       telefone: whatsapp,
       email: email || 'Não informado',
@@ -56,94 +48,83 @@ export default async function handler(req, res) {
       cidade: cidade || '',
       estado: estado || '',
 
-      // Pesquisa trabalhista - 6 questões específicas
       nome_ultima_empresa: nomeUltimaEmpresa || nome_ultima_empresa || 'Não informado',
       tipo_carteira: tipoCarteira || tipo_carteira || 'Não informado',
       recebeu_tudo_certinho: recebeuTudoCertinho || recebeu_tudo_certinho || 'Não informado',
       situacoes_enfrentadas: situacoesEnfrentadas || situacoes_enfrentadas || 'Não informado',
       aceita_consultoria: aceitaConsultoria || aceita_consultoria || 'Não informado',
 
-      // Campos antigos para compatibilidade (se ainda existirem)
-      fgts: recebeuFgts || 'Não informado',
-      ferias: recebeuFerias || 'Não informado',
-      decimo_terceiro: recebeuDecimoTerceiro || 'Não informado',
-      assedio: sofreu_assedio || 'Não informado',
-      sem_registro: trabalhouSemRegistro || 'Não informado',
-
-      // Observações
       mensagem: mensagem || '',
 
-      // Dados da vaga (se aplicável)
       vaga_id: vaga?.id || null,
-      vaga_titulo: vaga?.titulo || 'Pesquisa Trabalhista Rápida',
-      vaga_empresa: vaga?.empresa || '',
-      vaga_localizacao: vaga?.localizacao || '',
+      vaga_titulo: vaga?.titulo || vaga?.title || 'Pesquisa Trabalhista',
+      vaga_empresa: vaga?.empresa || vaga?.company || '',
+      vaga_localizacao: vaga?.localizacao || vaga?.location || '',
+      vaga_url: vaga?.url || vaga?.redirectUrl || vaga?.external_url || vaga?.externalUrl || '',
 
-      // Controle e rastreamento
-      fonte: fonte || 'modal_pesquisa_trabalhista_rapida',
+      fonte: fonte || 'modal_pesquisa_trabalhista',
       status: 'novo',
-      contatado: false,
-      convertido: false,
       data_criacao: timestamp || new Date().toISOString(),
       created_at: new Date().toISOString()
     }
 
-    console.log('📤 Enviando dados completos para backend:', leadData)
+    console.log('📤 Enviando para backend:', leadData)
 
-    // Enviar para o endpoint correto do backend
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app'
+    // Enviar para o endpoint correto
+    const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
     const endpoint = `${backendUrl}/api/labor-research`
-
-    console.log('🔗 ENDPOINT USADO:', endpoint)
-    console.log('🌐 BACKEND URL:', backendUrl)
 
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'User-Agent': 'SiteDoTrabalhador-PesquisaTrabalhista'
+        'Accept': 'application/json'
       },
       body: JSON.stringify(leadData)
     })
 
-    const responseText = await response.text()
-    console.log('📥 Resposta do backend:', responseText.substring(0, 500))
-
     if (!response.ok) {
-      throw new Error(`Backend erro: ${response.status} - ${responseText}`)
+      const errorText = await response.text()
+      throw new Error(`Backend erro: ${response.status} - ${errorText}`)
     }
 
-    let result
-    try {
-      result = JSON.parse(responseText)
-    } catch (parseError) {
-      console.error('❌ Erro ao parsear resposta JSON:', parseError)
-      throw new Error('Resposta inválida do backend')
+    const result = await response.json()
+    console.log('✅ SUCESSO! Lead salvo:', result)
+
+    // Extrair URL real da vaga para redirecionamento
+    let vagaUrl = null
+
+    if (vaga?.url) {
+      vagaUrl = vaga.url
+    } else if (vaga?.redirectUrl) {
+      vagaUrl = vaga.redirectUrl
+    } else if (vaga?.external_url) {
+      vagaUrl = vaga.external_url
+    } else if (vaga?.externalUrl) {
+      vagaUrl = vaga.externalUrl
     }
 
-    console.log('✅ SUCESSO! Pesquisa trabalhista salva:', result)
+    console.log('🔗 URL da vaga identificada:', vagaUrl)
 
     return res.status(200).json({
       success: true,
-      message: 'Pesquisa trabalhista enviada com sucesso! Entraremos em contato em breve.',
+      message: 'Lead salvo com sucesso!',
       data: {
         ...result,
-        vagaUrl: vaga?.url || vaga?.redirectUrl, // URL REAL da vaga
-        vagaTitulo: vaga?.titulo || vaga?.title,
-        vagaEmpresa: vaga?.empresa || vaga?.company,
+        vagaUrl: vagaUrl,
         vagaId: vaga?.id,
-        vagaLocalizacao: vaga?.localizacao || vaga?.location
+        vagaTitulo: vaga?.titulo || vaga?.title,
+        vagaEmpresa: vaga?.empresa || vaga?.company
       },
       timestamp: new Date().toISOString()
     })
 
   } catch (error) {
-    console.error('❌ ERRO no envio da pesquisa trabalhista:', error)
+    console.error('❌ ERRO:', error)
 
     return res.status(500).json({
       success: false,
-      message: 'Erro interno do servidor ao processar pesquisa trabalhista',
+      message: 'Erro interno do servidor',
       error: error.message,
       timestamp: new Date().toISOString()
     })
