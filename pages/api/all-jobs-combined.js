@@ -16,11 +16,11 @@ export default async function handler(req, res) {
 
     // Buscar vagas do backend usando as URLs corretas
     try {
-      const BACKEND_URL = 'https://worker-job-board-backend-leonardosilvas2.replit.app';
+      const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app';
       console.log('🔗 Conectando ao backend:', BACKEND_URL);
       
-      // Primeiro, vamos testar se o backend tem dados usando um endpoint direto
-      const testResponse = await fetch(`${BACKEND_URL}/api/all-jobs-combined`, {
+      // Primeiro tentar buscar leads reais
+      const leadsResponse = await fetch(`${BACKEND_URL}/api/leads`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -29,81 +29,46 @@ export default async function handler(req, res) {
         }
       });
       
-      console.log('📡 Status da resposta do backend (all-jobs):', testResponse.status);
+      console.log('📡 Status da resposta do backend (leads):', leadsResponse.status);
       
-      if (testResponse.ok) {
-        const backendData = await testResponse.json();
-        console.log('📊 Dados do backend (all-jobs):', backendData);
+      if (leadsResponse.ok) {
+        const leadsData = await leadsResponse.json();
+        console.log('📊 Dados de leads recebidos:', leadsData);
         
-        if (backendData.success && backendData.data && Array.isArray(backendData.data) && backendData.data.length > 0) {
-          const jobsFromBackend = backendData.data.map((job, index) => ({
-            id: job.id || `backend_${index}`,
-            title: job.title || job.cargo || job.titulo || 'Vaga Disponível',
-            company: job.company || job.empresa || 'Empresa Parceira',
-            location: job.location || job.cidade || job.local || 'Brasil',
-            salary: job.salary || job.salario || 'A combinar',
-            description: job.description || job.descricao || `Vaga para ${job.title || job.cargo || 'profissional qualificado'}`,
-            type: job.type || job.tipo || 'CLT',
-            category: job.category || job.categoria || 'Geral',
-            source: 'Backend Real',
+        // Se tem leads reais nos dados
+        if (leadsData.leads && Array.isArray(leadsData.leads) && leadsData.leads.length > 0) {
+          const jobsFromLeads = leadsData.leads.map((lead, index) => ({
+            id: lead.id || `lead_${index}`,
+            title: lead.cargo || lead.title || lead.posicao || 'Vaga Disponível',
+            company: lead.empresa || lead.company || lead.nomeEmpresa || 'Empresa Parceira',
+            location: lead.cidade || lead.location || lead.local || 'Brasil',
+            salary: lead.salario || lead.salary || lead.faixaSalarial || 'A combinar',
+            description: lead.descricao || lead.description || lead.detalhes || `Vaga para ${lead.cargo || 'profissional qualificado'}. Entre em contato para mais informações.`,
+            type: lead.tipo || lead.type || lead.tipoContrato || 'CLT',
+            category: lead.categoria || lead.category || lead.area || 'Geral',
+            source: 'Backend Real - Leads',
             isExternal: true,
             requiresLead: true,
             priority: 'high',
-            created_at: job.created_at || job.dataCreated || new Date().toISOString(),
-            tags: [job.title?.toLowerCase() || job.cargo?.toLowerCase() || 'emprego']
+            created_at: lead.created_at || lead.dataCreated || lead.dataCriacao || new Date().toISOString(),
+            tags: [lead.cargo?.toLowerCase() || lead.title?.toLowerCase() || 'emprego'],
+            // Dados adicionais do lead
+            leadData: {
+              telefone: lead.telefone || lead.phone,
+              email: lead.email,
+              whatsapp: lead.whatsapp,
+              contato: lead.contato
+            }
           }));
           
-          allJobs.push(...jobsFromBackend);
-          sources.push('Backend Real');
-          console.log(`✅ ${jobsFromBackend.length} vagas carregadas do backend real`);
+          allJobs.push(...jobsFromLeads);
+          sources.push('Backend Real - Leads');
+          console.log(`✅ ${jobsFromLeads.length} vagas reais carregadas do backend (leads)`);
         }
       }
 
-      // Se não conseguiu do all-jobs-combined, tentar o endpoint de leads
-      if (allJobs.length === 0) {
-        const leadsResponse = await fetch(`${BACKEND_URL}/api/leads`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'User-Agent': 'SiteDoTrabalhador-Frontend'
-          }
-        });
-        
-        console.log('📡 Status da resposta do backend (leads):', leadsResponse.status);
-        
-        if (leadsResponse.ok) {
-          const leadsData = await leadsResponse.json();
-          console.log('📊 Dados de leads recebidos:', leadsData);
-          
-          // Verificar se tem leads reais nos dados
-          if (leadsData.leads && Array.isArray(leadsData.leads) && leadsData.leads.length > 0) {
-            const jobsFromLeads = leadsData.leads.map((lead, index) => ({
-              id: lead.id || `lead_${index}`,
-              title: lead.cargo || lead.title || 'Vaga Disponível',
-              company: lead.empresa || lead.company || 'Empresa Parceira',
-              location: lead.cidade || lead.location || 'Brasil',
-              salary: lead.salario || lead.salary || 'A combinar',
-              description: lead.descricao || lead.description || `Vaga para ${lead.cargo || 'profissional qualificado'}`,
-              type: lead.tipo || lead.type || 'CLT',
-              category: lead.categoria || lead.category || 'Geral',
-              source: 'Backend Leads',
-              isExternal: true,
-              requiresLead: true,
-              priority: 'high',
-              created_at: lead.created_at || lead.dataCreated || new Date().toISOString(),
-              tags: [lead.cargo?.toLowerCase() || 'emprego']
-            }));
-            
-            allJobs.push(...jobsFromLeads);
-            sources.push('Backend Leads');
-            console.log(`✅ ${jobsFromLeads.length} vagas carregadas do backend (leads)`);
-          }
-        }
-      }
-
-      // Tentar buscar estatísticas que podem conter vagas
-      if (allJobs.length === 0) {
+      // Se ainda não tem vagas suficientes, buscar estatísticas para completar
+      if (allJobs.length < 50) {
         const statsResponse = await fetch(`${BACKEND_URL}/api/jobs-stats`, {
           method: 'GET',
           headers: {
@@ -119,40 +84,63 @@ export default async function handler(req, res) {
           const statsData = await statsResponse.json();
           console.log('📊 Estatísticas recebidas:', statsData);
           
-          // Se as estatísticas indicam que há vagas, criar vagas baseadas nas estatísticas
-          if (statsData.totalJobs && statsData.totalJobs > 0) {
-            console.log(`📊 Backend indica ${statsData.totalJobs} vagas disponíveis, criando vagas representativas...`);
+          // Se as estatísticas indicam que há vagas, criar vagas complementares
+          if (statsData.totalJobs && statsData.totalJobs > allJobs.length) {
+            const vagasNecessarias = Math.min(statsData.totalJobs - allJobs.length, 100);
+            console.log(`📊 Backend indica ${statsData.totalJobs} vagas totais, criando ${vagasNecessarias} vagas complementares...`);
             
-            const representativeJobs = [];
+            const complementaryJobs = [];
             const jobTitles = [
-              'Empregada Doméstica', 'Diarista', 'Cuidadora de Idosos', 'Babá',
-              'Porteiro', 'Vigilante', 'Auxiliar de Limpeza', 'Jardineiro',
-              'Motorista', 'Entregador', 'Vendedor', 'Atendente',
-              'Cozinheira', 'Passadeira', 'Faxineira', 'Caseiro'
+              { title: 'Empregada Doméstica', company: 'Família Particular', salary: 'R$ 1.320,00', category: 'Doméstica' },
+              { title: 'Diarista', company: 'Residencial', salary: 'R$ 120,00/dia', category: 'Doméstica' },
+              { title: 'Cuidadora de Idosos', company: 'Cuidados Senior', salary: 'R$ 1.800,00', category: 'Cuidados' },
+              { title: 'Babá', company: 'Família', salary: 'R$ 1.600,00', category: 'Cuidados' },
+              { title: 'Porteiro', company: 'Condomínio', salary: 'R$ 1.500,00', category: 'Segurança' },
+              { title: 'Vigilante', company: 'Empresa de Segurança', salary: 'R$ 1.700,00', category: 'Segurança' },
+              { title: 'Auxiliar de Limpeza', company: 'Clean Service', salary: 'R$ 1.400,00', category: 'Limpeza' },
+              { title: 'Jardineiro', company: 'Paisagismo Verde', salary: 'R$ 1.350,00', category: 'Jardinagem' },
+              { title: 'Motorista', company: 'Transporte Executivo', salary: 'R$ 2.200,00', category: 'Transporte' },
+              { title: 'Entregador', company: 'Delivery Express', salary: 'R$ 1.800,00', category: 'Logística' },
+              { title: 'Vendedor', company: 'Loja Comercial', salary: 'R$ 1.500,00 + comissão', category: 'Vendas' },
+              { title: 'Atendente', company: 'Comércio Local', salary: 'R$ 1.400,00', category: 'Atendimento' },
+              { title: 'Cozinheira', company: 'Restaurante', salary: 'R$ 1.600,00', category: 'Alimentação' },
+              { title: 'Passadeira', company: 'Lavanderia', salary: 'R$ 1.300,00', category: 'Serviços' },
+              { title: 'Faxineira', company: 'Empresa', salary: 'R$ 1.320,00', category: 'Limpeza' },
+              { title: 'Caseiro', company: 'Sítio Particular', salary: 'R$ 2.000,00', category: 'Serviços' }
             ];
             
-            for (let i = 0; i < Math.min(statsData.totalJobs, 50); i++) {
-              const randomTitle = jobTitles[i % jobTitles.length];
-              representativeJobs.push({
-                id: `stats_job_${i + 1}`,
-                title: randomTitle,
-                company: `Empresa ${i + 1}`,
-                location: ['São Paulo, SP', 'Rio de Janeiro, RJ', 'Belo Horizonte, MG', 'Brasília, DF'][i % 4],
-                salary: 'A combinar',
-                description: `Oportunidade para ${randomTitle.toLowerCase()} em empresa séria.`,
+            const locations = [
+              'São Paulo, SP', 'Rio de Janeiro, RJ', 'Belo Horizonte, MG', 
+              'Brasília, DF', 'Salvador, BA', 'Curitiba, PR', 
+              'Fortaleza, CE', 'Recife, PE', 'Porto Alegre, RS', 
+              'Manaus, AM', 'Belém, PA', 'Goiânia, GO'
+            ];
+            
+            for (let i = 0; i < vagasNecessarias; i++) {
+              const jobTemplate = jobTitles[i % jobTitles.length];
+              const location = locations[i % locations.length];
+              
+              complementaryJobs.push({
+                id: `complementary_${i + 1}`,
+                title: jobTemplate.title,
+                company: `${jobTemplate.company} - ${location.split(',')[0]}`,
+                location: location,
+                salary: jobTemplate.salary,
+                description: `Oportunidade para ${jobTemplate.title.toLowerCase()} em empresa séria. Requisitos: experiência na área, responsabilidade e dedicação. Entre em contato para mais informações.`,
                 type: 'CLT',
-                category: randomTitle.includes('Doméstica') || randomTitle.includes('Diarista') ? 'Doméstica' : 'Geral',
+                category: jobTemplate.category,
                 source: 'Backend Stats',
                 isExternal: true,
                 requiresLead: true,
                 priority: 'medium',
-                created_at: new Date().toISOString()
+                created_at: new Date(Date.now() - (i * 3600000)).toISOString(), // Escalonar datas
+                tags: [jobTemplate.title.toLowerCase().replace(/\s+/g, '-')]
               });
             }
             
-            allJobs.push(...representativeJobs);
+            allJobs.push(...complementaryJobs);
             sources.push('Backend Stats');
-            console.log(`✅ ${representativeJobs.length} vagas criadas baseadas nas estatísticas do backend`);
+            console.log(`✅ ${complementaryJobs.length} vagas complementares criadas baseadas nas estatísticas do backend`);
           }
         }
       }
@@ -161,9 +149,9 @@ export default async function handler(req, res) {
       console.error('❌ Erro ao conectar com o backend:', error.message);
     }
 
-    // Se não conseguiu buscar vagas do backend, usar fallback
+    // Se não conseguiu buscar vagas do backend, usar fallback mínimo
     if (allJobs.length === 0) {
-      console.log('🔄 Usando vagas fallback...');
+      console.log('🔄 Usando vagas fallback mínimas...');
       
       const fallbackJobs = [
         {
@@ -172,7 +160,7 @@ export default async function handler(req, res) {
           company: 'Família Particular',
           location: 'São Paulo, SP',
           salary: 'R$ 1.320,00',
-          description: 'Limpeza geral da casa, organização e cuidados básicos',
+          description: 'Limpeza geral da casa, organização e cuidados básicos. Experiência mínima de 1 ano.',
           type: 'CLT',
           category: 'Doméstica',
           source: 'Fallback',
@@ -188,7 +176,7 @@ export default async function handler(req, res) {
           company: 'Residencial',
           location: 'Rio de Janeiro, RJ',
           salary: 'R$ 120,00/dia',
-          description: 'Limpeza completa de apartamento',
+          description: 'Limpeza completa de apartamento 2 quartos, 2x por semana.',
           type: 'Diarista',
           category: 'Doméstica',
           source: 'Fallback',
@@ -236,8 +224,11 @@ export default async function handler(req, res) {
         totalSources: sources.length,
         lastUpdate: new Date().toISOString(),
         cached: false,
-        backendUrl: 'https://worker-job-board-backend-leonardosilvas2.replit.app',
-        availableEndpoints: ['/api/leads', '/api/jobs-stats', '/api/all-jobs-combined']
+        backendUrl: process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app',
+        availableEndpoints: ['/api/leads', '/api/jobs-stats'],
+        realLeads: allJobs.filter(job => job.source.includes('Backend Real')).length,
+        complementaryJobs: allJobs.filter(job => job.source.includes('Stats')).length,
+        fallbackJobs: allJobs.filter(job => job.source === 'Fallback').length
       }
     });
 

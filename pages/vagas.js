@@ -164,35 +164,42 @@ const Vagas = () => {
     setFilteredJobs(vagasFixas)
     setLoading(false)
     
-    // Tentar buscar vagas da API em paralelo (opcional)
-    fetch(`/api/all-jobs-combined?t=${Date.now()}`, {
-      headers: {
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache'
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
+    // Buscar vagas da API em paralelo (opcional)
+    const fetchAPIJobs = async () => {
+      try {
+        console.log('🔄 Buscando vagas da API...')
+        const response = await fetch(`/api/all-jobs-combined?t=${Date.now()}`, {
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        })
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        }
+        
+        const data = await response.json()
         console.log('📋 Dados recebidos da API:', data)
         
         // Só atualizar se realmente tiver vagas da API
         if (data.success && ((data.jobs && data.jobs.length > 0) || (data.data && data.data.length > 0))) {
           const vagasAPI = data.jobs || data.data || []
-          console.log(`🔄 Mesclando ${vagasAPI.length} vagas da API com ${vagasFixas.length} vagas fixas`)
+          console.log(`🔄 Substituindo vagas fixas por ${vagasAPI.length} vagas da API`)
           
-          // Mesclar vagas da API com vagas fixas (API tem prioridade)
-          const vagasMescladas = [...vagasAPI, ...vagasFixas]
-          setJobs(vagasMescladas)
-          setFilteredJobs(vagasMescladas)
+          // Usar apenas vagas da API (não mesclar com fixas)
+          setJobs(vagasAPI)
+          setFilteredJobs(vagasAPI)
         } else {
           console.log('⚠️ API retornou dados vazios, mantendo vagas fixas')
-          // Manter vagas fixas se API não retornar dados úteis
         }
-      })
-      .catch(err => {
-        console.log('⚠️ API não disponível, usando apenas vagas fixas:', err.message)
-        // Continua com vagas fixas
-      })
+      } catch (err) {
+        console.log('⚠️ Erro ao buscar API:', err.message)
+        // Manter vagas fixas em caso de erro
+      }
+    }
+    
+    fetchAPIJobs()
   }, [])
 
   // Effect para aplicar filtros
