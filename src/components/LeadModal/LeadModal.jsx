@@ -93,20 +93,30 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         return
       }
 
-      // Preparar dados para envio no formato exato do backend
+      // Preparar dados para envio no formato que o /api/submit-lead espera
       const leadData = {
-        ultimaEmpresa: formData.lastCompany || "Nome da empresa",
-        tipoCarteira: formData.workStatus || "Com carteira assinada",
-        recebeuTudoCertinho: formData.receivedRights || "Sim",
-        situacoesDuranteTrabalho: Array.isArray(formData.workProblems) ? formData.workProblems : [formData.workProblems || "Nenhuma"],
-        aceitaConsultoria: formData.wantConsultation || "Sim",
-        nomeCompleto: formData.name,
-        whatsapp: formData.whatsapp
+        name: formData.name,
+        whatsapp: formData.whatsapp,
+        lastCompany: formData.lastCompany,
+        workStatus: formData.workStatus,
+        receivedRights: formData.receivedRights,
+        workProblems: formData.workProblems,
+        wantConsultation: formData.wantConsultation,
+        lgpdConsent: formData.lgpdConsent,
+        jobId: jobData?.id,
+        jobTitle: jobData?.title,
+        company: jobData?.company?.name || jobData?.company,
+        jobLink: jobData?.url || jobData?.link || jobData?.apply_url,
+        originalLocation: jobData?.location,
+        fonte: 'Site do Trabalhador',
+        paginaOrigem: window.location.pathname
       }
 
-      console.log('📤 Enviando dados do formulário:', leadData)
+      console.log('📤 DADOS DO FORMULÁRIO ANTES DO ENVIO:', formData)
+      console.log('📋 DADOS DA VAGA:', jobData)
+      console.log('🚀 DADOS FORMATADOS PARA ENVIO:', leadData)
 
-      const response = await fetch('/api/labor-research', {
+      const response = await fetch('/api/submit-lead', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
