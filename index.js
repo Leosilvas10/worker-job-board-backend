@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
   res.json({ 
     message: 'Backend Worker Job Board rodando!',
     timestamp: new Date().toISOString(),
-    endpoints: ['/api/leads', '/api/health']
+    endpoints: ['/api/leads', '/api/health', '/api/jobs-stats']
   });
 });
 
@@ -60,6 +60,16 @@ app.post('/api/leads', (req, res) => {
   res.json({
     message: 'Lead criado com sucesso',
     data: req.body,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Rota para estatísticas de vagas
+app.get('/api/jobs-stats', (req, res) => {
+  res.json({
+    totalJobs: 120,
+    recentJobs: 25,
+    activeJobs: 95,
     timestamp: new Date().toISOString()
   });
 });
