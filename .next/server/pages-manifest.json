@@ -3,7 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/api/all-jobs-combined": "pages/api/all-jobs-combined.js",
   "/vagas": "pages/vagas.js",
-  "/api/submit-lead": "pages/api/submit-lead.js"
+  "/api/all-jobs-combined": "pages/api/all-jobs-combined.js"
 }
