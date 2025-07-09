@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 
 export default function LeadModal({ isOpen, onClose, vaga = null }) {
@@ -10,12 +11,12 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     cidade: '',
     estado: '',
 
-    // Pesquisa trabalhista - 5 questões principais
-    recebeuFgts: '',
-    recebeuFerias: '',
-    recebeuDecimoTerceiro: '',
-    sofreu_assedio: '',
-    trabalhouSemRegistro: '',
+    // Pesquisa trabalhista - 6 questões específicas
+    nomeUltimaEmpresa: '',
+    tipoCarteira: '',
+    recebeuTudoCertinho: '',
+    situacoesEnfrentadas: [],
+    aceitaConsultoria: '',
 
     // Observações
     mensagem: ''
@@ -43,6 +44,15 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     }))
   }
 
+  const handleSituacaoChange = (situacao, checked) => {
+    setFormData(prev => ({
+      ...prev,
+      situacoesEnfrentadas: checked 
+        ? [...prev.situacoesEnfrentadas, situacao]
+        : prev.situacoesEnfrentadas.filter(s => s !== situacao)
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
@@ -57,13 +67,19 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
         },
         body: JSON.stringify({
           ...formData,
+          // Mapear campos para compatibilidade com backend
+          nome_ultima_empresa: formData.nomeUltimaEmpresa,
+          tipo_carteira: formData.tipoCarteira,
+          recebeu_tudo_certinho: formData.recebeuTudoCertinho,
+          situacoes_enfrentadas: formData.situacoesEnfrentadas.join(', '),
+          aceita_consultoria: formData.aceitaConsultoria,
           vaga: vaga ? {
             id: vaga.id,
             titulo: vaga.title || vaga.titulo,
             empresa: vaga.company || vaga.empresa,
             localizacao: vaga.location || vaga.localizacao
           } : null,
-          fonte: 'modal_pesquisa_trabalhista',
+          fonte: 'modal_pesquisa_trabalhista_rapida',
           timestamp: new Date().toISOString()
         })
       })
@@ -81,11 +97,11 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
           idade: 18,
           cidade: '',
           estado: '',
-          recebeuFgts: '',
-          recebeuFerias: '',
-          recebeuDecimoTerceiro: '',
-          sofreu_assedio: '',
-          trabalhouSemRegistro: '',
+          nomeUltimaEmpresa: '',
+          tipoCarteira: '',
+          recebeuTudoCertinho: '',
+          situacoesEnfrentadas: [],
+          aceitaConsultoria: '',
           mensagem: ''
         })
         setStep(1)
@@ -107,9 +123,14 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
       <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-gray-800">
-              {vaga ? `Candidatar-se: ${vaga.title}` : 'Pesquisa Trabalhista - Seus Direitos'}
-            </h2>
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">
+                PESQUISA RÁPIDA SOBRE SEU ÚLTIMO EMPREGO
+              </h2>
+              <p className="text-sm text-gray-600 mt-1">
+                Leva menos de 1 minuto! Suas respostas podem te ajudar a descobrir se a empresa te deve algum valor.
+              </p>
+            </div>
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 text-2xl"
@@ -133,129 +154,72 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {step === 1 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">👤 Dados Pessoais</h3>
-
+              <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nome Completo *
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <span className="text-blue-600 font-semibold">1.</span> Qual foi o nome da última empresa onde você trabalhou?
                   </label>
                   <input
                     type="text"
                     required
-                    value={formData.nomeCompleto}
-                    onChange={(e) => handleInputChange('nomeCompleto', e.target.value)}
+                    value={formData.nomeUltimaEmpresa}
+                    onChange={(e) => handleInputChange('nomeUltimaEmpresa', e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Seu nome completo"
+                    placeholder="Nome da empresa"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    WhatsApp *
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <span className="text-blue-600 font-semibold">2.</span> Você trabalhou com ou sem carteira assinada?
                   </label>
-                  <input
-                    type="tel"
-                    required
-                    value={formData.whatsapp}
-                    onChange={(e) => handleInputChange('whatsapp', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="(11) 99999-9999"
-                  />
+                  <div className="space-y-2">
+                    {[
+                      { value: 'com_carteira', label: 'Com carteira assinada' },
+                      { value: 'sem_carteira', label: 'Sem carteira assinada' },
+                      { value: 'comecou_sem_depois_registrou', label: 'Comecei sem, depois registraram' },
+                      { value: 'nao_tenho_certeza', label: 'Não tenho certeza' }
+                    ].map(option => (
+                      <label key={option.value} className="flex items-center">
+                        <input
+                          type="radio"
+                          name="tipoCarteira"
+                          value={option.value}
+                          checked={formData.tipoCarteira === option.value}
+                          onChange={(e) => handleInputChange('tipoCarteira', e.target.value)}
+                          className="mr-3"
+                          required
+                        />
+                        <span className="text-sm">{option.label}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Idade *
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        required
-                        min="18"
-                        max="100"
-                        value={formData.idade}
-                        onChange={(e) => {
-                          const valor = parseInt(e.target.value) || 18;
-                          if (valor >= 18) {
-                            handleInputChange('idade', valor);
-                          }
-                        }}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="18"
-                      />
-                      <div className="absolute right-1 top-1 flex flex-col">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const novaIdade = Math.min(100, (formData.idade || 18) + 1);
-                            handleInputChange('idade', novaIdade);
-                          }}
-                          className="text-xs px-1 py-0 text-gray-600 hover:text-blue-600"
-                        >
-                          ▲
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const novaIdade = Math.max(18, (formData.idade || 18) - 1);
-                            handleInputChange('idade', novaIdade);
-                          }}
-                          className="text-xs px-1 py-0 text-gray-600 hover:text-blue-600"
-                        >
-                          ▼
-                        </button>
-                      </div>
-                    </div>
-                    <p className="text-xs text-gray-500 mt-1">Mínimo: 18 anos</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Estado *
-                    </label>
-                    <select
-                      required
-                      value={formData.estado}
-                      onChange={(e) => {
-                        handleInputChange('estado', e.target.value);
-                        handleInputChange('cidade', ''); // Reset cidade quando mudar estado
-                      }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="">Selecione o Estado</option>
-                      <option value="SP">São Paulo</option>
-                      <option value="RJ">Rio de Janeiro</option>
-                      <option value="MG">Minas Gerais</option>
-                      <option value="RS">Rio Grande do Sul</option>
-                      <option value="PR">Paraná</option>
-                      <option value="SC">Santa Catarina</option>
-                      <option value="BA">Bahia</option>
-                      <option value="GO">Goiás</option>
-                      <option value="PE">Pernambuco</option>
-                      <option value="CE">Ceará</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Cidade *
-                    </label>
-                    <select
-                      required
-                      value={formData.cidade}
-                      onChange={(e) => handleInputChange('cidade', e.target.value)}
-                      disabled={!formData.estado}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
-                    >
-                      <option value="">
-                        {formData.estado ? 'Selecione a Cidade' : 'Primeiro selecione o Estado'}
-                      </option>
-                      {formData.estado && cidadesPorEstado[formData.estado]?.map(cidade => (
-                        <option key={cidade} value={cidade}>
-                          {cidade}
-                        </option>
-                      ))}
-                    </select>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <span className="text-blue-600 font-semibold">3.</span> Quando saiu da empresa, recebeu tudo certinho?
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'sim', label: 'Sim' },
+                      { value: 'nao_recebi_nada', label: 'Não recebi nada' },
+                      { value: 'recebi_so_uma_parte', label: 'Recebi só uma parte' },
+                      { value: 'nao_sei_dizer', label: 'Não sei dizer' }
+                    ].map(option => (
+                      <label key={option.value} className="flex items-center">
+                        <input
+                          type="radio"
+                          name="recebeuTudoCertinho"
+                          value={option.value}
+                          checked={formData.recebeuTudoCertinho === option.value}
+                          onChange={(e) => handleInputChange('recebeuTudoCertinho', e.target.value)}
+                          className="mr-3"
+                          required
+                        />
+                        <span className="text-sm">{option.label}</span>
+                      </label>
+                    ))}
                   </div>
                 </div>
 
@@ -270,114 +234,54 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
             )}
 
             {step === 2 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">⚖️ Pesquisa Trabalhista - Seus Direitos</h3>
-                <p className="text-sm text-gray-600 mb-4">Responda essas 5 questões importantes sobre seus direitos trabalhistas:</p>
-
-                <div className="space-y-6">
-                  <div className="border-b pb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
-                      1. Você recebeu o FGTS (Fundo de Garantia) adequadamente?
-                    </label>
-                    <div className="flex flex-wrap gap-4">
-                      {['Sim', 'Não', 'Não sei', 'Parcialmente'].map(option => (
-                        <label key={option} className="flex items-center">
-                          <input
-                            type="radio"
-                            name="recebeuFgts"
-                            value={option}
-                            checked={formData.recebeuFgts === option}
-                            onChange={(e) => handleInputChange('recebeuFgts', e.target.value)}
-                            className="mr-2"
-                          />
-                          <span className="text-sm">{option}</span>
-                        </label>
-                      ))}
-                    </div>
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <span className="text-blue-600 font-semibold">4.</span> Durante o trabalho, você passou por alguma dessas situações?
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'hora_extra_sem_receber', label: 'Fazia hora extra sem receber' },
+                      { value: 'domingos_feriados_sem_adicional', label: 'Trabalhei domingos/feriados sem adicional ou folga' },
+                      { value: 'assedio_humilhacoes', label: 'Sofri assédio ou humilhações' },
+                      { value: 'acumulo_funcoes_sem_aumento', label: 'Acúmulo de funções sem aumento salarial' },
+                      { value: 'nenhuma_dessas', label: 'Nenhuma dessas' }
+                    ].map(option => (
+                      <label key={option.value} className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={formData.situacoesEnfrentadas.includes(option.value)}
+                          onChange={(e) => handleSituacaoChange(option.value, e.target.checked)}
+                          className="mr-3"
+                        />
+                        <span className="text-sm">{option.label}</span>
+                      </label>
+                    ))}
                   </div>
+                </div>
 
-                  <div className="border-b pb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
-                      2. Você recebeu suas férias corretamente?
-                    </label>
-                    <div className="flex flex-wrap gap-4">
-                      {['Sim', 'Não', 'Não sei', 'Parcialmente'].map(option => (
-                        <label key={option} className="flex items-center">
-                          <input
-                            type="radio"
-                            name="recebeuFerias"
-                            value={option}
-                            checked={formData.recebeuFerias === option}
-                            onChange={(e) => handleInputChange('recebeuFerias', e.target.value)}
-                            className="mr-2"
-                          />
-                          <span className="text-sm">{option}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="border-b pb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
-                      3. Você recebeu o 13º salário adequadamente?
-                    </label>
-                    <div className="flex flex-wrap gap-4">
-                      {['Sim', 'Não', 'Não sei', 'Parcialmente'].map(option => (
-                        <label key={option} className="flex items-center">
-                          <input
-                            type="radio"
-                            name="recebeuDecimoTerceiro"
-                            value={option}
-                            checked={formData.recebeuDecimoTerceiro === option}
-                            onChange={(e) => handleInputChange('recebeuDecimoTerceiro', e.target.value)}
-                            className="mr-2"
-                          />
-                          <span className="text-sm">{option}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="border-b pb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
-                      4. Você sofreu assédio moral ou sexual no trabalho?
-                    </label>
-                    <div className="flex flex-wrap gap-4">
-                      {['Sim', 'Não', 'Às vezes', 'Prefiro não responder'].map(option => (
-                        <label key={option} className="flex items-center">
-                          <input
-                            type="radio"
-                            name="sofreu_assedio"
-                            value={option}
-                            checked={formData.sofreu_assedio === option}
-                            onChange={(e) => handleInputChange('sofreu_assedio', e.target.value)}
-                            className="mr-2"
-                          />
-                          <span className="text-sm">{option}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="border-b pb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
-                      5. Você já trabalhou sem carteira assinada?
-                    </label>
-                    <div className="flex flex-wrap gap-4">
-                      {['Sim', 'Não', 'Algumas vezes', 'Não sei'].map(option => (
-                        <label key={option} className="flex items-center">
-                          <input
-                            type="radio"
-                            name="trabalhouSemRegistro"
-                            value={option}
-                            checked={formData.trabalhouSemRegistro === option}
-                            onChange={(e) => handleInputChange('trabalhouSemRegistro', e.target.value)}
-                            className="mr-2"
-                          />
-                          <span className="text-sm">{option}</span>
-                        </label>
-                      ))}
-                    </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <span className="text-blue-600 font-semibold">5.</span> Podemos encaminhar suas respostas para um parceiro especializado em consultas trabalhistas gratuitas, que pode te orientar sobre seus direitos?
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'sim', label: 'Sim, quero saber se tenho algo a receber' },
+                      { value: 'nao', label: 'Não, obrigado(a)' }
+                    ].map(option => (
+                      <label key={option.value} className="flex items-center">
+                        <input
+                          type="radio"
+                          name="aceitaConsultoria"
+                          value={option.value}
+                          checked={formData.aceitaConsultoria === option.value}
+                          onChange={(e) => handleInputChange('aceitaConsultoria', e.target.value)}
+                          className="mr-3"
+                          required
+                        />
+                        <span className="text-sm">{option.label}</span>
+                      </label>
+                    ))}
                   </div>
                 </div>
 
@@ -401,24 +305,153 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
             )}
 
             {step === 3 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">✅ Finalização</h3>
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <span className="text-blue-600 font-semibold">6.</span> Para isso, informe seu nome e WhatsApp para contato:
+                  </label>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Nome Completo *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.nomeCompleto}
+                        onChange={(e) => handleInputChange('nomeCompleto', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Seu nome completo"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        WhatsApp *
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        value={formData.whatsapp}
+                        onChange={(e) => handleInputChange('whatsapp', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="(11) 99999-9999"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Idade *
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="number"
+                            required
+                            min="18"
+                            max="100"
+                            value={formData.idade}
+                            onChange={(e) => {
+                              const valor = parseInt(e.target.value) || 18;
+                              if (valor >= 18) {
+                                handleInputChange('idade', valor);
+                              }
+                            }}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="18"
+                          />
+                          <div className="absolute right-1 top-1 flex flex-col">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const novaIdade = Math.min(100, (formData.idade || 18) + 1);
+                                handleInputChange('idade', novaIdade);
+                              }}
+                              className="text-xs px-1 py-0 text-gray-600 hover:text-blue-600"
+                            >
+                              ▲
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const novaIdade = Math.max(18, (formData.idade || 18) - 1);
+                                handleInputChange('idade', novaIdade);
+                              }}
+                              className="text-xs px-1 py-0 text-gray-600 hover:text-blue-600"
+                            >
+                              ▼
+                            </button>
+                          </div>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">Mínimo: 18 anos</p>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Estado *
+                        </label>
+                        <select
+                          required
+                          value={formData.estado}
+                          onChange={(e) => {
+                            handleInputChange('estado', e.target.value);
+                            handleInputChange('cidade', ''); // Reset cidade quando mudar estado
+                          }}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="">Selecione o Estado</option>
+                          <option value="SP">São Paulo</option>
+                          <option value="RJ">Rio de Janeiro</option>
+                          <option value="MG">Minas Gerais</option>
+                          <option value="RS">Rio Grande do Sul</option>
+                          <option value="PR">Paraná</option>
+                          <option value="SC">Santa Catarina</option>
+                          <option value="BA">Bahia</option>
+                          <option value="GO">Goiás</option>
+                          <option value="PE">Pernambuco</option>
+                          <option value="CE">Ceará</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Cidade *
+                        </label>
+                        <select
+                          required
+                          value={formData.cidade}
+                          onChange={(e) => handleInputChange('cidade', e.target.value)}
+                          disabled={!formData.estado}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                        >
+                          <option value="">
+                            {formData.estado ? 'Selecione a Cidade' : 'Primeiro selecione o Estado'}
+                          </option>
+                          {formData.estado && cidadesPorEstado[formData.estado]?.map(cidade => (
+                            <option key={cidade} value={cidade}>
+                              {cidade}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Mensagem adicional (opcional)
+                    Observações adicionais (opcional)
                   </label>
                   <textarea
                     value={formData.mensagem}
                     onChange={(e) => handleInputChange('mensagem', e.target.value)}
-                    rows={4}
+                    rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Conte mais sobre sua situação trabalhista ou alguma dúvida que tenha..."
+                    placeholder="Algo mais que gostaria de nos contar..."
                   />
                 </div>
 
-                <div className="bg-blue-50 p-4 rounded-md">
-                  <p className="text-sm text-blue-800">
+                <div className="bg-green-50 p-4 rounded-md">
+                  <p className="text-sm text-green-800">
                     <strong>📞 Próximos passos:</strong> Nossa equipe entrará em contato em até 24 horas para uma consultoria gratuita sobre seus direitos trabalhistas.
                   </p>
                 </div>

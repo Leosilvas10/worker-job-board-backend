@@ -18,7 +18,19 @@ export default async function handler(req, res) {
       cidade,
       estado,
       
-      // Pesquisa trabalhista - 5 questões principais
+      // Pesquisa trabalhista - 6 questões específicas
+      nomeUltimaEmpresa,
+      nome_ultima_empresa,
+      tipoCarteira,
+      tipo_carteira,
+      recebeuTudoCertinho,
+      recebeu_tudo_certinho,
+      situacoesEnfrentadas,
+      situacoes_enfrentadas,
+      aceitaConsultoria,
+      aceita_consultoria,
+      
+      // Campos antigos para compatibilidade
       recebeuFgts,
       recebeuFerias,
       recebeuDecimoTerceiro,
@@ -44,7 +56,14 @@ export default async function handler(req, res) {
       cidade: cidade || '',
       estado: estado || '',
       
-      // Pesquisa trabalhista - 5 questões principais
+      // Pesquisa trabalhista - 6 questões específicas
+      nome_ultima_empresa: nomeUltimaEmpresa || nome_ultima_empresa || 'Não informado',
+      tipo_carteira: tipoCarteira || tipo_carteira || 'Não informado',
+      recebeu_tudo_certinho: recebeuTudoCertinho || recebeu_tudo_certinho || 'Não informado',
+      situacoes_enfrentadas: situacoesEnfrentadas || situacoes_enfrentadas || 'Não informado',
+      aceita_consultoria: aceitaConsultoria || aceita_consultoria || 'Não informado',
+      
+      // Campos antigos para compatibilidade (se ainda existirem)
       fgts: recebeuFgts || 'Não informado',
       ferias: recebeuFerias || 'Não informado',
       decimo_terceiro: recebeuDecimoTerceiro || 'Não informado',
@@ -56,12 +75,12 @@ export default async function handler(req, res) {
       
       // Dados da vaga (se aplicável)
       vaga_id: vaga?.id || null,
-      vaga_titulo: vaga?.titulo || 'Pesquisa Trabalhista',
+      vaga_titulo: vaga?.titulo || 'Pesquisa Trabalhista Rápida',
       vaga_empresa: vaga?.empresa || '',
       vaga_localizacao: vaga?.localizacao || '',
       
       // Controle e rastreamento
-      fonte: fonte || 'modal_pesquisa_trabalhista',
+      fonte: fonte || 'modal_pesquisa_trabalhista_rapida',
       status: 'novo',
       contatado: false,
       convertido: false,
