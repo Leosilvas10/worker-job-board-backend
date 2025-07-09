@@ -6,45 +6,79 @@ export default async function handler(req, res) {
   try {
     console.log('🔍 Testando conexão com backend...');
     
-    // Testar endpoint de leads
-    const leadsResponse = await fetch(`${BACKEND_URL}/api/leads`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    });
+    const results = {};
     
-    const leadsData = leadsResponse.ok ? await leadsResponse.json() : null;
+    // Testar endpoint de leads
+    try {
+      const leadsResponse = await fetch(`${BACKEND_URL}/api/leads`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+      
+      const leadsData = leadsResponse.ok ? await leadsResponse.json() : null;
+      
+      results.leads = {
+        status: leadsResponse.status,
+        ok: leadsResponse.ok,
+        data: leadsData,
+        count: leadsData?.leads?.length || leadsData?.data?.length || 0
+      };
+    } catch (error) {
+      results.leads = { error: error.message };
+    }
     
     // Testar endpoint de stats
-    const statsResponse = await fetch(`${BACKEND_URL}/api/jobs-stats`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    });
+    try {
+      const statsResponse = await fetch(`${BACKEND_URL}/api/jobs-stats`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+      
+      const statsData = statsResponse.ok ? await statsResponse.json() : null;
+      
+      results.stats = {
+        status: statsResponse.status,
+        ok: statsResponse.ok,
+        data: statsData,
+        totalJobs: statsData?.totalJobs || 0
+      };
+    } catch (error) {
+      results.stats = { error: error.message };
+    }
     
-    const statsData = statsResponse.ok ? await statsResponse.json() : null;
+    // Testar endpoint all-jobs-combined
+    try {
+      const allJobsResponse = await fetch(`${BACKEND_URL}/api/all-jobs-combined`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+      
+      const allJobsData = allJobsResponse.ok ? await allJobsResponse.json() : null;
+      
+      results.allJobs = {
+        status: allJobsResponse.status,
+        ok: allJobsResponse.ok,
+        data: allJobsData,
+        count: allJobsData?.data?.length || allJobsData?.jobs?.length || 0
+      };
+    } catch (error) {
+      results.allJobs = { error: error.message };
+    }
     
     return res.status(200).json({
       success: true,
       backend: BACKEND_URL,
-      endpoints: {
-        leads: {
-          status: leadsResponse.status,
-          ok: leadsResponse.ok,
-          data: leadsData,
-          count: leadsData?.data?.length || 0
-        },
-        stats: {
-          status: statsResponse.status,
-          ok: statsResponse.ok,
-          data: statsData,
-          totalJobs: statsData?.totalJobs || 0
-        }
-      }
+      timestamp: new Date().toISOString(),
+      endpoints: results
     });
     
   } catch (error) {
