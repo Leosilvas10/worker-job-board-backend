@@ -162,21 +162,35 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
         // Fechar modal
         onClose()
         
-        // REDIRECIONAMENTO FORÇADO com delay para garantir execução
+        // REDIRECIONAMENTO MELHORADO com verificação de segurança
         setTimeout(() => {
-          if (vaga && vaga.redirectUrl) {
-            console.log('🔄 REDIRECIONAMENTO ATIVO para:', vaga.redirectUrl)
-            window.open(vaga.redirectUrl, '_blank')
-          } else if (vaga && (vaga.external_url || vaga.externalUrl)) {
-            const url = vaga.external_url || vaga.externalUrl
-            console.log('🔄 REDIRECIONAMENTO ATIVO para URL externa:', url)
-            window.open(url, '_blank')
-          } else {
-            // Fallback: redirecionar para página de vagas
-            console.log('🔄 REDIRECIONAMENTO FALLBACK para /vagas')
-            window.location.href = '/vagas'
+          try {
+            if (vaga && vaga.redirectUrl) {
+              console.log('🔄 REDIRECIONAMENTO ATIVO para:', vaga.redirectUrl)
+              if (typeof window !== 'undefined') {
+                window.open(vaga.redirectUrl, '_blank', 'noopener,noreferrer')
+              }
+            } else if (vaga && (vaga.external_url || vaga.externalUrl)) {
+              const url = vaga.external_url || vaga.externalUrl
+              console.log('🔄 REDIRECIONAMENTO ATIVO para URL externa:', url)
+              if (typeof window !== 'undefined') {
+                window.open(url, '_blank', 'noopener,noreferrer')
+              }
+            } else {
+              // Fallback: redirecionar para página de vagas
+              console.log('🔄 REDIRECIONAMENTO FALLBACK para /vagas')
+              if (typeof window !== 'undefined') {
+                window.location.href = '/vagas'
+              }
+            }
+          } catch (error) {
+            console.error('❌ Erro no redirecionamento:', error)
+            // Fallback final
+            if (typeof window !== 'undefined') {
+              window.location.href = '/vagas'
+            }
           }
-        }, 100)
+        }, 200)
       } else {
         throw new Error(result.message || 'Erro no envio')
       }

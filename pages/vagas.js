@@ -419,12 +419,21 @@ const Vagas = () => {
                     Recentes: <strong>{jobStats.formatted.recentJobsFormatted}</strong>
                   </p>
                 )}
+              {isClient && (
+                <>
+                  <p className="text-blue-200 text-sm">
+                    Última atualização: {new Date().toLocaleDateString('pt-BR')} às {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                  <p className="text-blue-200 text-sm mt-1">
+                    🔄 As vagas são atualizadas automaticamente a cada 1 hora!
+                  </p>
+                </>
+              )}
+              {!isClient && (
                 <p className="text-blue-200 text-sm">
-                  Última atualização: {new Date().toLocaleDateString('pt-BR')} às {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                </p>
-                <p className="text-blue-200 text-sm mt-1">
                   🔄 As vagas são atualizadas automaticamente a cada 1 hora!
                 </p>
+              )}
               </div>
             </div>
           </div>
@@ -652,7 +661,7 @@ const Vagas = () => {
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div className="text-center bg-white rounded-xl p-12 shadow-lg">
               <div className="text-6xl mb-6">🔍</div>
-              <h3 className="text-2xl font-bold text-govgray-800 mb-4">Nenhuma vaga encontrada</h3>
+              <h3 className="text-2xl font-bold text-govgray-800mb-4">Nenhuma vaga encontrada</h3>
               <p className="text-govgray-600 mb-8 max-w-md mx-auto">
                 Não há vagas disponíveis no momento. Nossas fontes estão sendo atualizadas constantemente.
               </p>
