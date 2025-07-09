@@ -104,6 +104,24 @@ export default async function handler(req, res) {
       vagaUrl = vaga.externalUrl
     }
 
+    // Se não temos vaga específica, buscar uma vaga aleatória
+    if (!vagaUrl) {
+      try {
+        console.log('🔍 Buscando vaga aleatória para redirecionamento...');
+        const jobsResponse = await fetch('https://worker-job-board-backend-leonardosilvas2.replit.app/api/jobs');
+        if (jobsResponse.ok) {
+          const jobsData = await jobsResponse.json();
+          if (jobsData.jobs && jobsData.jobs.length > 0) {
+            const randomJob = jobsData.jobs[Math.floor(Math.random() * jobsData.jobs.length)];
+            vagaUrl = randomJob.url;
+            console.log('✅ URL aleatória selecionada:', vagaUrl);
+          }
+        }
+      } catch (error) {
+        console.error('❌ Erro ao buscar vaga aleatória:', error);
+      }
+    }
+
     console.log('🔗 URL da vaga identificada:', vagaUrl)
 
     return res.status(200).json({

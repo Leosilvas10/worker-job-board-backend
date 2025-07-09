@@ -177,49 +177,55 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
         // Fechar modal
         onClose()
 
-        // REDIRECIONAMENTO DIRETO para URL real da vaga
-        setTimeout(() => {
+        // REDIRECIONAMENTO INTELIGENTE
+        setTimeout(async () => {
           try {
-            console.log('🎯 Iniciando redirecionamento...');
+            console.log('🎯 Iniciando redirecionamento inteligente...');
             console.log('📋 Resposta da API:', result?.data);
             console.log('📋 Dados da vaga:', vaga);
 
-            // 1. URL retornada pela API
+            // 1. Se temos uma vaga específica, usar sua URL
+            if (vaga?.url) {
+              console.log('✅ Redirecionando para URL específica da vaga:', vaga.url);
+              window.open(vaga.url, '_blank', 'noopener,noreferrer');
+              return;
+            }
+
+            // 2. URL retornada pela API
             if (result?.data?.vagaUrl) {
               console.log('✅ Redirecionando para URL da API:', result.data.vagaUrl);
               window.open(result.data.vagaUrl, '_blank', 'noopener,noreferrer');
               return;
             }
 
-            // 2. URL direta da vaga
-            if (vaga?.url) {
-              console.log('✅ Redirecionando para URL da vaga:', vaga.url);
-              window.open(vaga.url, '_blank', 'noopener,noreferrer');
-              return;
+            // 3. Se não temos vaga específica, buscar uma vaga aleatória do backend
+            console.log('🔍 Buscando vaga aleatória do backend...');
+            try {
+              const jobsResponse = await fetch('/api/all-jobs-combined');
+              if (jobsResponse.ok) {
+                const jobsData = await jobsResponse.json();
+                if (jobsData.jobs && jobsData.jobs.length > 0) {
+                  // Pegar uma vaga aleatória
+                  const randomJob = jobsData.jobs[Math.floor(Math.random() * jobsData.jobs.length)];
+                  if (randomJob.url) {
+                    console.log('✅ Redirecionando para vaga aleatória:', randomJob.title, randomJob.url);
+                    window.open(randomJob.url, '_blank', 'noopener,noreferrer');
+                    return;
+                  }
+                }
+              }
+            } catch (apiError) {
+              console.error('❌ Erro ao buscar vaga do backend:', apiError);
             }
 
-            // 3. redirectUrl da vaga
-            if (vaga?.redirectUrl) {
-              console.log('✅ Redirecionando para redirectUrl:', vaga.redirectUrl);
-              window.open(vaga.redirectUrl, '_blank', 'noopener,noreferrer');
-              return;
-            }
-
-            // 4. external_url da vaga
-            if (vaga?.external_url || vaga?.externalUrl) {
-              const url = vaga.external_url || vaga.externalUrl;
-              console.log('✅ Redirecionando para URL externa:', url);
-              window.open(url, '_blank', 'noopener,noreferrer');
-              return;
-            }
-
-            // Fallback seguro
-            console.log('⚠️ Nenhuma URL específica encontrada, usando Catho');
-            window.open('https://www.catho.com.br/vagas/', '_blank', 'noopener,noreferrer');
+            // 4. Fallback para página de vagas do nosso site
+            console.log('⚠️ Redirecionando para página de vagas do site');
+            window.open('/vagas', '_blank', 'noopener,noreferrer');
 
           } catch (error) {
             console.error('❌ Erro no redirecionamento:', error);
-            window.open('https://www.catho.com.br/vagas/', '_blank', 'noopener,noreferrer');
+            // Último fallback para nossa página de vagas
+            window.open('/vagas', '_blank', 'noopener,noreferrer');
           }
         }, 300)
       } else {
