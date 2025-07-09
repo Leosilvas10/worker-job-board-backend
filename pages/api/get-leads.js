@@ -1,37 +1,40 @@
+Ensuring the `utm` object is included in the demo lead generated when backend is connected.
+```
+```replit_final_file
 // API para listar leads capturados das candidaturas
 
 // Função para sanitizar caracteres especiais
 function sanitizeText(text) {
   if (!text || typeof text !== 'string') return text
-  
+
   return text
     // Corrigir caracteres especiais comuns
-    .replace(/�/g, 'ã')
-    .replace(/�/g, 'ç')
-    .replace(/�/g, 'é')
-    .replace(/�/g, 'á')
-    .replace(/�/g, 'í')
-    .replace(/�/g, 'ó')
-    .replace(/�/g, 'ú')
-    .replace(/�/g, 'ê')
-    .replace(/�/g, 'â')
-    .replace(/�/g, 'ô')
-    .replace(/�/g, 'à')
-    .replace(/�/g, 'õ')
-    .replace(/�/g, 'ü')
+    .replace(//g, 'ã')
+    .replace(//g, 'ç')
+    .replace(//g, 'é')
+    .replace(//g, 'á')
+    .replace(//g, 'í')
+    .replace(//g, 'ó')
+    .replace(//g, 'ú')
+    .replace(//g, 'ê')
+    .replace(//g, 'â')
+    .replace(//g, 'ô')
+    .replace(//g, 'à')
+    .replace(//g, 'õ')
+    .replace(//g, 'ü')
     // Corrigir caracteres maiúsculos
-    .replace(/�/g, 'Ã')
-    .replace(/�/g, 'Ç')
-    .replace(/�/g, 'É')
-    .replace(/�/g, 'Á')
-    .replace(/�/g, 'Í')
-    .replace(/�/g, 'Ó')
-    .replace(/�/g, 'Ú')
-    .replace(/�/g, 'Ê')
-    .replace(/�/g, 'Â')
-    .replace(/�/g, 'Ô')
-    .replace(/�/g, 'À')
-    .replace(/�/g, 'Õ')
+    .replace(//g, 'Ã')
+    .replace(//g, 'Ç')
+    .replace(//g, 'É')
+    .replace(//g, 'Á')
+    .replace(//g, 'Í')
+    .replace(//g, 'Ó')
+    .replace(//g, 'Ú')
+    .replace(//g, 'Ê')
+    .replace(//g, 'Â')
+    .replace(//g, 'Ô')
+    .replace(//g, 'À')
+    .replace(//g, 'Õ')
     // Corrigir outros caracteres problemáticos
     .replace(/Ã¡/g, 'á')
     .replace(/Ã©/g, 'é')
@@ -50,9 +53,9 @@ function sanitizeText(text) {
 // Função para sanitizar um objeto lead completo
 function sanitizeLead(lead) {
   if (!lead) return lead
-  
+
   const sanitized = { ...lead }
-  
+
   // Sanitizar campos de texto do lead
   if (sanitized.nome) sanitized.nome = sanitizeText(sanitized.nome)
   if (sanitized.email) sanitized.email = sanitizeText(sanitized.email)
@@ -67,7 +70,7 @@ function sanitizeLead(lead) {
   if (sanitized.motivo_demissao) sanitized.motivo_demissao = sanitizeText(sanitized.motivo_demissao)
   if (sanitized.disponibilidade) sanitized.disponibilidade = sanitizeText(sanitized.disponibilidade)
   if (sanitized.pretensao_salarial) sanitized.pretensao_salarial = sanitizeText(sanitized.pretensao_salarial)
-  
+
   return sanitized
 }
 
@@ -83,7 +86,7 @@ export default async function handler(req, res) {
     // Buscar dados reais do backend em produção
     const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
     console.log('🔍 Tentando conectar ao backend:', backendUrl)
-    
+
     let leadsReais = []
     try {
       // Primeiro tentar buscar responses/submissions
@@ -95,13 +98,13 @@ export default async function handler(req, res) {
           'User-Agent': 'SiteDoTrabalhador-Frontend'
         }
       })
-      
+
       console.log('📡 Status da resposta do backend (labor-research/data):', laborResearchResponse.status)
-      
+
       if (laborResearchResponse.ok) {
         const submissionsText = await laborResearchResponse.text()
         console.log('📄 Resposta bruta (submissions):', submissionsText)
-        
+
         let submissionsData
         try {
           submissionsData = JSON.parse(submissionsText)
@@ -109,14 +112,14 @@ export default async function handler(req, res) {
           console.error('❌ Erro ao fazer parse da resposta de submissions:', parseError)
           submissionsData = null
         }
-        
+
         if (submissionsData && submissionsData.submissions && Array.isArray(submissionsData.submissions)) {
           console.log('✅', submissionsData.submissions.length, 'leads reais encontrados no backend')
-          
+
           leadsReais = submissionsData.submissions.map((lead, index) => {
             // Aplicar sanitização no lead antes de processar
             const cleanLead = sanitizeLead(lead)
-            
+
             return {
               id: cleanLead.id || `lead_${index + 1}`,
               nome: cleanLead.nome || cleanLead.name || 'Nome não informado',
@@ -172,7 +175,7 @@ export default async function handler(req, res) {
         }
       } else {
         console.log('⚠️ Endpoint submissions não disponível, tentando endpoint principal...')
-        
+
         // Tentar endpoint principal labor-research (que sabemos que funciona)
         const backendResponse = await fetch(`${backendUrl}/api/labor-research`, {
           method: 'GET',
@@ -182,19 +185,19 @@ export default async function handler(req, res) {
             'User-Agent': 'SiteDoTrabalhador-Frontend'
           }
         })
-        
+
         // Se o endpoint labor-research funcionar, usar as questões para criar lead de demo
         if (backendResponse.ok) {
           const fallbackText = await backendResponse.text()
           console.log('📋 Questões do backend funcionando:', fallbackText)
-          
+
           let questionsData
           try {
             questionsData = JSON.parse(fallbackText)
           } catch (e) {
             questionsData = null
           }
-          
+
           if (questionsData && questionsData.questions) {
             console.log('✅ Backend funcionando! Criando lead de demonstração com as questões')
             leadsReais = [{
@@ -232,6 +235,11 @@ ${questionsData.questions.map(q => `• ${q.question}`).join('\n')}
 
 Status: ✅ Pronto para receber dados reais dos usuários`,
               fonte: 'Sistema Backend',
+              utm: {
+                source: 'backend',
+                medium: 'sistema',
+                campaign: 'demo'
+              },
               status: 'backend_conectado',
               criadoEm: new Date().toISOString(),
               contatado: true,
@@ -239,11 +247,11 @@ Status: ✅ Pronto para receber dados reais dos usuários`,
             }]
           }
         }
-        
+
         if (backendResponse.ok) {
           const responseText = await backendResponse.text()
           console.log('📄 Resposta bruta (original):', responseText)
-          
+
           let backendData
           try {
             backendData = JSON.parse(responseText)
@@ -251,14 +259,14 @@ Status: ✅ Pronto para receber dados reais dos usuários`,
             console.error('❌ Erro ao fazer parse da resposta original:', parseError)
             backendData = null
           }
-          
+
           // Se o backend retornar dados no formato esperado
           if (backendData && backendData.data && Array.isArray(backendData.data)) {
             console.log('✅', backendData.data.length, 'leads encontrados no endpoint original')
-            
+
             leadsReais = backendData.data.map((lead, index) => {
               const cleanLead = sanitizeLead(lead)
-              
+
               return {
                 id: cleanLead.id || `lead_${index + 1}`,
                 nome: cleanLead.nome || cleanLead.name || cleanLead.nomeCompleto || 'Nome não informado',
@@ -417,7 +425,7 @@ Status: ✅ Pronto para receber dados reais dos usuários`,
 
     // Priorizar leads reais do backend, com dados de exemplo como fallback
     let allLeads = []
-    
+
     if (leadsReais.length > 0) {
       // Se temos leads reais do backend, usar eles
       allLeads = [...leadsReais]
@@ -477,7 +485,7 @@ Status: ✅ Pronto para receber dados reais dos usuários`,
 
   } catch (error) {
     console.error('❌ Erro ao buscar leads:', error)
-    
+
     return res.status(500).json({
       success: false,
       message: 'Erro ao carregar leads',
