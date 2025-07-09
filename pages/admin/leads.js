@@ -14,6 +14,8 @@ export default function AdminLeads() {
   const [statusFilter, setStatusFilter] = useState('all')
   const [selectedLead, setSelectedLead] = useState(null)
   const [showModal, setShowModal] = useState(false)
+  const [selectedLeads, setSelectedLeads] = useState([])
+  const [selectAll, setSelectAll] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,15 +101,79 @@ export default function AdminLeads() {
     setSelectedLead(null)
   }
 
+  const handleSelectLead = (leadId) => {
+    if (selectedLeads.includes(leadId)) {
+      setSelectedLeads(selectedLeads.filter(id => id !== leadId))
+    } else {
+      setSelectedLeads([...selectedLeads, leadId])
+    }
+  }
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedLeads([])
+    } else {
+      setSelectedLeads(filteredLeads.map(lead => lead.id))
+    }
+    setSelectAll(!selectAll)
+  }
+
   const handleDeleteLead = async (leadId) => {
     if (confirm('Tem certeza que deseja excluir este lead? Esta ação não pode ser desfeita.')) {
       try {
-        // Em produção, fazer DELETE para o backend
-        setLeads(leads.filter(lead => lead.id !== leadId))
-        alert('Lead excluído com sucesso!')
+        console.log('🗑️ Deletando lead:', leadId)
+        
+        const response = await fetch('/api/delete-lead', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ leadId })
+        })
+
+        const result = await response.json()
+        
+        if (result.success) {
+          console.log('✅ Lead deletado com sucesso:', result)
+          // Atualizar a lista removendo o lead deletado
+          setLeads(leads.filter(lead => lead.id !== leadId))
+          alert('Lead excluído com sucesso!')
+        } else {
+          throw new Error(result.message || 'Erro ao deletar lead')
+        }
       } catch (error) {
-        console.error('Erro ao excluir lead:', error)
+        console.error('❌ Erro ao excluir lead:', error)
         alert('Erro ao excluir lead. Tente novamente.')
+      }
+    }
+  }
+
+  const handleDeleteMultipleLeads = async (leadIds) => {
+    if (confirm(`Tem certeza que deseja excluir ${leadIds.length} leads? Esta ação não pode ser desfeita.`)) {
+      try {
+        console.log('🗑️ Deletando múltiplos leads:', leadIds)
+        
+        const response = await fetch('/api/delete-lead', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ leadIds })
+        })
+
+        const result = await response.json()
+        
+        if (result.success) {
+          console.log('✅ Leads deletados com sucesso:', result)
+          // Atualizar a lista removendo os leads deletados
+          setLeads(leads.filter(lead => !leadIds.includes(lead.id)))
+          alert(`${leadIds.length} leads excluídos com sucesso!`)
+        } else {
+          throw new Error(result.message || 'Erro ao deletar leads')
+        }
+      } catch (error) {
+        console.error('❌ Erro ao excluir leads:', error)
+        alert('Erro ao excluir leads. Tente novamente.')
       }
     }
   }
@@ -203,12 +269,22 @@ export default function AdminLeads() {
                 <option value="closed">Fechado</option>
               </select>
             </div>
-            <button
-              onClick={handleExport}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Exportar CSV
-            </button>
+            <div className="flex gap-2">
+              {selectedLeads.length > 0 && (
+                <button
+                  onClick={() => handleDeleteMultipleLeads(selectedLeads)}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  🗑️ Deletar {selectedLeads.length} Selecionados
+                </button>
+              )}
+              <button
+                onClick={handleExport}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Exportar CSV
+              </button>
+            </div>
           </div>
         </div>
 
@@ -223,6 +299,14 @@ export default function AdminLeads() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <input
+                      type="checkbox"
+                      checked={selectAll}
+                      onChange={handleSelectAll}
+                      className="rounded"
+                    />
+                  </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Nome
                   </th>
@@ -249,6 +333,14 @@ export default function AdminLeads() {
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredLeads.length > 0 ? filteredLeads.map((lead) => (
                   <tr key={lead.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <input
+                        type="checkbox"
+                        checked={selectedLeads.includes(lead.id)}
+                        onChange={() => handleSelectLead(lead.id)}
+                        className="rounded"
+                      />
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">{lead.nome || lead.name}</div>
                     </td>
@@ -299,7 +391,7 @@ export default function AdminLeads() {
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
+                    <td colSpan="8" className="px-6 py-4 text-center text-gray-500">
                       Nenhum lead encontrado
                     </td>
                   </tr>
