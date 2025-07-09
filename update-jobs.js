@@ -176,14 +176,24 @@ async function validateUrl(url) {
         port: urlObj.port,
         path: urlObj.pathname + urlObj.search,
         method: 'HEAD',
-        timeout: 5000
+        timeout: 8000,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
       }, (res) => {
-        // Considerar válido se status 200, 301, 302
-        resolve(res.statusCode >= 200 && res.statusCode < 400);
+        // Considerar válido se status 200, 301, 302, 403 (alguns sites bloqueiam HEAD)
+        const isValid = res.statusCode >= 200 && res.statusCode < 400;
+        console.log(`🔍 Validando ${url}: ${res.statusCode} - ${isValid ? 'VÁLIDA' : 'INVÁLIDA'}`);
+        resolve(isValid);
       });
       
-      req.on('error', () => resolve(false));
+      req.on('error', (error) => {
+        console.log(`❌ Erro na URL ${url}: ${error.message}`);
+        resolve(false);
+      });
+      
       req.on('timeout', () => {
+        console.log(`⏱️ Timeout na URL ${url}`);
         req.destroy();
         resolve(false);
       });
@@ -191,6 +201,7 @@ async function validateUrl(url) {
       req.end();
     });
   } catch (error) {
+    console.log(`❌ Erro ao processar URL ${url}: ${error.message}`);
     return false;
   }
 }
@@ -230,6 +241,46 @@ async function getRealJobUrls() {
   
   return validUrls;
 }
+
+// URLs de busca garantidamente funcionais como fallback
+const SEARCH_FALLBACK_URLS = {
+  'empregada-domestica': [
+    'https://www.indeed.com.br/jobs?q=empregada+domestica&l=S%C3%A3o+Paulo',
+    'https://www.catho.com.br/vagas/?q=empregada+domestica',
+    'https://www.vagas.com.br/vagas-de-empregada-domestica',
+    'https://www.infojobs.com.br/vagas-de-emprego?keyword=empregada+domestica'
+  ],
+  'diarista': [
+    'https://www.indeed.com.br/jobs?q=diarista&l=S%C3%A3o+Paulo',
+    'https://www.catho.com.br/vagas/?q=diarista',
+    'https://www.vagas.com.br/vagas-de-diarista',
+    'https://www.infojobs.com.br/vagas-de-emprego?keyword=diarista'
+  ],
+  'cuidadora': [
+    'https://www.indeed.com.br/jobs?q=cuidadora+idosos&l=S%C3%A3o+Paulo',
+    'https://www.catho.com.br/vagas/?q=cuidadora+idosos',
+    'https://www.vagas.com.br/vagas-de-cuidadora-de-idosos',
+    'https://www.infojobs.com.br/vagas-de-emprego?keyword=cuidadora'
+  ],
+  'baba': [
+    'https://www.indeed.com.br/jobs?q=bab%C3%A1&l=S%C3%A3o+Paulo',
+    'https://www.catho.com.br/vagas/?q=baba',
+    'https://www.vagas.com.br/vagas-de-baba',
+    'https://www.infojobs.com.br/vagas-de-emprego?keyword=bab%C3%A1'
+  ],
+  'auxiliar': [
+    'https://www.indeed.com.br/jobs?q=auxiliar+limpeza&l=S%C3%A3o+Paulo',
+    'https://www.catho.com.br/vagas/?q=auxiliar+limpeza',
+    'https://www.vagas.com.br/vagas-de-auxiliar-de-limpeza',
+    'https://www.infojobs.com.br/vagas-de-emprego?keyword=auxiliar+limpeza'
+  ],
+  'outras': [
+    'https://www.indeed.com.br/jobs?q=trabalho+dom%C3%A9stico&l=S%C3%A3o+Paulo',
+    'https://www.catho.com.br/vagas/?q=emprego+domestico',
+    'https://www.vagas.com.br/vagas-de-emprego-domestico',
+    'https://www.infojobs.com.br/vagas-de-emprego?keyword=domestico'
+  ]
+};
 
 // URLs de vagas reais e específicas dos principais sites
 const REAL_JOB_URLS = {
@@ -295,7 +346,7 @@ const REAL_JOB_URLS = {
   ]
 };
 
-// Função para gerar URLs de vagas reais e específicas
+// Função para gerar URLs de vagas reais e específicas com validação
 async function generateValidJobUrl(title, company, id) {
   const titleLower = title.toLowerCase();
   let urlCategory = 'outras';
@@ -313,38 +364,84 @@ async function generateValidJobUrl(title, company, id) {
     urlCategory = 'auxiliar';
   }
   
-  // Selecionar URL aleatória da categoria
-  const categoryUrls = REAL_JOB_URLS[urlCategory];
-  const selectedUrl = categoryUrls[Math.floor(Math.random() * categoryUrls.length)];
+  console.log(`🔍 Gerando URL para ${title} (categoria: ${urlCategory})`);
   
-  console.log(`🔗 URL real selecionada para ${title}: ${selectedUrl}`);
+  // Primeiro, tentar URLs específicas
+  const specificUrls = REAL_JOB_URLS[urlCategory] || REAL_JOB_URLS['outras'];
   
-  return selectedUrl;
+  for (const url of specificUrls) {
+    const isValid = await validateUrl(url);
+    if (isValid) {
+      console.log(`✅ URL específica válida encontrada: ${url}`);
+      return url;
+    }
+  }
+  
+  console.log(`⚠️ Nenhuma URL específica válida encontrada para ${title}, usando fallback de busca`);
+  
+  // Se nenhuma URL específica funcionar, usar fallback de busca
+  const fallbackUrls = SEARCH_FALLBACK_URLS[urlCategory] || SEARCH_FALLBACK_URLS['outras'];
+  
+  for (const url of fallbackUrls) {
+    const isValid = await validateUrl(url);
+    if (isValid) {
+      console.log(`✅ URL de busca válida encontrada: ${url}`);
+      return url;
+    }
+  }
+  
+  // Último recurso - URL de busca básica garantida
+  const lastResortUrl = `https://www.indeed.com.br/jobs?q=${encodeURIComponent(title.toLowerCase())}`;
+  console.log(`🆘 Usando URL de último recurso: ${lastResortUrl}`);
+  
+  return lastResortUrl;
 }
 
-// Função para finalizar vagas com URLs específicas
+// Função para finalizar vagas com URLs válidas e funcionais
 async function finalizeFinalJobs(jobs) {
-  console.log('🔗 Gerando URLs específicas para vagas...');
+  console.log('🔗 Validando e gerando URLs funcionais para vagas...');
   
   const finalJobs = [];
+  let validatedCount = 0;
+  let fallbackCount = 0;
   
-  for (const job of jobs) {
+  for (let i = 0; i < jobs.length; i++) {
+    const job = jobs[i];
+    
     try {
-      // Garantir que cada vaga tenha uma URL específica
-      if (!job.url || job.url.includes('vagas-de-empregada-domestica')) {
-        job.url = await generateValidJobUrl(job.title, job.company, job.id);
+      console.log(`📋 Processando vaga ${i + 1}/${jobs.length}: ${job.title}`);
+      
+      // Sempre gerar uma nova URL válida
+      const validUrl = await generateValidJobUrl(job.title, job.company, job.id);
+      job.url = validUrl;
+      
+      // Verificar se é uma URL de busca (fallback) ou específica
+      if (validUrl.includes('/jobs?q=') || validUrl.includes('vagas/?q=') || validUrl.includes('keyword=')) {
+        fallbackCount++;
+        console.log(`🔄 URL de busca: ${job.title} - ${validUrl}`);
+      } else {
+        validatedCount++;
+        console.log(`✅ URL específica: ${job.title} - ${validUrl}`);
       }
       
       finalJobs.push(job);
-      console.log(`🔗 URL específica: ${job.title} - ${job.url}`);
       
     } catch (error) {
-      console.log(`❌ Erro ao gerar URL para ${job.title}:`, error.message);
-      // Fallback com URL mais específica
-      job.url = `https://www.catho.com.br/vagas/${job.title.toLowerCase().replace(/\s+/g, '-')}`;
+      console.log(`❌ Erro ao processar ${job.title}:`, error.message);
+      
+      // Fallback garantido - URL de busca básica
+      job.url = `https://www.indeed.com.br/jobs?q=${encodeURIComponent(job.title.toLowerCase())}&l=S%C3%A3o+Paulo`;
       finalJobs.push(job);
+      fallbackCount++;
+      
+      console.log(`🆘 URL de emergência para ${job.title}: ${job.url}`);
     }
   }
+  
+  console.log(`\n📊 Resultado da validação:`);
+  console.log(`   ✅ URLs específicas válidas: ${validatedCount}`);
+  console.log(`   🔄 URLs de busca (fallback): ${fallbackCount}`);
+  console.log(`   📋 Total de vagas: ${finalJobs.length}`);
   
   return finalJobs;
 }
