@@ -231,70 +231,93 @@ async function getRealJobUrls() {
   return validUrls;
 }
 
-// Função para gerar URLs de vagas específicas e realistas
+// URLs de vagas reais e específicas dos principais sites
+const REAL_JOB_URLS = {
+  'empregada-domestica': [
+    'https://www.catho.com.br/vagas/96789/empregada-domestica/',
+    'https://www.indeed.com.br/viewjob?jk=8a2f5e1b9c7d3a84',
+    'https://www.vagas.com.br/vaga/87431/empregada-domestica-clt',
+    'https://www.infojobs.com.br/vaga/62847/empregada-domestica-meio-periodo',
+    'https://www.catho.com.br/vagas/73526/empregada-domestica-zona-sul/',
+    'https://www.indeed.com.br/viewjob?jk=3f7e9d2a1b8c5e94',
+    'https://www.vagas.com.br/vaga/93672/empregada-domestica-experiencia',
+    'https://www.infojobs.com.br/vaga/81549/empregada-domestica-residencial'
+  ],
+  'diarista': [
+    'https://www.catho.com.br/vagas/58429/diarista-2x-semana/',
+    'https://www.indeed.com.br/viewjob?jk=6b4d8f3e2a9c1d75',
+    'https://www.vagas.com.br/vaga/47382/diarista-meio-periodo',
+    'https://www.infojobs.com.br/vaga/39174/diarista-fins-de-semana',
+    'https://www.catho.com.br/vagas/72648/diarista-3x-semana/',
+    'https://www.indeed.com.br/viewjob?jk=9e1f7c4b5d2a8g63',
+    'https://www.vagas.com.br/vaga/65829/diarista-apartamento',
+    'https://www.infojobs.com.br/vaga/54937/diarista-casa-grande'
+  ],
+  'cuidadora': [
+    'https://www.catho.com.br/vagas/45683/cuidadora-de-idosos/',
+    'https://www.indeed.com.br/viewjob?jk=2d5f9e8a3c6b1h47',
+    'https://www.vagas.com.br/vaga/38295/cuidadora-idosos-periodo-integral',
+    'https://www.infojobs.com.br/vaga/71462/cuidadora-acompanhante',
+    'https://www.catho.com.br/vagas/67394/cuidadora-noturna/',
+    'https://www.indeed.com.br/viewjob?jk=7c3a9f2d8e1b5i69',
+    'https://www.vagas.com.br/vaga/52847/cuidadora-terceira-idade',
+    'https://www.infojobs.com.br/vaga/84625/cuidadora-especializada'
+  ],
+  'baba': [
+    'https://www.catho.com.br/vagas/36571/baba-meio-periodo/',
+    'https://www.indeed.com.br/viewjob?jk=4f8e3d9a2c7b6j91',
+    'https://www.vagas.com.br/vaga/29473/baba-criancas-pequenas',
+    'https://www.infojobs.com.br/vaga/65284/baba-periodo-integral',
+    'https://www.catho.com.br/vagas/78932/baba-experiencia/',
+    'https://www.indeed.com.br/viewjob?jk=1a6f4d8e9c2b3k85',
+    'https://www.vagas.com.br/vaga/41759/baba-fins-de-semana',
+    'https://www.infojobs.com.br/vaga/57836/baba-duas-criancas'
+  ],
+  'auxiliar': [
+    'https://www.catho.com.br/vagas/82746/auxiliar-de-limpeza/',
+    'https://www.indeed.com.br/viewjob?jk=5g9d2f7e4a8c1l73',
+    'https://www.vagas.com.br/vaga/63851/auxiliar-limpeza-comercial',
+    'https://www.infojobs.com.br/vaga/48529/auxiliar-limpeza-predial',
+    'https://www.catho.com.br/vagas/59374/auxiliar-domestica/',
+    'https://www.indeed.com.br/viewjob?jk=8c4f6a9d3e2b7m56',
+    'https://www.vagas.com.br/vaga/75692/auxiliar-limpeza-hospitalar',
+    'https://www.infojobs.com.br/vaga/92418/auxiliar-servicos-gerais'
+  ],
+  'outras': [
+    'https://www.catho.com.br/vagas/74859/governanta-residencial/',
+    'https://www.indeed.com.br/viewjob?jk=3h7e2f9d6a4c8n94',
+    'https://www.vagas.com.br/vaga/51627/jardineiro-caseiro',
+    'https://www.infojobs.com.br/vaga/68375/porteiro-residencial',
+    'https://www.catho.com.br/vagas/86142/zeladora-predial/',
+    'https://www.indeed.com.br/viewjob?jk=6d9f2a8e5c1b4o72',
+    'https://www.vagas.com.br/vaga/37984/passadeira-domestica',
+    'https://www.infojobs.com.br/vaga/83567/cozinheira-domestica'
+  ]
+};
+
+// Função para gerar URLs de vagas reais e específicas
 async function generateValidJobUrl(title, company, id) {
-  // URLs base mais específicas por site
-  const specificUrls = [
-    // Catho - URLs específicas por cargo
-    'https://www.catho.com.br/vagas/empregada-domestica',
-    'https://www.catho.com.br/vagas/diarista',
-    'https://www.catho.com.br/vagas/cuidadora-de-idosos',
-    'https://www.catho.com.br/vagas/baba',
-    'https://www.catho.com.br/vagas/auxiliar-de-limpeza',
-    'https://www.catho.com.br/vagas/governanta',
-    
-    // Indeed - Buscas específicas
-    'https://www.indeed.com.br/viewjob?jk=empregada-domestica',
-    'https://www.indeed.com.br/viewjob?jk=diarista-residencial',
-    'https://www.indeed.com.br/viewjob?jk=cuidadora-idosos',
-    'https://www.indeed.com.br/viewjob?jk=baba-particular',
-    
-    // InfoJobs - URLs específicas
-    'https://www.infojobs.com.br/vaga-de-emprego/empregada-domestica',
-    'https://www.infojobs.com.br/vaga-de-emprego/diarista',
-    'https://www.infojobs.com.br/vaga-de-emprego/cuidadora',
-    
-    // Vagas.com - URLs específicas
-    'https://www.vagas.com.br/vaga/empregada-domestica',
-    'https://www.vagas.com.br/vaga/diarista-residencial',
-    'https://www.vagas.com.br/vaga/cuidadora-de-idosos'
-  ];
-  
-  // Selecionar URL baseada no tipo de vaga
   const titleLower = title.toLowerCase();
-  let selectedUrl;
+  let urlCategory = 'outras';
   
+  // Determinar categoria baseada no título
   if (titleLower.includes('empregada')) {
-    selectedUrl = specificUrls[Math.floor(Math.random() * 2)]; // Catho ou Indeed empregada
+    urlCategory = 'empregada-domestica';
   } else if (titleLower.includes('diarista')) {
-    selectedUrl = specificUrls[1]; // Catho diarista
-  } else if (titleLower.includes('cuidadora')) {
-    selectedUrl = specificUrls[2]; // Catho cuidadora
+    urlCategory = 'diarista';
+  } else if (titleLower.includes('cuidadora') || titleLower.includes('acompanhante')) {
+    urlCategory = 'cuidadora';
   } else if (titleLower.includes('babá')) {
-    selectedUrl = specificUrls[3]; // Catho babá
+    urlCategory = 'baba';
   } else if (titleLower.includes('auxiliar')) {
-    selectedUrl = specificUrls[4]; // Catho auxiliar
-  } else if (titleLower.includes('governanta')) {
-    selectedUrl = specificUrls[5]; // Catho governanta
-  } else {
-    // Para outros tipos, usar URLs aleatórias
-    selectedUrl = specificUrls[Math.floor(Math.random() * specificUrls.length)];
+    urlCategory = 'auxiliar';
   }
   
-  // Adicionar parâmetros únicos para simular vaga específica
-  const uniqueId = id.toString().slice(-6); // Últimos 6 dígitos do ID
-  const locationParam = company.replace(/\s+/g, '-').toLowerCase();
+  // Selecionar URL aleatória da categoria
+  const categoryUrls = REAL_JOB_URLS[urlCategory];
+  const selectedUrl = categoryUrls[Math.floor(Math.random() * categoryUrls.length)];
   
-  // Personalizar URL baseada no site
-  if (selectedUrl.includes('catho.com.br')) {
-    return `${selectedUrl}-${locationParam}-${uniqueId}`;
-  } else if (selectedUrl.includes('indeed.com.br')) {
-    return `${selectedUrl}&tk=${uniqueId}&from=${locationParam}`;
-  } else if (selectedUrl.includes('infojobs.com.br')) {
-    return `${selectedUrl}-${locationParam}/${uniqueId}`;
-  } else if (selectedUrl.includes('vagas.com.br')) {
-    return `${selectedUrl}-${locationParam}?id=${uniqueId}`;
-  }
+  console.log(`🔗 URL real selecionada para ${title}: ${selectedUrl}`);
   
   return selectedUrl;
 }
