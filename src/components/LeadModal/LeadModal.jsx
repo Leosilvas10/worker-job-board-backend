@@ -246,7 +246,7 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         
         // Log para debug
         console.error('📊 DETALHES DO ERRO:')
-        console.error('- URL:', backendUrl)
+        console.error('- URL:', apiUrl)
         console.error('- Payload:', leadData)
         console.error('- Response Status:', response.status)
         console.error('- Response Text:', responseText)
@@ -254,8 +254,7 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
     } catch (error) {
       console.error('❌ ERRO CRÍTICO ao enviar candidatura:', error)
       console.error('📊 STACK TRACE:', error.stack)
-      console.error('📋 DADOS QUE ESTAVAM SENDO ENVIADOS:', leadData)
-      console.error('📋 DADOS DO FORMULÁRIO:', formData)
+      console.error('📋 DADOS QUE ESTAVAM SENDO ENVIADOS:', formData)
       console.error('📋 DADOS DA VAGA:', jobData)
       
       // Mostrar erro mais detalhado
