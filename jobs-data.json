@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1752092863839,
+    "title": "Empregada Doméstica",
+    "company": "Família Silva",
+    "salary": "R$ 1.400,00",
+    "type": "CLT",
+    "timeAgo": "Há 1 hora",
+    "description": "Limpeza, organização e cuidados com a casa. Experiência de 2 anos.",
+    "tags": [
+      "Doméstica",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T20:27:43.839Z"
+  },
+  {
+    "id": 1752092863840,
+    "title": "Diarista - 3x por semana",
+    "company": "Residência Particular",
+    "salary": "R$ 150,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 2 horas",
+    "description": "Limpeza residencial. Disponibilidade para segunda, quarta e sexta.",
+    "tags": [
+      "Diarista",
+      "Flexível"
+    ],
+    "createdAt": "2025-07-09T20:27:43.839Z"
+  },
+  {
+    "id": 1752092863841,
+    "title": "Cuidadora de Idosos",
+    "company": "Família Oliveira",
+    "salary": "R$ 1.600,00",
+    "type": "CLT",
+    "timeAgo": "Há 3 horas",
+    "description": "Cuidados com idoso. Experiência e paciência necessárias.",
+    "tags": [
+      "Cuidadora",
+      "Idoso"
+    ],
+    "createdAt": "2025-07-09T20:27:43.839Z"
+  }
+]
