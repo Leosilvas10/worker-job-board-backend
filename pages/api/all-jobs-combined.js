@@ -371,7 +371,25 @@ export default async function handler(req, res) {
 
     // Chamar a função principal e retornar os resultados
     const result = await getAllJobsCombined();
-    res.status(200).json(result);
+    
+    // Garantir que sempre temos jobs no formato correto
+    if (result.success && result.data && Array.isArray(result.data)) {
+      res.status(200).json({
+        success: true,
+        jobs: result.data,
+        data: result.data,
+        total: result.data.length,
+        meta: result.meta
+      });
+    } else {
+      res.status(200).json({
+        success: false,
+        jobs: [],
+        data: [],
+        total: 0,
+        message: 'Nenhuma vaga encontrada'
+      });
+    }
 
   } catch (error) {
     console.error('❌ Erro geral na API:', error);

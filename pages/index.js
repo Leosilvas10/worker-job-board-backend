@@ -22,16 +22,18 @@ export default function Home() {
         console.log('🔍 Buscando vagas para destaque na homepage...')
         setLoading(true)
 
-        const response = await fetch('/api/all-jobs-combined/')
+        const response = await fetch('/api/all-jobs-combined')
         if (response.ok && mounted) {
           const data = await response.json()
 
-          if (data.jobs && Array.isArray(data.jobs)) {
-            console.log(`✅ Total de ${data.jobs.length} vagas disponíveis`)
-            console.log(`📊 Reais: ${data.jobs.length}, Complementares: 0`)
+          // Verificar se temos dados válidos
+          const jobsArray = data.jobs || data.data || []
+          
+          if (jobsArray && Array.isArray(jobsArray) && jobsArray.length > 0) {
+            console.log(`✅ Total de ${jobsArray.length} vagas disponíveis`)
 
             // Selecionar 6 vagas aleatórias para destaque
-            const shuffled = [...data.jobs].sort(() => 0.5 - Math.random())
+            const shuffled = [...jobsArray].sort(() => 0.5 - Math.random())
             const featured = shuffled.slice(0, 6)
 
             if (mounted) {
@@ -40,7 +42,7 @@ export default function Home() {
             }
           } else {
             if (mounted) {
-              console.log('⚠️ Nenhuma vaga encontrada')
+              console.log('⚠️ Nenhuma vaga encontrada, dados recebidos:', data)
               setJobs([])
             }
           }
