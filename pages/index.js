@@ -15,38 +15,56 @@ export default function Home() {
 
   // Buscar vagas em destaque - mesma estrutura da página de vagas
   useEffect(() => {
-    const fetchJobs = async () => {
+    let mounted = true
+
+    const loadJobs = async () => {
       try {
         console.log('🔍 Buscando vagas para destaque na homepage...')
-        
-        const response = await fetch(`/api/all-jobs-combined?t=${Date.now()}`, {
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache'
+        setLoading(true)
+
+        const response = await fetch('/api/all-jobs-combined/')
+        if (response.ok && mounted) {
+          const data = await response.json()
+
+          if (data.jobs && Array.isArray(data.jobs)) {
+            console.log(`✅ Total de ${data.jobs.length} vagas disponíveis`)
+            console.log(`📊 Reais: ${data.jobs.length}, Complementares: 0`)
+
+            // Selecionar 6 vagas aleatórias para destaque
+            const shuffled = [...data.jobs].sort(() => 0.5 - Math.random())
+            const featured = shuffled.slice(0, 6)
+
+            if (mounted) {
+              setJobs(featured)
+              console.log('🔥 6 vagas selecionadas para destaque')
+            }
+          } else {
+            if (mounted) {
+              console.log('⚠️ Nenhuma vaga encontrada')
+              setJobs([])
+            }
           }
-        })
-        const data = await response.json()
-        
-        if (data.success && data.data) {
-          console.log(`✅ Total de ${data.data.length} vagas disponíveis`)
-          console.log(`📊 Reais: ${data.meta?.realJobs || 0}, Complementares: ${data.meta?.complementaryJobs || 0}`)
-          
-          // Pegar apenas as 6 primeiras vagas para exibir em destaque
-          const featuredJobs = data.data.slice(0, 6)
-          console.log(`🔥 ${featuredJobs.length} vagas selecionadas para destaque`)
-          
-          setJobs(featuredJobs)
-        } else {
-          console.error('❌ Erro na resposta da API:', data.message)
+        } else if (mounted) {
+          console.error('❌ Erro na resposta da API:', response.status)
+          setJobs([])
         }
       } catch (error) {
-        console.error('❌ Erro ao buscar vagas:', error)
+        if (mounted) {
+          console.error('❌ Erro ao carregar vagas:', error)
+          setJobs([])
+        }
       } finally {
-        setLoading(false)
+        if (mounted) {
+          setLoading(false)
+        }
       }
     }
-    
-    fetchJobs()
+
+    loadJobs()
+
+    return () => {
+      mounted = false
+    }
   }, [])
 
   const handleApplyClick = (job) => {
@@ -67,13 +85,13 @@ export default function Home() {
         <meta name="keywords" content="vagas de emprego, direitos trabalhistas, calculadora trabalhista, trabalho doméstico, cuidador, porteiro, limpeza" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href="https://sitedotrabalhador.com.br" />
-        
+
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://sitedotrabalhador.com.br/" />
         <meta property="og:title" content="Site do Trabalhador - Vagas e Direitos Trabalhistas" />
         <meta property="og:description" content="Encontre vagas de emprego e conheça seus direitos trabalhistas. Calculadora trabalhista gratuita!" />
-        
+
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://sitedotrabalhador.com.br/" />
@@ -166,7 +184,7 @@ export default function Home() {
                   pertence. É uma ferramenta rápida, fácil de usar e totalmente segura. <span className="text-yellow-300 font-bold">Proteja seu futuro financeiro e 
                   garante o que é justo!</span>
                 </p>
-                
+
                 <div className="mb-8">
                   <Link href="/calculadora">
                     <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl text-lg inline-flex items-center gap-2">
@@ -198,7 +216,7 @@ export default function Home() {
                   <div className="text-sm">Avaliação dos Usuários</div>
                 </div>
               </div>
-              
+
               <p className="text-xs mt-4 opacity-70">
                 *Estimativa baseada em relatos de usuários que utilizaram nossa calculadora
               </p>
@@ -228,7 +246,7 @@ export default function Home() {
                 <h3 className="text-xl font-bold mb-6">
                   Por que escolher o Site do Trabalhador para encontrar seus funcionários?
                 </h3>
-                
+
                 <div className="grid md:grid-cols-2 gap-6 mb-8">
                   <div className="flex items-center gap-3">
                     <span className="w-6 h-6 bg-white text-green-600 rounded-full flex items-center justify-center text-sm font-bold">✓</span>
@@ -292,7 +310,7 @@ export default function Home() {
                 {/* Lado Esquerdo - Informações de Contato */}
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold text-gray-800 mb-6">Fale Conosco</h3>
-                  
+
                   {/* Email */}
                   <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
                     <div className="flex items-center gap-4">
@@ -339,7 +357,7 @@ export default function Home() {
                 {/* Lado Direito - Formulário de Contato */}
                 <div className="bg-white rounded-xl p-8 border border-gray-200 shadow-sm">
                   <h3 className="text-2xl font-bold text-gray-800 mb-6">Envie sua Mensagem</h3>
-                  
+
                   <form className="space-y-4 bg-white">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
@@ -359,7 +377,7 @@ export default function Home() {
                         />
                       </div>
                     </div>
-                    
+
                     <div>
                       <label className="block text-gray-700 font-medium mb-2">Assunto *</label>
                       <select className="w-full px-4 py-3 rounded-lg border border-gray-300 !bg-white text-gray-800 focus:ring-2 focus:ring-govgreen-500 focus:border-transparent">
@@ -371,7 +389,7 @@ export default function Home() {
                         <option value="suporte">Suporte técnico</option>
                       </select>
                     </div>
-                    
+
                     <div>
                       <label className="block text-gray-700 font-medium mb-2">Mensagem *</label>
                       <textarea
@@ -380,7 +398,7 @@ export default function Home() {
                         className="w-full px-4 py-3 rounded-lg border border-gray-300 !bg-white text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-govgreen-500 focus:border-transparent resize-vertical"
                       />
                     </div>
-                    
+
                     <div className="flex items-start gap-3">
                       <input type="checkbox" className="mt-1" />
                       <label className="text-sm text-gray-600">
@@ -389,7 +407,7 @@ export default function Home() {
                         e <a href="#" className="text-govgreen-600 hover:underline">LGPD</a>.
                       </label>
                     </div>
-                    
+
                     <Link href="/contato">
                       <button
                         type="button"

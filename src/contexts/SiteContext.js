@@ -41,6 +41,34 @@ export const SiteProvider = ({ children }) => {
     }
   }, [])
 
+  // Carregar configurações ao iniciar - uma única vez
+  useEffect(() => {
+    const loadSiteConfig = async () => {
+      try {
+        const timestamp = Date.now() + Math.random()
+
+        const configs = {
+          logoUrl: `/site do trabalhador.png?v=${timestamp}`,
+          heroTitulo: 'Encontre sua próxima oportunidade',
+          heroSubtitulo: 'Conectamos trabalhadores a empresas em todo o Brasil',
+          sobreTitulo: 'Sobre o Site do Trabalhador',
+          sobreTexto: 'Plataforma dedicada a conectar trabalhadores e empresas.',
+          contatoEmail: 'contato@sitedotrabalhador.com.br',
+          contatoTelefone: '(11) 99999-9999'
+        }
+
+        setSiteConfig(configs)
+      } catch (error) {
+        console.error('Erro ao carregar configurações:', error)
+      }
+    }
+
+    // Carregar apenas uma vez
+    if (!siteConfig.logoUrl) {
+      loadSiteConfig()
+    }
+  }, [siteConfig.logoUrl])
+
   const updateSiteConfig = (newConfig) => {
     const updatedConfig = { ...siteConfig, ...newConfig }
     setSiteConfig(updatedConfig)

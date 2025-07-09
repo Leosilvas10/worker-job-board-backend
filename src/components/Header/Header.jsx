@@ -69,25 +69,25 @@ const Header = () => {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(100%); }
         }
-        
+
         @keyframes floating {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-10px); }
         }
-        
+
         @keyframes glow {
           0%, 100% { filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5)); }
           50% { filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.8)); }
         }
-        
+
         .logo-container {
           animation: floating 3s ease-in-out infinite;
         }
-        
+
         .logo-container:hover {
           animation: floating 1s ease-in-out infinite, glow 2s ease-in-out infinite;
         }
-        
+
         .shimmer-effect {
           animation: shimmer 3s infinite;
         }
