@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 
 export default function LeadModal({ isOpen, onClose, vaga = null }) {
   const [step, setStep] = useState(1)
@@ -37,20 +37,36 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     'CE': ['Fortaleza', 'Caucaia', 'Juazeiro do Norte', 'Maracanaú', 'Sobral', 'Crato', 'Itapipoca', 'Maranguape', 'Iguatu', 'Quixadá']
   }
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = useCallback((field, value) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }))
-  }
+  }, [])
 
-  const handleSituacaoChange = (situacao, checked) => {
+  const handleSituacaoChange = useCallback((situacao, checked) => {
     setFormData(prev => ({
       ...prev,
       situacoesEnfrentadas: checked 
         ? [...prev.situacoesEnfrentadas, situacao]
         : prev.situacoesEnfrentadas.filter(s => s !== situacao)
     }))
+  }, [])
+
+  const formatWhatsApp = (value) => {
+    // Remove tudo que não é número
+    const numbers = value.replace(/\D/g, '')
+    
+    // Aplica a máscara (XX) XXXXX-XXXX
+    if (numbers.length <= 11) {
+      return numbers.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
+        .replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3')
+        .replace(/(\d{2})(\d{0,5})/, '($1) $2')
+        .replace(/(\d{0,2})/, '($1')
+    }
+    
+    // Limita a 15 caracteres no total
+    return value.substring(0, 15)
   }
 
   const handleSubmit = async (e) => {
@@ -225,7 +241,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
 
                 <button
                   type="button"
-                  onClick={() => setStep(2)}
+                  onClick={useCallback(() => setStep(2), [])}
                   className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
                 >
                   Continuar →
@@ -288,14 +304,14 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
                 <div className="flex space-x-2">
                   <button
                     type="button"
-                    onClick={() => setStep(1)}
+                    onClick={useCallback(() => setStep(1), [])}
                     className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition-colors"
                   >
                     ← Voltar
                   </button>
                   <button
                     type="button"
-                    onClick={() => setStep(3)}
+                    onClick={useCallback(() => setStep(3), [])}
                     className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
                   >
                     Continuar →
@@ -334,9 +350,13 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
                         type="tel"
                         required
                         value={formData.whatsapp}
-                        onChange={(e) => handleInputChange('whatsapp', e.target.value)}
+                        onChange={(e) => {
+                          const formatted = formatWhatsApp(e.target.value)
+                          handleInputChange('whatsapp', formatted)
+                        }}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="(11) 99999-9999"
+                        maxLength="15"
                       />
                     </div>
 
@@ -364,20 +384,20 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
                           <div className="absolute right-1 top-1 flex flex-col">
                             <button
                               type="button"
-                              onClick={() => {
+                              onClick={useCallback(() => {
                                 const novaIdade = Math.min(100, (formData.idade || 18) + 1);
                                 handleInputChange('idade', novaIdade);
-                              }}
+                              }, [formData.idade, handleInputChange])}
                               className="text-xs px-1 py-0 text-gray-600 hover:text-blue-600"
                             >
                               ▲
                             </button>
                             <button
                               type="button"
-                              onClick={() => {
+                              onClick={useCallback(() => {
                                 const novaIdade = Math.max(18, (formData.idade || 18) - 1);
                                 handleInputChange('idade', novaIdade);
-                              }}
+                              }, [formData.idade, handleInputChange])}
                               className="text-xs px-1 py-0 text-gray-600 hover:text-blue-600"
                             >
                               ▼
@@ -459,7 +479,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
                 <div className="flex space-x-2">
                   <button
                     type="button"
-                    onClick={() => setStep(2)}
+                    onClick={useCallback(() => setStep(2), [])}
                     className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition-colors"
                   >
                     ← Voltar
