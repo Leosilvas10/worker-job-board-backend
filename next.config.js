@@ -1,8 +1,15 @@
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+  },
+  // Configuração para produção
+  trailingSlash: true,
+  output: 'standalone',
+  experimental: {
+    outputFileTracingRoot: undefined,
   },
   async rewrites() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app';
