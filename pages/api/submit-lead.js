@@ -255,31 +255,57 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
 
     // Enviar para o backend usando a URL correta
     const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
-    console.log('📤 Enviando lead para backend:', backendUrl)
-    console.log('📋 Dados do lead sendo enviados:', JSON.stringify(leadData, null, 2))
+    console.log('📤 ENVIANDO LEAD PARA BACKEND:', backendUrl)
+    console.log('📋 DADOS COMPLETOS sendo enviados:', JSON.stringify(leadData, null, 2))
     
-    // Tentar primeiro o endpoint de leads
-    let response = await fetch(`${backendUrl}/api/leads`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'User-Agent': 'SiteDoTrabalhador-Frontend'
-      },
-      body: JSON.stringify(leadData)
-    })
+    // Endpoints para tentar em ordem
+    const endpoints = [
+      '/api/leads',                    // Endpoint principal
+      '/api/labor-research',           // Endpoint alternativo
+      '/api/labor-research/submit',    // Possível endpoint de submissão
+      '/api/submissions'               // Outro possível endpoint
+    ]
 
-    // Se não funcionar, tentar o endpoint de labor-research
-    if (!response.ok) {
-      console.log('⚠️ Endpoint /api/leads falhou, tentando /api/labor-research...')
-      response = await fetch(`${backendUrl}/api/labor-research`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'User-Agent': 'SiteDoTrabalhador-Frontend'
-        },
-        body: JSON.stringify(leadData)
+    let response = null
+    let lastError = null
+
+    for (const endpoint of endpoints) {
+      console.log(`📡 Tentando enviar para: ${backendUrl}${endpoint}`)
+      
+      try {
+        response = await fetch(`${backendUrl}${endpoint}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'User-Agent': 'SiteDoTrabalhador-Frontend'
+          },
+          body: JSON.stringify(leadData)
+        })
+
+        console.log(`📊 Status ${endpoint}:`, response.status)
+        
+        if (response.ok) {
+          console.log(`✅ SUCESSO! Dados salvos em ${endpoint}`)
+          break
+        } else {
+          const errorText = await response.text()
+          console.log(`❌ ERRO em ${endpoint}:`, response.status, errorText)
+          lastError = `${endpoint}: ${response.status} ${errorText}`
+        }
+      } catch (error) {
+        console.log(`💥 EXCEÇÃO em ${endpoint}:`, error.message)
+        lastError = `${endpoint}: ${error.message}`
+      }
+    }
+
+    if (!response || !response.ok) {
+      console.error('💀 FALHA TOTAL EM TODOS OS ENDPOINTS!')
+      console.error('🔥 Último erro:', lastError)
+      
+      return res.status(500).json({
+        success: false,
+        message: 'Falha ao salvar no backend. Último erro: ' + lastError
       })
     }
 
