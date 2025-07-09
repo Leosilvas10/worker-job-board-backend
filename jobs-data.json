@@ -1,1978 +1,2106 @@
 [
   {
-    "id": 1752093627679,
-    "title": "Jardineiro",
-    "company": "Família Santos",
-    "salary": "R$ 1.417,00",
+    "id": 1752094800018,
+    "title": "Babá",
+    "company": "Casa Botafogo",
+    "salary": "R$ 1.597,00",
     "type": "CLT",
-    "timeAgo": "Há 6 horas",
-    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Meio período. Disponibilidade para viagens.",
+    "timeAgo": "Há 2 horas",
+    "description": "Limpeza, organização e pequenos reparos domésticos. Horário flexível. Pontualidade e responsabilidade.",
     "tags": [
-      "Jardineiro",
+      "Babá",
       "CLT",
-      "Experiência"
+      "Diarista"
     ],
-    "createdAt": "2025-07-09T16:43:31.432Z",
-    "location": "Salvador - BA",
-    "schedule": "Meio período"
+    "createdAt": "2025-07-09T13:03:17.449Z",
+    "location": "Curitiba - PR",
+    "schedule": "Horário flexível",
+    "url": "https://www.linkedin.com/jobs/vaga/bab-casa-botafogo-1752094800018"
   },
   {
-    "id": 1752093627602,
+    "id": 1752094800083,
+    "title": "Cuidadora de Idosos",
+    "company": "Residência Jardins",
+    "salary": "R$ 1.222,00",
+    "type": "CLT",
+    "timeAgo": "Há 4 horas",
+    "description": "Cuidados com a casa e tarefas domésticas gerais. Horário flexível. Experiência em casas grandes.",
+    "tags": [
+      "Cuidadora",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T16:21:25.196Z",
+    "location": "Osasco - SP",
+    "schedule": "Horário flexível",
+    "url": "https://www.sine.com.br/vaga/cuidadora-de-idosos-residncia-jardins-1752094800083"
+  },
+  {
+    "id": 1752094800036,
+    "title": "Governanta",
+    "company": "Residência Brooklin",
+    "salary": "R$ 1.750,00",
+    "type": "CLT",
+    "timeAgo": "Há 5 horas",
+    "description": "Manutenção da limpeza e organização do lar. 3x por semana. Conhecimento em produtos de limpeza.",
+    "tags": [
+      "Governanta",
+      "CLT",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T14:05:59.827Z",
+    "location": "Uberlândia - MG",
+    "schedule": "3x por semana",
+    "url": "https://www.linkedin.com/jobs/vaga/governanta-residncia-brooklin-1752094800036"
+  },
+  {
+    "id": 1752094800033,
+    "title": "Acompanhante de Idosos",
+    "company": "Família Monteiro",
+    "salary": "R$ 1.470,00",
+    "type": "CLT",
+    "timeAgo": "Há 1 hora",
+    "description": "Responsável pela manutenção e limpeza do ambiente residencial. 2x por semana. Conhecimento em cozinha básica.",
+    "tags": [
+      "Acompanhante",
+      "CLT",
+      "Flexível"
+    ],
+    "createdAt": "2025-07-09T03:15:51.913Z",
+    "location": "Santo André - SP",
+    "schedule": "2x por semana",
+    "url": "https://www.99jobs.com/vaga/acompanhante-de-idosos-famlia-monteiro-1752094800033"
+  },
+  {
+    "id": 1752094800049,
+    "title": "Caseiro",
+    "company": "Família Nascimento",
+    "salary": "R$ 1.814,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 dias",
+    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Período integral. Referências necessárias.",
+    "tags": [
+      "Caseiro",
+      "CLT",
+      "Babá"
+    ],
+    "createdAt": "2025-07-09T10:35:20.165Z",
+    "location": "Sorocaba - SP",
+    "schedule": "Período integral",
+    "url": "https://www.sine.com.br/vaga/caseiro-famlia-nascimento-1752094800049"
+  },
+  {
+    "id": 1752094800029,
+    "title": "Jardineiro",
+    "company": "Casa Ipanema",
+    "salary": "R$ 1.645,00",
+    "type": "CLT",
+    "timeAgo": "Há 3 horas",
+    "description": "Limpeza, organização e pequenos reparos domésticos. Meio período. Pontualidade e responsabilidade.",
+    "tags": [
+      "Jardineiro",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T18:32:25.993Z",
+    "location": "Salvador - BA",
+    "schedule": "Meio período",
+    "url": "https://www.infojobs.com.br/vaga/jardineiro-casa-ipanema-1752094800029"
+  },
+  {
+    "id": 1752094800041,
+    "title": "Empregada Doméstica",
+    "company": "Família Pereira",
+    "salary": "R$ 1.152,00",
+    "type": "CLT",
+    "timeAgo": "Há 4 horas",
+    "description": "Manutenção da limpeza e organização do lar. Segunda a Sábado. Experiência com crianças.",
+    "tags": [
+      "Empregada",
+      "CLT",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T19:15:54.171Z",
+    "location": "Santo André - SP",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.99jobs.com/vaga/empregada-domstica-famlia-pereira-1752094800041"
+  },
+  {
+    "id": 1752094800032,
+    "title": "Caseiro",
+    "company": "Residência Zona Sul",
+    "salary": "R$ 1.692,00",
+    "type": "CLT",
+    "timeAgo": "Há 3 horas",
+    "description": "Cuidados domésticos e manutenção da limpeza. Período integral. Experiência com animais domésticos.",
+    "tags": [
+      "Caseiro",
+      "CLT",
+      "Babá"
+    ],
+    "createdAt": "2025-07-09T17:33:54.537Z",
+    "location": "Campinas - SP",
+    "schedule": "Período integral",
+    "url": "https://www.99jobs.com/vaga/caseiro-residncia-zona-sul-1752094800032"
+  },
+  {
+    "id": 1752094800072,
     "title": "Diarista",
-    "company": "Apartamento Barra",
-    "salary": "R$ 139,00/dia",
+    "company": "Família Barbosa",
+    "salary": "R$ 122,00/dia",
     "type": "Diarista",
-    "timeAgo": "Ontem",
-    "description": "Experiência em limpeza e organização de residências. 3x por semana. Experiência com animais domésticos.",
+    "timeAgo": "Há 4 horas",
+    "description": "Experiência em trabalhos domésticos e limpeza. Segunda a Sábado. Experiência com animais domésticos.",
     "tags": [
       "Diarista",
       "Diarista"
     ],
-    "createdAt": "2025-07-09T06:12:25.861Z",
-    "location": "Fortaleza - CE",
-    "schedule": "3x por semana"
+    "createdAt": "2025-07-09T20:28:25.685Z",
+    "location": "Belo Horizonte - MG",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.vagas.com.br/vaga/diarista-famlia-barbosa-1752094800072"
   },
   {
-    "id": 1752093627592,
-    "title": "Auxiliar de Limpeza",
-    "company": "Casa Flamengo",
-    "salary": "R$ 1.455,00",
+    "id": 1752094800130,
+    "title": "Cuidadora de Idosos",
+    "company": "Casa Botafogo",
+    "salary": "R$ 1.258,00",
     "type": "CLT",
-    "timeAgo": "Há 2 dias",
-    "description": "Experiência em serviços de limpeza e organização. 2x por semana. Pontualidade e responsabilidade.",
+    "timeAgo": "Há 4 horas",
+    "description": "Cuidados domésticos e manutenção da limpeza. Segunda a Sexta. Experiência mínima de 1 ano.",
     "tags": [
-      "Auxiliar",
+      "Cuidadora",
+      "CLT",
+      "Comercial"
+    ],
+    "createdAt": "2025-07-08T22:51:23.006Z",
+    "location": "São José dos Campos - SP",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.vagas.com.br/vaga/cuidadora-de-idosos-casa-botafogo-1752094800130"
+  },
+  {
+    "id": 1752094800050,
+    "title": "Diarista",
+    "company": "Casa Flamengo",
+    "salary": "R$ 127,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 1 hora",
+    "description": "Cuidados com a casa e tarefas domésticas gerais. 2x por semana. Conhecimento em cozinha básica.",
+    "tags": [
+      "Diarista",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-09T09:30:34.877Z",
+    "location": "Brasília - DF",
+    "schedule": "2x por semana",
+    "url": "https://www.indeed.com.br/vaga/diarista-casa-flamengo-1752094800050"
+  },
+  {
+    "id": 1752094800014,
+    "title": "Passadeira",
+    "company": "Apartamento Barra",
+    "salary": "R$ 64,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 2 horas",
+    "description": "Cuidados com o ambiente doméstico e limpeza geral. Segunda a Sexta. Experiência em casas grandes.",
+    "tags": [
+      "Passadeira",
+      "Diarista",
+      "Cuidadora"
+    ],
+    "createdAt": "2025-07-09T19:23:34.207Z",
+    "location": "São Bernardo - SP",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.indeed.com.br/vaga/passadeira-apartamento-barra-1752094800014"
+  },
+  {
+    "id": 1752094800116,
+    "title": "Acompanhante de Idosos",
+    "company": "Família Ferreira",
+    "salary": "R$ 1.737,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 horas",
+    "description": "Cuidados domésticos e manutenção da limpeza. Segunda a Sexta. Disponibilidade para viagens.",
+    "tags": [
+      "Acompanhante",
+      "CLT",
+      "Comercial"
+    ],
+    "createdAt": "2025-07-09T00:06:56.494Z",
+    "location": "São José dos Campos - SP",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.trabalha.com.br/vaga/acompanhante-de-idosos-famlia-ferreira-1752094800116"
+  },
+  {
+    "id": 1752094800064,
+    "title": "Cuidadora de Idosos",
+    "company": "Apartamento Barra",
+    "salary": "R$ 1.674,00",
+    "type": "CLT",
+    "timeAgo": "Há 3 horas",
+    "description": "Cuidados domésticos e manutenção da limpeza. Fins de semana. Conhecimento em cozinha básica.",
+    "tags": [
+      "Cuidadora",
       "CLT"
     ],
-    "createdAt": "2025-07-09T02:11:25.379Z",
-    "location": "Sorocaba - SP",
-    "schedule": "2x por semana"
+    "createdAt": "2025-07-09T03:08:46.647Z",
+    "location": "Belo Horizonte - MG",
+    "schedule": "Fins de semana",
+    "url": "https://www.linkedin.com/jobs/vaga/cuidadora-de-idosos-apartamento-barra-1752094800064"
   },
   {
-    "id": 1752093627636,
-    "title": "Auxiliar de Limpeza",
-    "company": "Família Oliveira",
-    "salary": "R$ 1.362,00",
+    "id": 1752094800108,
+    "title": "Babá",
+    "company": "Família Almeida",
+    "salary": "R$ 1.593,00",
     "type": "CLT",
-    "timeAgo": "Há 6 horas",
-    "description": "Serviços domésticos e cuidados com a residência. Horário flexível. Experiência com idosos.",
+    "timeAgo": "Há 5 horas",
+    "description": "Cuidados com o ambiente doméstico e limpeza geral. Horário flexível. Experiência com idosos.",
+    "tags": [
+      "Babá",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T04:36:35.189Z",
+    "location": "Porto Alegre - RS",
+    "schedule": "Horário flexível",
+    "url": "https://www.infojobs.com.br/vaga/bab-famlia-almeida-1752094800108"
+  },
+  {
+    "id": 1752094800024,
+    "title": "Faxineira",
+    "company": "Casa Higienópolis",
+    "salary": "R$ 107,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 3 horas",
+    "description": "Trabalhos domésticos e cuidados com a casa. Horário flexível. Conhecimento em cozinha básica.",
+    "tags": [
+      "Faxineira",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-09T09:57:52.576Z",
+    "location": "São José dos Campos - SP",
+    "schedule": "Horário flexível",
+    "url": "https://www.linkedin.com/jobs/vaga/faxineira-casa-higienpolis-1752094800024"
+  },
+  {
+    "id": 1752094800073,
+    "title": "Diarista",
+    "company": "Apartamento Centro",
+    "salary": "R$ 116,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 3 horas",
+    "description": "Manutenção da limpeza e organização do lar. 3x por semana. Experiência com crianças.",
+    "tags": [
+      "Diarista",
+      "Diarista",
+      "Residencial"
+    ],
+    "createdAt": "2025-07-09T12:59:29.553Z",
+    "location": "Brasília - DF",
+    "schedule": "3x por semana",
+    "url": "https://www.99jobs.com/vaga/diarista-apartamento-centro-1752094800073"
+  },
+  {
+    "id": 1752094800062,
+    "title": "Auxiliar de Limpeza",
+    "company": "Família Ribeiro",
+    "salary": "R$ 1.269,00",
+    "type": "CLT",
+    "timeAgo": "Há 4 horas",
+    "description": "Experiência em trabalhos domésticos e limpeza. 2x por semana. Disponibilidade de horário.",
     "tags": [
       "Auxiliar",
       "CLT",
       "Cuidadora"
     ],
-    "createdAt": "2025-07-09T11:12:48.303Z",
-    "location": "Santo André - SP",
-    "schedule": "Horário flexível"
+    "createdAt": "2025-07-09T12:38:33.223Z",
+    "location": "Porto Alegre - RS",
+    "schedule": "2x por semana",
+    "url": "https://www.glassdoor.com.br/vaga/auxiliar-de-limpeza-famlia-ribeiro-1752094800062"
   },
   {
-    "id": 1752093627593,
-    "title": "Auxiliar Doméstica",
-    "company": "Família Nascimento",
-    "salary": "R$ 1.507,00",
+    "id": 1752094800095,
+    "title": "Empregada Doméstica",
+    "company": "Casa Higienópolis",
+    "salary": "R$ 1.154,00",
+    "type": "CLT",
+    "timeAgo": "Há 5 horas",
+    "description": "Limpeza geral da casa, organização e cuidados básicos. Período integral. Experiência com crianças.",
+    "tags": [
+      "Empregada",
+      "CLT",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T13:22:28.790Z",
+    "location": "Brasília - DF",
+    "schedule": "Período integral",
+    "url": "https://www.empregos.com.br/vaga/empregada-domstica-casa-higienpolis-1752094800095"
+  },
+  {
+    "id": 1752094800085,
+    "title": "Governanta",
+    "company": "Apartamento Lapa",
+    "salary": "R$ 2.151,00",
+    "type": "CLT",
+    "timeAgo": "Ontem",
+    "description": "Experiência em limpeza e organização de residências. Meio período. Disponibilidade aos fins de semana.",
+    "tags": [
+      "Governanta",
+      "CLT",
+      "Cuidadora"
+    ],
+    "createdAt": "2025-07-09T06:04:57.956Z",
+    "location": "Salvador - BA",
+    "schedule": "Meio período",
+    "url": "https://www.99jobs.com/vaga/governanta-apartamento-lapa-1752094800085"
+  },
+  {
+    "id": 1752094800054,
+    "title": "Auxiliar de Limpeza",
+    "company": "Residência Particular",
+    "salary": "R$ 1.270,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 dias",
+    "description": "Serviços domésticos e cuidados com a residência. 2x por semana. Experiência com idosos.",
+    "tags": [
+      "Auxiliar",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T14:02:10.359Z",
+    "location": "São José dos Campos - SP",
+    "schedule": "2x por semana",
+    "url": "https://www.glassdoor.com.br/vaga/auxiliar-de-limpeza-residncia-particular-1752094800054"
+  },
+  {
+    "id": 1752094800011,
+    "title": "Empregada Doméstica",
+    "company": "Residência Morumbi",
+    "salary": "R$ 1.067,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 dias",
+    "description": "Limpeza profissional e organização de ambientes. Fins de semana. Disponibilidade de horário.",
+    "tags": [
+      "Empregada",
+      "CLT",
+      "Doméstica"
+    ],
+    "createdAt": "2025-07-09T13:18:12.201Z",
+    "location": "Salvador - BA",
+    "schedule": "Fins de semana",
+    "url": "https://www.trabalha.com.br/vaga/empregada-domstica-residncia-morumbi-1752094800011"
+  },
+  {
+    "id": 1752094800071,
+    "title": "Cuidadora de Idosos",
+    "company": "Apartamento Barra",
+    "salary": "R$ 1.624,00",
+    "type": "CLT",
+    "timeAgo": "Há 3 horas",
+    "description": "Cuidados domésticos e manutenção da limpeza. Fins de semana. Referências necessárias.",
+    "tags": [
+      "Cuidadora",
+      "CLT",
+      "Doméstica"
+    ],
+    "createdAt": "2025-07-09T04:38:39.676Z",
+    "location": "Belo Horizonte - MG",
+    "schedule": "Fins de semana",
+    "url": "https://www.indeed.com.br/vaga/cuidadora-de-idosos-apartamento-barra-1752094800071"
+  },
+  {
+    "id": 1752094800118,
+    "title": "Passadeira",
+    "company": "Família Gomes",
+    "salary": "R$ 73,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 4 horas",
+    "description": "Cuidados com a casa e tarefas domésticas gerais. 2x por semana. Morar próximo à região.",
+    "tags": [
+      "Passadeira",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-09T10:27:34.023Z",
+    "location": "Porto Alegre - RS",
+    "schedule": "2x por semana",
+    "url": "https://www.99jobs.com/vaga/passadeira-famlia-gomes-1752094800118"
+  },
+  {
+    "id": 1752094800089,
+    "title": "Babá",
+    "company": "Apartamento Leblon",
+    "salary": "R$ 1.152,00",
+    "type": "CLT",
+    "timeAgo": "Há 5 horas",
+    "description": "Serviços de limpeza e cuidados com a residência. 3x por semana. Disponibilidade aos fins de semana.",
+    "tags": [
+      "Babá",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T16:54:23.560Z",
+    "location": "Brasília - DF",
+    "schedule": "3x por semana",
+    "url": "https://www.catho.com.br/vaga/bab-apartamento-leblon-1752094800089"
+  },
+  {
+    "id": 1752094800107,
+    "title": "Acompanhante de Idosos",
+    "company": "Apartamento Centro",
+    "salary": "R$ 1.331,00",
+    "type": "CLT",
+    "timeAgo": "Há 4 horas",
+    "description": "Experiência em serviços de limpeza e organização. Fins de semana. Conhecimento em produtos de limpeza.",
+    "tags": [
+      "Acompanhante",
+      "CLT",
+      "Flexível"
+    ],
+    "createdAt": "2025-07-09T20:31:46.731Z",
+    "location": "Curitiba - PR",
+    "schedule": "Fins de semana",
+    "url": "https://www.catho.com.br/vaga/acompanhante-de-idosos-apartamento-centro-1752094800107"
+  },
+  {
+    "id": 1752094800100,
+    "title": "Passadeira",
+    "company": "Casa Flamengo",
+    "salary": "R$ 78,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 2 horas",
+    "description": "Limpeza profissional e organização de ambientes. Meio período. Experiência com idosos.",
+    "tags": [
+      "Passadeira",
+      "Diarista",
+      "Limpeza"
+    ],
+    "createdAt": "2025-07-09T01:27:19.434Z",
+    "location": "Uberlândia - MG",
+    "schedule": "Meio período",
+    "url": "https://www.linkedin.com/jobs/vaga/passadeira-casa-flamengo-1752094800100"
+  },
+  {
+    "id": 1752094800017,
+    "title": "Empregada Doméstica",
+    "company": "Apartamento Barra",
+    "salary": "R$ 1.413,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 horas",
+    "description": "Limpeza geral da casa, organização e cuidados básicos. Segunda a Sexta. Experiência com crianças.",
+    "tags": [
+      "Empregada",
+      "CLT",
+      "CLT"
+    ],
+    "createdAt": "2025-07-08T23:37:31.383Z",
+    "location": "Campinas - SP",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.catho.com.br/vaga/empregada-domstica-apartamento-barra-1752094800017"
+  },
+  {
+    "id": 1752094800103,
+    "title": "Babá",
+    "company": "Família Sousa",
+    "salary": "R$ 1.381,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 dias",
+    "description": "Limpeza profissional e organização de ambientes. Segunda a Sexta. Experiência mínima de 1 ano.",
+    "tags": [
+      "Babá",
+      "CLT"
+    ],
+    "createdAt": "2025-07-08T22:00:30.301Z",
+    "location": "Fortaleza - CE",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.infojobs.com.br/vaga/bab-famlia-sousa-1752094800103"
+  },
+  {
+    "id": 1752094800043,
+    "title": "Auxiliar de Limpeza",
+    "company": "Residência Morumbi",
+    "salary": "R$ 1.455,00",
     "type": "CLT",
     "timeAgo": "Há 6 horas",
-    "description": "Serviços domésticos e cuidados com a residência. Meio período. Experiência em casas grandes.",
+    "description": "Experiência em trabalhos domésticos e limpeza. Meio período. Experiência com crianças.",
     "tags": [
       "Auxiliar",
       "CLT",
+      "Limpeza"
+    ],
+    "createdAt": "2025-07-09T06:58:11.152Z",
+    "location": "Salvador - BA",
+    "schedule": "Meio período",
+    "url": "https://www.sine.com.br/vaga/auxiliar-de-limpeza-residncia-morumbi-1752094800043"
+  },
+  {
+    "id": 1752094800104,
+    "title": "Babá",
+    "company": "Família Costa",
+    "salary": "R$ 1.470,00",
+    "type": "CLT",
+    "timeAgo": "Há 5 horas",
+    "description": "Responsável por manter a casa organizada e limpa. 3x por semana. Experiência com crianças.",
+    "tags": [
+      "Babá",
+      "CLT",
       "Diarista"
     ],
-    "createdAt": "2025-07-09T19:46:54.190Z",
-    "location": "Salvador - BA",
-    "schedule": "Meio período"
+    "createdAt": "2025-07-09T09:35:00.130Z",
+    "location": "Contagem - MG",
+    "schedule": "3x por semana",
+    "url": "https://www.linkedin.com/jobs/vaga/bab-famlia-costa-1752094800104"
   },
   {
-    "id": 1752093627659,
-    "title": "Empregada Doméstica",
-    "company": "Residência Morumbi",
-    "salary": "R$ 1.350,00",
-    "type": "CLT",
-    "timeAgo": "Há 1 hora",
-    "description": "Limpeza profissional e organização de ambientes. 3x por semana. Experiência comprovada.",
-    "tags": [
-      "Empregada",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T11:36:51.203Z",
-    "location": "São José dos Campos - SP",
-    "schedule": "3x por semana"
-  },
-  {
-    "id": 1752093627683,
+    "id": 1752094800098,
     "title": "Governanta",
-    "company": "Família Oliveira",
-    "salary": "R$ 2.003,00",
+    "company": "Casa Botafogo",
+    "salary": "R$ 1.754,00",
     "type": "CLT",
-    "timeAgo": "Há 4 horas",
-    "description": "Limpeza geral da casa, organização e cuidados básicos. Meio período. Referências necessárias.",
+    "timeAgo": "Há 5 horas",
+    "description": "Trabalhos domésticos e cuidados com a casa. Fins de semana. Disponibilidade aos fins de semana.",
     "tags": [
       "Governanta",
       "CLT"
     ],
-    "createdAt": "2025-07-09T10:43:23.388Z",
+    "createdAt": "2025-07-08T22:17:20.118Z",
     "location": "Guarulhos - SP",
-    "schedule": "Meio período"
+    "schedule": "Fins de semana",
+    "url": "https://www.sine.com.br/vaga/governanta-casa-botafogo-1752094800098"
   },
   {
-    "id": 1752093627682,
-    "title": "Passadeira",
-    "company": "Família Monteiro",
-    "salary": "R$ 67,00/dia",
+    "id": 1752094800063,
+    "title": "Porteiro Residencial",
+    "company": "Casa Flamengo",
+    "salary": "R$ 1.543,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 horas",
+    "description": "Cuidados domésticos e manutenção da limpeza. Horário flexível. Experiência com animais domésticos.",
+    "tags": [
+      "Porteiro",
+      "CLT",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-09T04:15:40.216Z",
+    "location": "Recife - PE",
+    "schedule": "Horário flexível",
+    "url": "https://www.catho.com.br/vaga/porteiro-residencial-casa-flamengo-1752094800063"
+  },
+  {
+    "id": 1752094800123,
+    "title": "Auxiliar de Limpeza",
+    "company": "Família Silva",
+    "salary": "R$ 1.130,00",
+    "type": "CLT",
+    "timeAgo": "Ontem",
+    "description": "Limpeza, organização e pequenos reparos domésticos. Fins de semana. Experiência com idosos.",
+    "tags": [
+      "Auxiliar",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T09:03:21.940Z",
+    "location": "Salvador - BA",
+    "schedule": "Fins de semana",
+    "url": "https://www.glassdoor.com.br/vaga/auxiliar-de-limpeza-famlia-silva-1752094800123"
+  },
+  {
+    "id": 1752094800078,
+    "title": "Auxiliar de Limpeza",
+    "company": "Apartamento Lapa",
+    "salary": "R$ 1.122,00",
+    "type": "CLT",
+    "timeAgo": "Há 3 horas",
+    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Segunda a Sexta. Experiência comprovada.",
+    "tags": [
+      "Auxiliar",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T05:30:58.512Z",
+    "location": "Porto Alegre - RS",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.vagas.com.br/vaga/auxiliar-de-limpeza-apartamento-lapa-1752094800078"
+  },
+  {
+    "id": 1752094800088,
+    "title": "Acompanhante de Idosos",
+    "company": "Casa Ipanema",
+    "salary": "R$ 1.196,00",
+    "type": "CLT",
+    "timeAgo": "Há 3 horas",
+    "description": "Experiência em serviços de limpeza e organização. Segunda a Sábado. Disponibilidade de horário.",
+    "tags": [
+      "Acompanhante",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T05:49:53.270Z",
+    "location": "Fortaleza - CE",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.indeed.com.br/vaga/acompanhante-de-idosos-casa-ipanema-1752094800088"
+  },
+  {
+    "id": 1752094800060,
+    "title": "Empregada Doméstica",
+    "company": "Residência Pinheiros",
+    "salary": "R$ 1.466,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 dias",
+    "description": "Serviços de limpeza e cuidados com a residência. Fins de semana. Disponibilidade para viagens.",
+    "tags": [
+      "Empregada",
+      "CLT",
+      "Residencial"
+    ],
+    "createdAt": "2025-07-09T02:00:06.496Z",
+    "location": "Porto Alegre - RS",
+    "schedule": "Fins de semana",
+    "url": "https://www.catho.com.br/vaga/empregada-domstica-residncia-pinheiros-1752094800060"
+  },
+  {
+    "id": 1752094800030,
+    "title": "Porteiro Residencial",
+    "company": "Família Martins",
+    "salary": "R$ 1.499,00",
+    "type": "CLT",
+    "timeAgo": "Há 5 horas",
+    "description": "Experiência em trabalhos domésticos e limpeza. 2x por semana. Experiência comprovada.",
+    "tags": [
+      "Porteiro",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T12:53:03.135Z",
+    "location": "Belo Horizonte - MG",
+    "schedule": "2x por semana",
+    "url": "https://www.sine.com.br/vaga/porteiro-residencial-famlia-martins-1752094800030"
+  },
+  {
+    "id": 1752094800051,
+    "title": "Auxiliar de Limpeza",
+    "company": "Família Cardoso",
+    "salary": "R$ 1.161,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 dias",
+    "description": "Limpeza, organização e pequenos reparos domésticos. Segunda a Sexta. Experiência com crianças.",
+    "tags": [
+      "Auxiliar",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T19:51:30.949Z",
+    "location": "Fortaleza - CE",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.vagas.com.br/vaga/auxiliar-de-limpeza-famlia-cardoso-1752094800051"
+  },
+  {
+    "id": 1752094800021,
+    "title": "Auxiliar de Limpeza",
+    "company": "Apartamento Barra",
+    "salary": "R$ 1.338,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 horas",
+    "description": "Experiência em trabalhos domésticos e limpeza. Segunda a Sexta. Pontualidade e responsabilidade.",
+    "tags": [
+      "Auxiliar",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T12:12:10.777Z",
+    "location": "Campinas - SP",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.99jobs.com/vaga/auxiliar-de-limpeza-apartamento-barra-1752094800021"
+  },
+  {
+    "id": 1752094800106,
+    "title": "Empregada Doméstica",
+    "company": "Casa Ipanema",
+    "salary": "R$ 1.436,00",
+    "type": "CLT",
+    "timeAgo": "Há 1 hora",
+    "description": "Cuidados com o ambiente doméstico e limpeza geral. Meio período. Disponibilidade aos fins de semana.",
+    "tags": [
+      "Empregada",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T07:44:50.107Z",
+    "location": "Campinas - SP",
+    "schedule": "Meio período",
+    "url": "https://www.sine.com.br/vaga/empregada-domstica-casa-ipanema-1752094800106"
+  },
+  {
+    "id": 1752094800102,
+    "title": "Diarista",
+    "company": "Família Dias",
+    "salary": "R$ 133,00/dia",
     "type": "Diarista",
+    "timeAgo": "Há 2 dias",
+    "description": "Manutenção da limpeza e organização do lar. 2x por semana. Experiência em casas grandes.",
+    "tags": [
+      "Diarista",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-09T16:14:58.152Z",
+    "location": "Niterói - RJ",
+    "schedule": "2x por semana",
+    "url": "https://www.indeed.com.br/vaga/diarista-famlia-dias-1752094800102"
+  },
+  {
+    "id": 1752094800090,
+    "title": "Empregada Doméstica",
+    "company": "Família Nascimento",
+    "salary": "R$ 1.569,00",
+    "type": "CLT",
+    "timeAgo": "Há 4 horas",
+    "description": "Limpeza, organização e pequenos reparos domésticos. Período integral. Disponibilidade de horário.",
+    "tags": [
+      "Empregada",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T00:23:34.018Z",
+    "location": "Curitiba - PR",
+    "schedule": "Período integral",
+    "url": "https://www.empregos.com.br/vaga/empregada-domstica-famlia-nascimento-1752094800090"
+  },
+  {
+    "id": 1752094800038,
+    "title": "Porteiro Residencial",
+    "company": "Família Cardoso",
+    "salary": "R$ 1.211,00",
+    "type": "CLT",
+    "timeAgo": "Há 1 hora",
+    "description": "Cuidados domésticos e manutenção da limpeza. Período integral. Pontualidade e responsabilidade.",
+    "tags": [
+      "Porteiro",
+      "CLT",
+      "Experiência"
+    ],
+    "createdAt": "2025-07-08T21:45:34.083Z",
+    "location": "Ribeirão Preto - SP",
+    "schedule": "Período integral",
+    "url": "https://www.catho.com.br/vaga/porteiro-residencial-famlia-cardoso-1752094800038"
+  },
+  {
+    "id": 1752094800044,
+    "title": "Cozinheira Doméstica",
+    "company": "Família Monteiro",
+    "salary": "R$ 1.886,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 horas",
+    "description": "Experiência em trabalhos domésticos e limpeza. Meio período. Experiência comprovada.",
+    "tags": [
+      "Cozinheira",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T15:25:38.834Z",
+    "location": "Sorocaba - SP",
+    "schedule": "Meio período",
+    "url": "https://www.catho.com.br/vaga/cozinheira-domstica-famlia-monteiro-1752094800044"
+  },
+  {
+    "id": 1752094800023,
+    "title": "Governanta",
+    "company": "Família Barbosa",
+    "salary": "R$ 2.145,00",
+    "type": "CLT",
+    "timeAgo": "Há 5 horas",
+    "description": "Limpeza geral da casa, organização e cuidados básicos. Segunda a Sábado. Experiência com idosos.",
+    "tags": [
+      "Governanta",
+      "CLT",
+      "Flexível"
+    ],
+    "createdAt": "2025-07-09T07:01:37.354Z",
+    "location": "São José dos Campos - SP",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.sine.com.br/vaga/governanta-famlia-barbosa-1752094800023"
+  },
+  {
+    "id": 1752094800092,
+    "title": "Acompanhante de Idosos",
+    "company": "Residência Brooklin",
+    "salary": "R$ 1.616,00",
+    "type": "CLT",
+    "timeAgo": "Ontem",
+    "description": "Limpeza, organização e pequenos reparos domésticos. 3x por semana. Pontualidade e responsabilidade.",
+    "tags": [
+      "Acompanhante",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T07:01:22.309Z",
+    "location": "Fortaleza - CE",
+    "schedule": "3x por semana",
+    "url": "https://www.empregos.com.br/vaga/acompanhante-de-idosos-residncia-brooklin-1752094800092"
+  },
+  {
+    "id": 1752094800037,
+    "title": "Governanta",
+    "company": "Residência Morumbi",
+    "salary": "R$ 1.759,00",
+    "type": "CLT",
+    "timeAgo": "Há 1 hora",
+    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Segunda a Sábado. Experiência comprovada.",
+    "tags": [
+      "Governanta",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T09:56:29.070Z",
+    "location": "Fortaleza - CE",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.vagas.com.br/vaga/governanta-residncia-morumbi-1752094800037"
+  },
+  {
+    "id": 1752094800094,
+    "title": "Porteiro Residencial",
+    "company": "Família Santos",
+    "salary": "R$ 1.331,00",
+    "type": "CLT",
+    "timeAgo": "Há 4 horas",
+    "description": "Experiência em limpeza e organização de residências. 2x por semana. Conhecimento em cozinha básica.",
+    "tags": [
+      "Porteiro",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T12:34:40.121Z",
+    "location": "Sorocaba - SP",
+    "schedule": "2x por semana",
+    "url": "https://www.99jobs.com/vaga/porteiro-residencial-famlia-santos-1752094800094"
+  },
+  {
+    "id": 1752094800074,
+    "title": "Empregada Doméstica",
+    "company": "Casa Ipanema",
+    "salary": "R$ 1.546,00",
+    "type": "CLT",
+    "timeAgo": "Há 5 horas",
+    "description": "Cuidados com o ambiente doméstico e limpeza geral. Fins de semana. Experiência comprovada.",
+    "tags": [
+      "Empregada",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T15:18:50.813Z",
+    "location": "Osasco - SP",
+    "schedule": "Fins de semana",
+    "url": "https://www.vagas.com.br/vaga/empregada-domstica-casa-ipanema-1752094800074"
+  },
+  {
+    "id": 1752094800022,
+    "title": "Cuidadora de Idosos",
+    "company": "Apartamento Leblon",
+    "salary": "R$ 1.502,00",
+    "type": "CLT",
+    "timeAgo": "Ontem",
+    "description": "Serviços domésticos e cuidados com a residência. 3x por semana. Disponibilidade de horário.",
+    "tags": [
+      "Cuidadora",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T16:45:50.351Z",
+    "location": "Fortaleza - CE",
+    "schedule": "3x por semana",
+    "url": "https://www.sine.com.br/vaga/cuidadora-de-idosos-apartamento-leblon-1752094800022"
+  },
+  {
+    "id": 1752094800026,
+    "title": "Acompanhante de Idosos",
+    "company": "Família Rodrigues",
+    "salary": "R$ 1.485,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 dias",
+    "description": "Cuidados com o ambiente doméstico e limpeza geral. Fins de semana. Pontualidade e responsabilidade.",
+    "tags": [
+      "Acompanhante",
+      "CLT",
+      "Experiência"
+    ],
+    "createdAt": "2025-07-09T03:47:36.548Z",
+    "location": "Belo Horizonte - MG",
+    "schedule": "Fins de semana",
+    "url": "https://www.indeed.com.br/vaga/acompanhante-de-idosos-famlia-rodrigues-1752094800026"
+  },
+  {
+    "id": 1752094800040,
+    "title": "Diarista",
+    "company": "Residência Pinheiros",
+    "salary": "R$ 130,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 2 dias",
+    "description": "Manutenção da limpeza e organização do lar. Período integral. Experiência mínima de 1 ano.",
+    "tags": [
+      "Diarista",
+      "Diarista",
+      "Babá"
+    ],
+    "createdAt": "2025-07-09T10:13:59.163Z",
+    "location": "Niterói - RJ",
+    "schedule": "Período integral",
+    "url": "https://www.glassdoor.com.br/vaga/diarista-residncia-pinheiros-1752094800040"
+  },
+  {
+    "id": 1752094800058,
+    "title": "Cuidadora de Idosos",
+    "company": "Apartamento Leblon",
+    "salary": "R$ 1.660,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 dias",
+    "description": "Responsável por manter a casa organizada e limpa. Horário flexível. Disponibilidade de horário.",
+    "tags": [
+      "Cuidadora",
+      "CLT",
+      "Cuidadora"
+    ],
+    "createdAt": "2025-07-09T18:36:02.228Z",
+    "location": "Campinas - SP",
+    "schedule": "Horário flexível",
+    "url": "https://www.99jobs.com/vaga/cuidadora-de-idosos-apartamento-leblon-1752094800058"
+  },
+  {
+    "id": 1752094800019,
+    "title": "Diarista",
+    "company": "Residência Pinheiros",
+    "salary": "R$ 131,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 2 horas",
+    "description": "Limpeza geral da casa, organização e cuidados básicos. Meio período. Conhecimento em produtos de limpeza.",
+    "tags": [
+      "Diarista",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-09T13:44:50.857Z",
+    "location": "Salvador - BA",
+    "schedule": "Meio período",
+    "url": "https://www.99jobs.com/vaga/diarista-residncia-pinheiros-1752094800019"
+  },
+  {
+    "id": 1752094800061,
+    "title": "Cozinheira Doméstica",
+    "company": "Residência Jardins",
+    "salary": "R$ 1.518,00",
+    "type": "CLT",
+    "timeAgo": "Ontem",
+    "description": "Cuidados domésticos e manutenção da limpeza. Segunda a Sábado. Conhecimento em organização.",
+    "tags": [
+      "Cozinheira",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T04:02:43.656Z",
+    "location": "Campinas - SP",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.99jobs.com/vaga/cozinheira-domstica-residncia-jardins-1752094800061"
+  },
+  {
+    "id": 1752094800080,
+    "title": "Auxiliar de Limpeza",
+    "company": "Apartamento Lapa",
+    "salary": "R$ 1.308,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 dias",
+    "description": "Serviços domésticos e cuidados com a residência. Segunda a Sábado. Experiência em casas grandes.",
+    "tags": [
+      "Auxiliar",
+      "CLT",
+      "Residencial"
+    ],
+    "createdAt": "2025-07-09T18:57:30.165Z",
+    "location": "Fortaleza - CE",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.sine.com.br/vaga/auxiliar-de-limpeza-apartamento-lapa-1752094800080"
+  },
+  {
+    "id": 1752094800052,
+    "title": "Acompanhante de Idosos",
+    "company": "Apartamento Lapa",
+    "salary": "R$ 1.375,00",
+    "type": "CLT",
+    "timeAgo": "Ontem",
+    "description": "Cuidados domésticos e manutenção da limpeza. 3x por semana. Disponibilidade para viagens.",
+    "tags": [
+      "Acompanhante",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T11:57:48.683Z",
+    "location": "São Paulo - SP",
+    "schedule": "3x por semana",
+    "url": "https://www.catho.com.br/vaga/acompanhante-de-idosos-apartamento-lapa-1752094800052"
+  },
+  {
+    "id": 1752094800069,
+    "title": "Diarista",
+    "company": "Família Costa",
+    "salary": "R$ 119,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 2 horas",
+    "description": "Serviços de limpeza e cuidados com a residência. Período integral. Conhecimento em organização.",
+    "tags": [
+      "Diarista",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-09T18:27:51.262Z",
+    "location": "Osasco - SP",
+    "schedule": "Período integral",
+    "url": "https://www.vagas.com.br/vaga/diarista-famlia-costa-1752094800069"
+  },
+  {
+    "id": 1752094800084,
+    "title": "Cuidadora de Idosos",
+    "company": "Família Monteiro",
+    "salary": "R$ 1.704,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 horas",
+    "description": "Limpeza geral da casa, organização e cuidados básicos. 2x por semana. Disponibilidade de horário.",
+    "tags": [
+      "Cuidadora",
+      "CLT",
+      "Doméstica"
+    ],
+    "createdAt": "2025-07-09T20:52:00.560Z",
+    "location": "Salvador - BA",
+    "schedule": "2x por semana",
+    "url": "https://www.glassdoor.com.br/vaga/cuidadora-de-idosos-famlia-monteiro-1752094800084"
+  },
+  {
+    "id": 1752094800126,
+    "title": "Babá",
+    "company": "Apartamento Copacabana",
+    "salary": "R$ 1.194,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 dias",
+    "description": "Cuidados com a casa e tarefas domésticas gerais. Segunda a Sexta. Disponibilidade para viagens.",
+    "tags": [
+      "Babá",
+      "CLT",
+      "Residencial"
+    ],
+    "createdAt": "2025-07-09T08:28:26.353Z",
+    "location": "Guarulhos - SP",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.trabalha.com.br/vaga/bab-apartamento-copacabana-1752094800126"
+  },
+  {
+    "id": 1752094800068,
+    "title": "Zeladora",
+    "company": "Residência Zona Sul",
+    "salary": "R$ 1.182,00",
+    "type": "CLT",
+    "timeAgo": "Há 6 horas",
+    "description": "Responsável por manter a casa organizada e limpa. Fins de semana. Disponibilidade para viagens.",
+    "tags": [
+      "Zeladora",
+      "CLT",
+      "Cuidadora"
+    ],
+    "createdAt": "2025-07-08T22:46:14.313Z",
+    "location": "Niterói - RJ",
+    "schedule": "Fins de semana",
+    "url": "https://www.glassdoor.com.br/vaga/zeladora-residncia-zona-sul-1752094800068"
+  },
+  {
+    "id": 1752094800096,
+    "title": "Auxiliar Doméstica",
+    "company": "Residência Particular",
+    "salary": "R$ 1.143,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 horas",
+    "description": "Cuidados com o ambiente doméstico e limpeza geral. Segunda a Sábado. Experiência com animais domésticos.",
+    "tags": [
+      "Auxiliar",
+      "CLT",
+      "Limpeza"
+    ],
+    "createdAt": "2025-07-09T16:30:40.491Z",
+    "location": "Contagem - MG",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.vagas.com.br/vaga/auxiliar-domstica-residncia-particular-1752094800096"
+  },
+  {
+    "id": 1752094800113,
+    "title": "Auxiliar de Limpeza",
+    "company": "Família Carvalho",
+    "salary": "R$ 1.385,00",
+    "type": "CLT",
+    "timeAgo": "Há 1 hora",
+    "description": "Responsável por manter a casa organizada e limpa. Período integral. Experiência comprovada.",
+    "tags": [
+      "Auxiliar",
+      "CLT",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T17:13:56.942Z",
+    "location": "Sorocaba - SP",
+    "schedule": "Período integral",
+    "url": "https://www.empregos.com.br/vaga/auxiliar-de-limpeza-famlia-carvalho-1752094800113"
+  },
+  {
+    "id": 1752094800111,
+    "title": "Faxineira",
+    "company": "Família Carvalho",
+    "salary": "R$ 82,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 1 hora",
+    "description": "Limpeza profissional e organização de ambientes. Segunda a Sexta. Experiência mínima de 1 ano.",
+    "tags": [
+      "Faxineira",
+      "Diarista",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T17:20:58.869Z",
+    "location": "São Bernardo - SP",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.99jobs.com/vaga/faxineira-famlia-carvalho-1752094800111"
+  },
+  {
+    "id": 1752094800034,
+    "title": "Faxineira",
+    "company": "Residência Jardins",
+    "salary": "R$ 100,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 4 horas",
+    "description": "Limpeza geral da casa, organização e cuidados básicos. Segunda a Sábado. Disponibilidade para viagens.",
+    "tags": [
+      "Faxineira",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-09T20:53:37.249Z",
+    "location": "São Paulo - SP",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.99jobs.com/vaga/faxineira-residncia-jardins-1752094800034"
+  },
+  {
+    "id": 1752094800082,
+    "title": "Auxiliar Doméstica",
+    "company": "Apartamento Copacabana",
+    "salary": "R$ 1.058,00",
+    "type": "CLT",
+    "timeAgo": "Há 5 horas",
+    "description": "Limpeza profissional e organização de ambientes. Segunda a Sábado. Experiência comprovada.",
+    "tags": [
+      "Auxiliar",
+      "CLT",
+      "Comercial"
+    ],
+    "createdAt": "2025-07-09T10:15:10.597Z",
+    "location": "Brasília - DF",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.sine.com.br/vaga/auxiliar-domstica-apartamento-copacabana-1752094800082"
+  },
+  {
+    "id": 1752094800055,
+    "title": "Cozinheira Doméstica",
+    "company": "Casa Ipanema",
+    "salary": "R$ 1.889,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 dias",
+    "description": "Cuidados com o ambiente doméstico e limpeza geral. Período integral. Morar próximo à região.",
+    "tags": [
+      "Cozinheira",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T17:20:49.374Z",
+    "location": "Fortaleza - CE",
+    "schedule": "Período integral",
+    "url": "https://www.sine.com.br/vaga/cozinheira-domstica-casa-ipanema-1752094800055"
+  },
+  {
+    "id": 1752094800093,
+    "title": "Diarista",
+    "company": "Residência Morumbi",
+    "salary": "R$ 119,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Ontem",
+    "description": "Responsável por manter a casa organizada e limpa. 2x por semana. Experiência comprovada.",
+    "tags": [
+      "Diarista",
+      "Diarista",
+      "Experiência"
+    ],
+    "createdAt": "2025-07-09T09:23:26.187Z",
+    "location": "São Paulo - SP",
+    "schedule": "2x por semana",
+    "url": "https://www.sine.com.br/vaga/diarista-residncia-morumbi-1752094800093"
+  },
+  {
+    "id": 1752094800091,
+    "title": "Empregada Doméstica",
+    "company": "Residência Brooklin",
+    "salary": "R$ 1.467,00",
+    "type": "CLT",
+    "timeAgo": "Há 5 horas",
+    "description": "Limpeza profissional e organização de ambientes. Segunda a Sábado. Disponibilidade para viagens.",
+    "tags": [
+      "Empregada",
+      "CLT",
+      "Experiência"
+    ],
+    "createdAt": "2025-07-09T16:50:42.894Z",
+    "location": "Campinas - SP",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.infojobs.com.br/vaga/empregada-domstica-residncia-brooklin-1752094800091"
+  },
+  {
+    "id": 1752094800035,
+    "title": "Caseiro",
+    "company": "Família Correia",
+    "salary": "R$ 1.661,00",
+    "type": "CLT",
+    "timeAgo": "Há 1 hora",
+    "description": "Responsável por manter a casa organizada e limpa. Meio período. Conhecimento em produtos de limpeza.",
+    "tags": [
+      "Caseiro",
+      "CLT",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T20:00:41.667Z",
+    "location": "Santo André - SP",
+    "schedule": "Meio período",
+    "url": "https://www.indeed.com.br/vaga/caseiro-famlia-correia-1752094800035"
+  },
+  {
+    "id": 1752094800099,
+    "title": "Faxineira",
+    "company": "Família Silva",
+    "salary": "R$ 86,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Ontem",
+    "description": "Limpeza profissional e organização de ambientes. Período integral. Conhecimento em organização.",
+    "tags": [
+      "Faxineira",
+      "Diarista",
+      "Doméstica"
+    ],
+    "createdAt": "2025-07-09T03:41:13.992Z",
+    "location": "Ribeirão Preto - SP",
+    "schedule": "Período integral",
+    "url": "https://www.linkedin.com/jobs/vaga/faxineira-famlia-silva-1752094800099"
+  },
+  {
+    "id": 1752094800120,
+    "title": "Zeladora",
+    "company": "Residência Particular",
+    "salary": "R$ 1.266,00",
+    "type": "CLT",
+    "timeAgo": "Há 1 hora",
+    "description": "Trabalhos domésticos e cuidados com a casa. Meio período. Experiência em casas grandes.",
+    "tags": [
+      "Zeladora",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T04:45:02.919Z",
+    "location": "Sorocaba - SP",
+    "schedule": "Meio período",
+    "url": "https://www.vagas.com.br/vaga/zeladora-residncia-particular-1752094800120"
+  },
+  {
+    "id": 1752094800086,
+    "title": "Auxiliar de Limpeza",
+    "company": "Família Ferreira",
+    "salary": "R$ 1.405,00",
+    "type": "CLT",
+    "timeAgo": "Há 5 horas",
+    "description": "Serviços de limpeza e cuidados com a residência. Período integral. Experiência mínima de 1 ano.",
+    "tags": [
+      "Auxiliar",
+      "CLT",
+      "Experiência"
+    ],
+    "createdAt": "2025-07-09T07:49:57.275Z",
+    "location": "Curitiba - PR",
+    "schedule": "Período integral",
+    "url": "https://www.linkedin.com/jobs/vaga/auxiliar-de-limpeza-famlia-ferreira-1752094800086"
+  },
+  {
+    "id": 1752094800057,
+    "title": "Zeladora",
+    "company": "Apartamento Barra",
+    "salary": "R$ 1.186,00",
+    "type": "CLT",
     "timeAgo": "Há 5 horas",
     "description": "Experiência em serviços de limpeza e organização. Período integral. Disponibilidade de horário.",
     "tags": [
-      "Passadeira",
-      "Diarista"
-    ],
-    "createdAt": "2025-07-09T18:33:42.950Z",
-    "location": "Uberlândia - MG",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627663,
-    "title": "Faxineira",
-    "company": "Residência Particular",
-    "salary": "R$ 89,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Há 2 horas",
-    "description": "Limpeza geral da casa, organização e cuidados básicos. Período integral. Disponibilidade para viagens.",
-    "tags": [
-      "Faxineira",
-      "Diarista"
-    ],
-    "createdAt": "2025-07-09T08:00:25.440Z",
-    "location": "Salvador - BA",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627667,
-    "title": "Governanta",
-    "company": "Casa Botafogo",
-    "salary": "R$ 2.118,00",
-    "type": "CLT",
-    "timeAgo": "Há 6 horas",
-    "description": "Serviços de limpeza e cuidados com a residência. 2x por semana. Conhecimento em produtos de limpeza.",
-    "tags": [
-      "Governanta",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T11:06:28.743Z",
-    "location": "São Paulo - SP",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627670,
-    "title": "Babá",
-    "company": "Família Barbosa",
-    "salary": "R$ 1.527,00",
-    "type": "CLT",
-    "timeAgo": "Há 1 hora",
-    "description": "Manutenção da limpeza e organização do lar. Horário flexível. Experiência com idosos.",
-    "tags": [
-      "Babá",
-      "CLT",
-      "Limpeza"
-    ],
-    "createdAt": "2025-07-09T19:00:33.128Z",
-    "location": "Curitiba - PR",
-    "schedule": "Horário flexível"
-  },
-  {
-    "id": 1752093627624,
-    "title": "Faxineira",
-    "company": "Apartamento Leblon",
-    "salary": "R$ 90,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Há 3 horas",
-    "description": "Trabalhos domésticos e cuidados com a casa. Período integral. Experiência mínima de 1 ano.",
-    "tags": [
-      "Faxineira",
-      "Diarista"
-    ],
-    "createdAt": "2025-07-09T10:17:34.860Z",
-    "location": "Belo Horizonte - MG",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627650,
-    "title": "Caseiro",
-    "company": "Família Martins",
-    "salary": "R$ 1.943,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Serviços de limpeza e cuidados com a residência. 2x por semana. Experiência em casas grandes.",
-    "tags": [
-      "Caseiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T16:16:09.336Z",
-    "location": "Recife - PE",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627696,
-    "title": "Zeladora",
-    "company": "Família Oliveira",
-    "salary": "R$ 1.079,00",
-    "type": "CLT",
-    "timeAgo": "Há 3 horas",
-    "description": "Limpeza geral da casa, organização e cuidados básicos. Fins de semana. Experiência com crianças.",
-    "tags": [
       "Zeladora",
       "CLT",
-      "Doméstica"
+      "Cuidadora"
     ],
-    "createdAt": "2025-07-09T01:57:42.057Z",
-    "location": "Santo André - SP",
-    "schedule": "Fins de semana"
+    "createdAt": "2025-07-09T10:20:41.675Z",
+    "location": "Uberlândia - MG",
+    "schedule": "Período integral",
+    "url": "https://www.catho.com.br/vaga/zeladora-apartamento-barra-1752094800057"
   },
   {
-    "id": 1752093627689,
-    "title": "Jardineiro",
-    "company": "Família Cardoso",
-    "salary": "R$ 1.318,00",
+    "id": 1752094800016,
+    "title": "Cuidadora de Idosos",
+    "company": "Apartamento Centro",
+    "salary": "R$ 1.730,00",
     "type": "CLT",
-    "timeAgo": "Ontem",
-    "description": "Limpeza, organização e pequenos reparos domésticos. Horário flexível. Pontualidade e responsabilidade.",
+    "timeAgo": "Há 4 horas",
+    "description": "Cuidados com o ambiente doméstico e limpeza geral. Segunda a Sexta. Disponibilidade aos fins de semana.",
     "tags": [
-      "Jardineiro",
-      "CLT",
-      "Babá"
-    ],
-    "createdAt": "2025-07-09T05:59:22.570Z",
-    "location": "Guarulhos - SP",
-    "schedule": "Horário flexível"
-  },
-  {
-    "id": 1752093627625,
-    "title": "Auxiliar Doméstica",
-    "company": "Família Santos",
-    "salary": "R$ 1.369,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Limpeza geral da casa, organização e cuidados básicos. Fins de semana. Experiência com idosos.",
-    "tags": [
-      "Auxiliar",
-      "CLT",
-      "Diarista"
-    ],
-    "createdAt": "2025-07-09T05:04:58.866Z",
-    "location": "São Paulo - SP",
-    "schedule": "Fins de semana"
-  },
-  {
-    "id": 1752093627677,
-    "title": "Caseiro",
-    "company": "Família Dias",
-    "salary": "R$ 1.911,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Cuidados domésticos e manutenção da limpeza. 3x por semana. Experiência com crianças.",
-    "tags": [
-      "Caseiro",
+      "Cuidadora",
       "CLT"
     ],
-    "createdAt": "2025-07-09T07:53:20.631Z",
-    "location": "Ribeirão Preto - SP",
-    "schedule": "3x por semana"
+    "createdAt": "2025-07-09T13:26:35.688Z",
+    "location": "Campinas - SP",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.trabalha.com.br/vaga/cuidadora-de-idosos-apartamento-centro-1752094800016"
   },
   {
-    "id": 1752093627577,
-    "title": "Diarista",
-    "company": "Residência Santa Teresa",
-    "salary": "R$ 102,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Ontem",
-    "description": "Serviços de limpeza e cuidados com a residência. Fins de semana. Experiência com crianças.",
+    "id": 1752094800114,
+    "title": "Acompanhante de Idosos",
+    "company": "Apartamento Centro",
+    "salary": "R$ 1.704,00",
+    "type": "CLT",
+    "timeAgo": "Há 4 horas",
+    "description": "Experiência em limpeza e organização de residências. Meio período. Disponibilidade de horário.",
     "tags": [
-      "Diarista",
-      "Diarista",
+      "Acompanhante",
+      "CLT",
+      "Cuidadora"
+    ],
+    "createdAt": "2025-07-09T18:59:18.199Z",
+    "location": "Belo Horizonte - MG",
+    "schedule": "Meio período",
+    "url": "https://www.empregos.com.br/vaga/acompanhante-de-idosos-apartamento-centro-1752094800114"
+  },
+  {
+    "id": 1752094800131,
+    "title": "Zeladora",
+    "company": "Casa Flamengo",
+    "salary": "R$ 1.046,00",
+    "type": "CLT",
+    "timeAgo": "Há 6 horas",
+    "description": "Responsável por manter a casa organizada e limpa. 3x por semana. Experiência mínima de 1 ano.",
+    "tags": [
+      "Zeladora",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T13:25:31.329Z",
+    "location": "Curitiba - PR",
+    "schedule": "3x por semana",
+    "url": "https://www.empregos.com.br/vaga/zeladora-casa-flamengo-1752094800131"
+  },
+  {
+    "id": 1752094800079,
+    "title": "Porteiro Residencial",
+    "company": "Família Correia",
+    "salary": "R$ 1.385,00",
+    "type": "CLT",
+    "timeAgo": "Ontem",
+    "description": "Limpeza geral da casa, organização e cuidados básicos. Segunda a Sexta. Disponibilidade para viagens.",
+    "tags": [
+      "Porteiro",
+      "CLT",
       "Comercial"
     ],
-    "createdAt": "2025-07-09T15:41:02.205Z",
-    "location": "Rio de Janeiro - RJ",
-    "schedule": "Fins de semana"
+    "createdAt": "2025-07-09T14:21:31.470Z",
+    "location": "Fortaleza - CE",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.99jobs.com/vaga/porteiro-residencial-famlia-correia-1752094800079"
   },
   {
-    "id": 1752093627635,
-    "title": "Auxiliar de Limpeza",
-    "company": "Família Rodrigues",
-    "salary": "R$ 1.429,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 dias",
-    "description": "Experiência em limpeza e organização de residências. Segunda a Sexta. Experiência com idosos.",
-    "tags": [
-      "Auxiliar",
-      "CLT",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T05:05:42.407Z",
-    "location": "Uberlândia - MG",
-    "schedule": "Segunda a Sexta"
-  },
-  {
-    "id": 1752093627675,
-    "title": "Auxiliar de Limpeza",
-    "company": "Residência Jardins",
-    "salary": "R$ 1.574,00",
+    "id": 1752094800115,
+    "title": "Porteiro Residencial",
+    "company": "Família Monteiro",
+    "salary": "R$ 1.749,00",
     "type": "CLT",
     "timeAgo": "Ontem",
-    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Horário flexível. Disponibilidade para viagens.",
+    "description": "Cuidados com a casa e tarefas domésticas gerais. Fins de semana. Experiência em casas grandes.",
     "tags": [
-      "Auxiliar",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T03:49:16.029Z",
-    "location": "Guarulhos - SP",
-    "schedule": "Horário flexível"
-  },
-  {
-    "id": 1752093627605,
-    "title": "Faxineira",
-    "company": "Família Rodrigues",
-    "salary": "R$ 88,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Há 5 horas",
-    "description": "Cuidados com o ambiente doméstico e limpeza geral. Fins de semana. Disponibilidade para viagens.",
-    "tags": [
-      "Faxineira",
-      "Diarista",
-      "Flexível"
-    ],
-    "createdAt": "2025-07-09T06:11:06.828Z",
-    "location": "São Paulo - SP",
-    "schedule": "Fins de semana"
-  },
-  {
-    "id": 1752093627676,
-    "title": "Jardineiro",
-    "company": "Família Ferreira",
-    "salary": "R$ 1.375,00",
-    "type": "CLT",
-    "timeAgo": "Há 4 horas",
-    "description": "Trabalhos domésticos e cuidados com a casa. Segunda a Sábado. Pontualidade e responsabilidade.",
-    "tags": [
-      "Jardineiro",
+      "Porteiro",
       "CLT",
-      "Doméstica"
+      "Residencial"
     ],
-    "createdAt": "2025-07-09T14:04:16.974Z",
-    "location": "Guarulhos - SP",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627598,
-    "title": "Caseiro",
-    "company": "Apartamento Centro",
-    "salary": "R$ 1.567,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Responsável por manter a casa organizada e limpa. 3x por semana. Experiência comprovada.",
-    "tags": [
-      "Caseiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T07:19:35.475Z",
-    "location": "São Bernardo - SP",
-    "schedule": "3x por semana"
-  },
-  {
-    "id": 1752093627665,
-    "title": "Auxiliar de Limpeza",
-    "company": "Residência Particular",
-    "salary": "R$ 1.185,00",
-    "type": "CLT",
-    "timeAgo": "Há 4 horas",
-    "description": "Responsável por manter a casa organizada e limpa. 2x por semana. Conhecimento em organização.",
-    "tags": [
-      "Auxiliar",
-      "CLT",
-      "Flexível"
-    ],
-    "createdAt": "2025-07-09T10:58:08.872Z",
-    "location": "Campinas - SP",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627634,
-    "title": "Faxineira",
-    "company": "Família Pereira",
-    "salary": "R$ 102,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Há 3 horas",
-    "description": "Limpeza profissional e organização de ambientes. Horário flexível. Experiência com crianças.",
-    "tags": [
-      "Faxineira",
-      "Diarista"
-    ],
-    "createdAt": "2025-07-09T16:29:57.230Z",
-    "location": "Sorocaba - SP",
-    "schedule": "Horário flexível"
-  },
-  {
-    "id": 1752093627685,
-    "title": "Jardineiro",
-    "company": "Residência Santa Teresa",
-    "salary": "R$ 1.650,00",
-    "type": "CLT",
-    "timeAgo": "Ontem",
-    "description": "Manutenção da limpeza e organização do lar. Meio período. Conhecimento em cozinha básica.",
-    "tags": [
-      "Jardineiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T10:37:52.295Z",
-    "location": "Guarulhos - SP",
-    "schedule": "Meio período"
-  },
-  {
-    "id": 1752093627662,
-    "title": "Cuidadora de Idosos",
-    "company": "Família Correia",
-    "salary": "R$ 1.483,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Manutenção da limpeza e organização do lar. Segunda a Sábado. Experiência com crianças.",
-    "tags": [
-      "Cuidadora",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T03:05:03.414Z",
+    "createdAt": "2025-07-09T16:14:26.661Z",
     "location": "Belo Horizonte - MG",
-    "schedule": "Segunda a Sábado"
+    "schedule": "Fins de semana",
+    "url": "https://www.sine.com.br/vaga/porteiro-residencial-famlia-monteiro-1752094800115"
   },
   {
-    "id": 1752093627633,
-    "title": "Caseiro",
-    "company": "Residência Zona Sul",
-    "salary": "R$ 1.918,00",
-    "type": "CLT",
-    "timeAgo": "Há 4 horas",
-    "description": "Manutenção da limpeza e organização do lar. Fins de semana. Experiência com animais domésticos.",
-    "tags": [
-      "Caseiro",
-      "CLT",
-      "Cuidadora"
-    ],
-    "createdAt": "2025-07-09T20:04:38.039Z",
-    "location": "Ribeirão Preto - SP",
-    "schedule": "Fins de semana"
-  },
-  {
-    "id": 1752093627646,
-    "title": "Auxiliar Doméstica",
-    "company": "Apartamento Tijuca",
-    "salary": "R$ 1.187,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Serviços domésticos e cuidados com a residência. Horário flexível. Morar próximo à região.",
-    "tags": [
-      "Auxiliar",
-      "CLT",
-      "Residencial"
-    ],
-    "createdAt": "2025-07-09T09:16:33.122Z",
-    "location": "Santo André - SP",
-    "schedule": "Horário flexível"
-  },
-  {
-    "id": 1752093627585,
-    "title": "Cozinheira Doméstica",
-    "company": "Residência Santa Teresa",
-    "salary": "R$ 1.882,00",
-    "type": "CLT",
-    "timeAgo": "Há 1 hora",
-    "description": "Experiência em trabalhos domésticos e limpeza. 2x por semana. Experiência mínima de 1 ano.",
-    "tags": [
-      "Cozinheira",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T10:00:53.883Z",
-    "location": "Sorocaba - SP",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627666,
+    "id": 1752094800059,
     "title": "Jardineiro",
     "company": "Residência Brooklin",
-    "salary": "R$ 1.538,00",
+    "salary": "R$ 1.410,00",
     "type": "CLT",
-    "timeAgo": "Ontem",
-    "description": "Trabalhos domésticos e cuidados com a casa. Período integral. Experiência com animais domésticos.",
+    "timeAgo": "Há 4 horas",
+    "description": "Serviços domésticos e cuidados com a residência. Meio período. Pontualidade e responsabilidade.",
     "tags": [
       "Jardineiro",
       "CLT",
-      "Flexível"
-    ],
-    "createdAt": "2025-07-09T19:28:56.410Z",
-    "location": "Fortaleza - CE",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627687,
-    "title": "Babá",
-    "company": "Família Lima",
-    "salary": "R$ 1.551,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Trabalhos domésticos e cuidados com a casa. Segunda a Sábado. Conhecimento em cozinha básica.",
-    "tags": [
-      "Babá",
       "CLT"
     ],
-    "createdAt": "2025-07-09T11:19:11.439Z",
-    "location": "Contagem - MG",
-    "schedule": "Segunda a Sábado"
+    "createdAt": "2025-07-09T09:04:55.440Z",
+    "location": "Belo Horizonte - MG",
+    "schedule": "Meio período",
+    "url": "https://www.catho.com.br/vaga/jardineiro-residncia-brooklin-1752094800059"
   },
   {
-    "id": 1752093627588,
-    "title": "Babá",
-    "company": "Família Nascimento",
-    "salary": "R$ 1.461,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Serviços domésticos e cuidados com a residência. Fins de semana. Experiência com animais domésticos.",
-    "tags": [
-      "Babá",
-      "CLT",
-      "Limpeza"
-    ],
-    "createdAt": "2025-07-08T22:54:42.806Z",
-    "location": "Brasília - DF",
-    "schedule": "Fins de semana"
-  },
-  {
-    "id": 1752093627639,
-    "title": "Babá",
-    "company": "Família Correia",
-    "salary": "R$ 1.638,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Segunda a Sábado. Experiência com crianças.",
-    "tags": [
-      "Babá",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T11:31:41.634Z",
-    "location": "São Bernardo - SP",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627638,
-    "title": "Babá",
-    "company": "Família Silva",
-    "salary": "R$ 1.438,00",
-    "type": "CLT",
-    "timeAgo": "Há 1 hora",
-    "description": "Limpeza profissional e organização de ambientes. Meio período. Morar próximo à região.",
-    "tags": [
-      "Babá",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T03:32:57.740Z",
-    "location": "Uberlândia - MG",
-    "schedule": "Meio período"
-  },
-  {
-    "id": 1752093627652,
-    "title": "Auxiliar de Limpeza",
-    "company": "Casa Ipanema",
-    "salary": "R$ 1.142,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Cuidados domésticos e manutenção da limpeza. 2x por semana. Disponibilidade para viagens.",
-    "tags": [
-      "Auxiliar",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T15:08:38.895Z",
-    "location": "Fortaleza - CE",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627612,
-    "title": "Cuidadora de Idosos",
+    "id": 1752094800015,
+    "title": "Diarista",
     "company": "Residência Santa Teresa",
-    "salary": "R$ 1.517,00",
-    "type": "CLT",
-    "timeAgo": "Há 6 horas",
-    "description": "Limpeza profissional e organização de ambientes. Período integral. Conhecimento em produtos de limpeza.",
-    "tags": [
-      "Cuidadora",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T16:09:57.561Z",
-    "location": "Curitiba - PR",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627582,
-    "title": "Babá",
-    "company": "Família Pereira",
-    "salary": "R$ 1.310,00",
-    "type": "CLT",
-    "timeAgo": "Há 6 horas",
-    "description": "Limpeza profissional e organização de ambientes. Segunda a Sábado. Experiência com crianças.",
-    "tags": [
-      "Babá",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T06:31:06.884Z",
-    "location": "Recife - PE",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627680,
-    "title": "Cozinheira Doméstica",
-    "company": "Residência Jardins",
-    "salary": "R$ 1.374,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Manutenção da limpeza e organização do lar. Meio período. Conhecimento em cozinha básica.",
-    "tags": [
-      "Cozinheira",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T02:30:37.029Z",
-    "location": "Osasco - SP",
-    "schedule": "Meio período"
-  },
-  {
-    "id": 1752093627623,
-    "title": "Zeladora",
-    "company": "Família Oliveira",
-    "salary": "R$ 1.393,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Limpeza geral da casa, organização e cuidados básicos. Segunda a Sábado. Referências necessárias.",
-    "tags": [
-      "Zeladora",
-      "CLT",
-      "Cuidadora"
-    ],
-    "createdAt": "2025-07-08T23:28:13.582Z",
-    "location": "Rio de Janeiro - RJ",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627620,
-    "title": "Jardineiro",
-    "company": "Família Sousa",
-    "salary": "R$ 1.189,00",
-    "type": "CLT",
-    "timeAgo": "Há 1 hora",
-    "description": "Cuidados com a casa e tarefas domésticas gerais. Segunda a Sábado. Experiência com crianças.",
-    "tags": [
-      "Jardineiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T10:37:40.059Z",
-    "location": "Sorocaba - SP",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627698,
-    "title": "Acompanhante de Idosos",
-    "company": "Residência Morumbi",
-    "salary": "R$ 1.570,00",
-    "type": "CLT",
-    "timeAgo": "Ontem",
-    "description": "Experiência em serviços de limpeza e organização. Segunda a Sexta. Experiência em casas grandes.",
-    "tags": [
-      "Acompanhante",
-      "CLT",
-      "Cuidadora"
-    ],
-    "createdAt": "2025-07-09T11:53:29.534Z",
-    "location": "Osasco - SP",
-    "schedule": "Segunda a Sexta"
-  },
-  {
-    "id": 1752093627609,
-    "title": "Jardineiro",
-    "company": "Casa Perdizes",
-    "salary": "R$ 1.440,00",
-    "type": "CLT",
-    "timeAgo": "Há 3 horas",
-    "description": "Limpeza, organização e pequenos reparos domésticos. 2x por semana. Conhecimento em organização.",
-    "tags": [
-      "Jardineiro",
-      "CLT",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T10:53:37.540Z",
-    "location": "São Paulo - SP",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627590,
-    "title": "Passadeira",
-    "company": "Residência Santa Teresa",
-    "salary": "R$ 75,00/dia",
+    "salary": "R$ 97,00/dia",
     "type": "Diarista",
-    "timeAgo": "Há 6 horas",
-    "description": "Serviços domésticos e cuidados com a residência. Período integral. Disponibilidade de horário.",
-    "tags": [
-      "Passadeira",
-      "Diarista",
-      "Limpeza"
-    ],
-    "createdAt": "2025-07-09T15:53:53.896Z",
-    "location": "São José dos Campos - SP",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627642,
-    "title": "Governanta",
-    "company": "Casa Perdizes",
-    "salary": "R$ 2.347,00",
-    "type": "CLT",
-    "timeAgo": "Há 3 horas",
-    "description": "Cuidados domésticos e manutenção da limpeza. Segunda a Sexta. Experiência mínima de 1 ano.",
-    "tags": [
-      "Governanta",
-      "CLT",
-      "Experiência"
-    ],
-    "createdAt": "2025-07-09T02:01:44.713Z",
-    "location": "Brasília - DF",
-    "schedule": "Segunda a Sexta"
-  },
-  {
-    "id": 1752093627651,
-    "title": "Jardineiro",
-    "company": "Família Santos",
-    "salary": "R$ 1.621,00",
-    "type": "CLT",
-    "timeAgo": "Ontem",
-    "description": "Responsável por manter a casa organizada e limpa. 3x por semana. Disponibilidade aos fins de semana.",
-    "tags": [
-      "Jardineiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-08T20:42:33.544Z",
-    "location": "Osasco - SP",
-    "schedule": "3x por semana"
-  },
-  {
-    "id": 1752093627700,
-    "title": "Acompanhante de Idosos",
-    "company": "Apartamento Tijuca",
-    "salary": "R$ 1.199,00",
-    "type": "CLT",
-    "timeAgo": "Há 1 hora",
-    "description": "Experiência em serviços de limpeza e organização. Segunda a Sexta. Disponibilidade de horário.",
-    "tags": [
-      "Acompanhante",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T15:58:16.208Z",
-    "location": "Osasco - SP",
-    "schedule": "Segunda a Sexta"
-  },
-  {
-    "id": 1752093627583,
-    "title": "Faxineira",
-    "company": "Família Oliveira",
-    "salary": "R$ 91,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Há 4 horas",
-    "description": "Serviços de limpeza e cuidados com a residência. Segunda a Sexta. Disponibilidade para viagens.",
-    "tags": [
-      "Faxineira",
-      "Diarista",
-      "Flexível"
-    ],
-    "createdAt": "2025-07-08T22:45:31.443Z",
-    "location": "Porto Alegre - RS",
-    "schedule": "Segunda a Sexta"
-  },
-  {
-    "id": 1752093627618,
-    "title": "Passadeira",
-    "company": "Família Costa",
-    "salary": "R$ 74,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Há 4 horas",
-    "description": "Experiência em trabalhos domésticos e limpeza. Meio período. Experiência comprovada.",
-    "tags": [
-      "Passadeira",
-      "Diarista"
-    ],
-    "createdAt": "2025-07-09T15:45:31.984Z",
-    "location": "Sorocaba - SP",
-    "schedule": "Meio período"
-  },
-  {
-    "id": 1752093627691,
-    "title": "Acompanhante de Idosos",
-    "company": "Apartamento Centro",
-    "salary": "R$ 1.406,00",
-    "type": "CLT",
-    "timeAgo": "Há 4 horas",
-    "description": "Limpeza, organização e pequenos reparos domésticos. Segunda a Sexta. Experiência mínima de 1 ano.",
-    "tags": [
-      "Acompanhante",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T14:45:50.585Z",
-    "location": "Campinas - SP",
-    "schedule": "Segunda a Sexta"
-  },
-  {
-    "id": 1752093627697,
-    "title": "Babá",
-    "company": "Residência Zona Sul",
-    "salary": "R$ 1.638,00",
-    "type": "CLT",
-    "timeAgo": "Há 1 hora",
-    "description": "Experiência em serviços de limpeza e organização. 3x por semana. Experiência com animais domésticos.",
-    "tags": [
-      "Babá",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T02:06:44.587Z",
-    "location": "Rio de Janeiro - RJ",
-    "schedule": "3x por semana"
-  },
-  {
-    "id": 1752093627615,
-    "title": "Auxiliar de Limpeza",
-    "company": "Casa Botafogo",
-    "salary": "R$ 1.323,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Experiência em serviços de limpeza e organização. Segunda a Sábado. Morar próximo à região.",
-    "tags": [
-      "Auxiliar",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T10:31:33.956Z",
-    "location": "São Paulo - SP",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627604,
-    "title": "Caseiro",
-    "company": "Família Dias",
-    "salary": "R$ 1.578,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Trabalhos domésticos e cuidados com a casa. Fins de semana. Disponibilidade aos fins de semana.",
-    "tags": [
-      "Caseiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T05:17:29.792Z",
-    "location": "Campinas - SP",
-    "schedule": "Fins de semana"
-  },
-  {
-    "id": 1752093627614,
-    "title": "Passadeira",
-    "company": "Família Silva",
-    "salary": "R$ 66,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Há 5 horas",
-    "description": "Serviços de limpeza e cuidados com a residência. Segunda a Sábado. Conhecimento em cozinha básica.",
-    "tags": [
-      "Passadeira",
-      "Diarista",
-      "Flexível"
-    ],
-    "createdAt": "2025-07-08T21:13:57.860Z",
-    "location": "Ribeirão Preto - SP",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627690,
-    "title": "Auxiliar Doméstica",
-    "company": "Casa da Dona Maria",
-    "salary": "R$ 1.239,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Serviços de limpeza e cuidados com a residência. Horário flexível. Experiência comprovada.",
-    "tags": [
-      "Auxiliar",
-      "CLT"
-    ],
-    "createdAt": "2025-07-08T23:08:15.825Z",
-    "location": "São Paulo - SP",
-    "schedule": "Horário flexível"
-  },
-  {
-    "id": 1752093627688,
-    "title": "Auxiliar de Limpeza",
-    "company": "Família Rodrigues",
-    "salary": "R$ 1.423,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Serviços de limpeza e cuidados com a residência. Segunda a Sábado. Experiência mínima de 1 ano.",
-    "tags": [
-      "Auxiliar",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T09:11:14.888Z",
-    "location": "São Bernardo - SP",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627664,
-    "title": "Jardineiro",
-    "company": "Família Gomes",
-    "salary": "R$ 1.147,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Período integral. Morar próximo à região.",
-    "tags": [
-      "Jardineiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T11:40:15.505Z",
-    "location": "Santo André - SP",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627694,
-    "title": "Babá",
-    "company": "Família Oliveira",
-    "salary": "R$ 1.270,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Manutenção da limpeza e organização do lar. Horário flexível. Experiência com idosos.",
-    "tags": [
-      "Babá",
-      "CLT",
-      "Doméstica"
-    ],
-    "createdAt": "2025-07-09T05:30:49.653Z",
-    "location": "Santo André - SP",
-    "schedule": "Horário flexível"
-  },
-  {
-    "id": 1752093627630,
-    "title": "Zeladora",
-    "company": "Família Dias",
-    "salary": "R$ 1.061,00",
-    "type": "CLT",
-    "timeAgo": "Há 1 hora",
-    "description": "Serviços domésticos e cuidados com a residência. Fins de semana. Morar próximo à região.",
-    "tags": [
-      "Zeladora",
-      "CLT",
-      "Doméstica"
-    ],
-    "createdAt": "2025-07-09T17:23:21.594Z",
-    "location": "Campinas - SP",
-    "schedule": "Fins de semana"
-  },
-  {
-    "id": 1752093627610,
-    "title": "Faxineira",
-    "company": "Família Santos",
-    "salary": "R$ 114,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Há 1 hora",
-    "description": "Limpeza, organização e pequenos reparos domésticos. Segunda a Sábado. Experiência com animais domésticos.",
-    "tags": [
-      "Faxineira",
-      "Diarista",
-      "Doméstica"
-    ],
-    "createdAt": "2025-07-09T02:38:16.072Z",
-    "location": "Osasco - SP",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627606,
-    "title": "Porteiro Residencial",
-    "company": "Apartamento Leblon",
-    "salary": "R$ 1.346,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Cuidados com a casa e tarefas domésticas gerais. 2x por semana. Experiência com crianças.",
-    "tags": [
-      "Porteiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T18:01:04.701Z",
-    "location": "Uberlândia - MG",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627645,
-    "title": "Cuidadora de Idosos",
-    "company": "Família Correia",
-    "salary": "R$ 1.207,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Limpeza, organização e pequenos reparos domésticos. Período integral. Experiência em casas grandes.",
-    "tags": [
-      "Cuidadora",
-      "CLT",
-      "Limpeza"
-    ],
-    "createdAt": "2025-07-09T03:35:30.585Z",
-    "location": "Santo André - SP",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627653,
-    "title": "Cuidadora de Idosos",
-    "company": "Família Almeida",
-    "salary": "R$ 1.534,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Limpeza geral da casa, organização e cuidados básicos. 2x por semana. Disponibilidade para viagens.",
-    "tags": [
-      "Cuidadora",
-      "CLT",
-      "Experiência"
-    ],
-    "createdAt": "2025-07-09T13:02:57.934Z",
-    "location": "Rio de Janeiro - RJ",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627607,
-    "title": "Cozinheira Doméstica",
-    "company": "Residência Particular",
-    "salary": "R$ 1.864,00",
-    "type": "CLT",
-    "timeAgo": "Há 6 horas",
-    "description": "Limpeza, organização e pequenos reparos domésticos. Fins de semana. Disponibilidade de horário.",
-    "tags": [
-      "Cozinheira",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T02:13:29.865Z",
-    "location": "Brasília - DF",
-    "schedule": "Fins de semana"
-  },
-  {
-    "id": 1752093627656,
-    "title": "Governanta",
-    "company": "Residência Jardins",
-    "salary": "R$ 1.996,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Limpeza profissional e organização de ambientes. Período integral. Experiência com idosos.",
-    "tags": [
-      "Governanta",
-      "CLT",
-      "Diarista"
-    ],
-    "createdAt": "2025-07-09T03:45:57.468Z",
-    "location": "Santo André - SP",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627626,
-    "title": "Porteiro Residencial",
-    "company": "Apartamento Centro",
-    "salary": "R$ 1.718,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Experiência em serviços de limpeza e organização. Segunda a Sexta. Pontualidade e responsabilidade.",
-    "tags": [
-      "Porteiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T15:45:59.414Z",
-    "location": "Porto Alegre - RS",
-    "schedule": "Segunda a Sexta"
-  },
-  {
-    "id": 1752093627661,
-    "title": "Porteiro Residencial",
-    "company": "Casa Botafogo",
-    "salary": "R$ 1.296,00",
-    "type": "CLT",
-    "timeAgo": "Há 3 horas",
-    "description": "Cuidados com o ambiente doméstico e limpeza geral. Segunda a Sábado. Conhecimento em cozinha básica.",
-    "tags": [
-      "Porteiro",
-      "CLT",
-      "Residencial"
-    ],
-    "createdAt": "2025-07-09T12:57:41.265Z",
-    "location": "Salvador - BA",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627586,
-    "title": "Jardineiro",
-    "company": "Família Santos",
-    "salary": "R$ 1.429,00",
-    "type": "CLT",
-    "timeAgo": "Há 3 horas",
-    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Segunda a Sábado. Experiência mínima de 1 ano.",
-    "tags": [
-      "Jardineiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T12:51:51.708Z",
-    "location": "Recife - PE",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627600,
-    "title": "Auxiliar Doméstica",
-    "company": "Casa Higienópolis",
-    "salary": "R$ 1.096,00",
-    "type": "CLT",
-    "timeAgo": "Ontem",
-    "description": "Experiência em trabalhos domésticos e limpeza. Meio período. Morar próximo à região.",
-    "tags": [
-      "Auxiliar",
-      "CLT",
-      "Diarista"
-    ],
-    "createdAt": "2025-07-08T23:24:39.225Z",
-    "location": "Sorocaba - SP",
-    "schedule": "Meio período"
-  },
-  {
-    "id": 1752093627672,
-    "title": "Caseiro",
-    "company": "Família Santos",
-    "salary": "R$ 1.518,00",
-    "type": "CLT",
-    "timeAgo": "Há 1 hora",
-    "description": "Trabalhos domésticos e cuidados com a casa. Meio período. Conhecimento em produtos de limpeza.",
-    "tags": [
-      "Caseiro",
-      "CLT",
-      "Babá"
-    ],
-    "createdAt": "2025-07-09T03:24:38.417Z",
-    "location": "Ribeirão Preto - SP",
-    "schedule": "Meio período"
-  },
-  {
-    "id": 1752093627644,
-    "title": "Porteiro Residencial",
-    "company": "Casa Vila Madalena",
-    "salary": "R$ 1.699,00",
-    "type": "CLT",
     "timeAgo": "Há 2 dias",
-    "description": "Cuidados com a casa e tarefas domésticas gerais. Segunda a Sexta. Experiência com animais domésticos.",
+    "description": "Manutenção da limpeza e organização do lar. Segunda a Sexta. Disponibilidade para viagens.",
     "tags": [
-      "Porteiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T10:21:24.250Z",
-    "location": "Rio de Janeiro - RJ",
-    "schedule": "Segunda a Sexta"
-  },
-  {
-    "id": 1752093627584,
-    "title": "Porteiro Residencial",
-    "company": "Apartamento Tijuca",
-    "salary": "R$ 1.356,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Cuidados com o ambiente doméstico e limpeza geral. Período integral. Conhecimento em cozinha básica.",
-    "tags": [
-      "Porteiro",
-      "CLT",
-      "Cuidadora"
-    ],
-    "createdAt": "2025-07-09T09:39:59.250Z",
-    "location": "Guarulhos - SP",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627657,
-    "title": "Auxiliar Doméstica",
-    "company": "Residência Brooklin",
-    "salary": "R$ 1.081,00",
-    "type": "CLT",
-    "timeAgo": "Há 1 hora",
-    "description": "Serviços de limpeza e cuidados com a residência. 2x por semana. Morar próximo à região.",
-    "tags": [
-      "Auxiliar",
-      "CLT"
-    ],
-    "createdAt": "2025-07-08T20:45:48.922Z",
-    "location": "Guarulhos - SP",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627597,
-    "title": "Caseiro",
-    "company": "Casa da Dona Maria",
-    "salary": "R$ 1.905,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Experiência em limpeza e organização de residências. 2x por semana. Disponibilidade de horário.",
-    "tags": [
-      "Caseiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T17:18:52.628Z",
-    "location": "Ribeirão Preto - SP",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627671,
-    "title": "Auxiliar Doméstica",
-    "company": "Casa Ipanema",
-    "salary": "R$ 1.132,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Experiência em limpeza e organização de residências. Horário flexível. Morar próximo à região.",
-    "tags": [
-      "Auxiliar",
-      "CLT",
-      "Flexível"
-    ],
-    "createdAt": "2025-07-08T23:47:38.714Z",
-    "location": "Campinas - SP",
-    "schedule": "Horário flexível"
-  },
-  {
-    "id": 1752093627649,
-    "title": "Empregada Doméstica",
-    "company": "Família Barbosa",
-    "salary": "R$ 1.139,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Meio período. Experiência com idosos.",
-    "tags": [
-      "Empregada",
-      "CLT",
+      "Diarista",
       "Diarista"
     ],
-    "createdAt": "2025-07-09T10:57:28.329Z",
-    "location": "Sorocaba - SP",
-    "schedule": "Meio período"
-  },
-  {
-    "id": 1752093627678,
-    "title": "Cozinheira Doméstica",
-    "company": "Família Silva",
-    "salary": "R$ 1.329,00",
-    "type": "CLT",
-    "timeAgo": "Há 4 horas",
-    "description": "Experiência em serviços de limpeza e organização. 3x por semana. Conhecimento em organização.",
-    "tags": [
-      "Cozinheira",
-      "CLT",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T16:32:45.428Z",
-    "location": "Brasília - DF",
-    "schedule": "3x por semana"
-  },
-  {
-    "id": 1752093627628,
-    "title": "Caseiro",
-    "company": "Residência Particular",
-    "salary": "R$ 1.689,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Limpeza, organização e pequenos reparos domésticos. Segunda a Sexta. Disponibilidade aos fins de semana.",
-    "tags": [
-      "Caseiro",
-      "CLT",
-      "Babá"
-    ],
-    "createdAt": "2025-07-09T18:30:26.471Z",
+    "createdAt": "2025-07-09T12:31:29.944Z",
     "location": "Porto Alegre - RS",
-    "schedule": "Segunda a Sexta"
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.infojobs.com.br/vaga/diarista-residncia-santa-teresa-1752094800015"
   },
   {
-    "id": 1752093627595,
-    "title": "Porteiro Residencial",
-    "company": "Família Pereira",
-    "salary": "R$ 1.482,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 dias",
-    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Horário flexível. Conhecimento em organização.",
-    "tags": [
-      "Porteiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-08T22:38:36.861Z",
-    "location": "Niterói - RJ",
-    "schedule": "Horário flexível"
-  },
-  {
-    "id": 1752093627587,
-    "title": "Passadeira",
-    "company": "Família Nascimento",
-    "salary": "R$ 90,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Ontem",
-    "description": "Limpeza, organização e pequenos reparos domésticos. Segunda a Sábado. Morar próximo à região.",
-    "tags": [
-      "Passadeira",
-      "Diarista"
-    ],
-    "createdAt": "2025-07-09T15:54:24.024Z",
-    "location": "Campinas - SP",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627617,
+    "id": 1752094800075,
     "title": "Passadeira",
     "company": "Família Monteiro",
-    "salary": "R$ 81,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Há 3 horas",
-    "description": "Trabalhos domésticos e cuidados com a casa. Período integral. Experiência com idosos.",
-    "tags": [
-      "Passadeira",
-      "Diarista"
-    ],
-    "createdAt": "2025-07-09T11:57:03.840Z",
-    "location": "Belo Horizonte - MG",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627684,
-    "title": "Auxiliar de Limpeza",
-    "company": "Casa Vila Madalena",
-    "salary": "R$ 1.158,00",
-    "type": "CLT",
-    "timeAgo": "Há 6 horas",
-    "description": "Cuidados com a casa e tarefas domésticas gerais. Meio período. Pontualidade e responsabilidade.",
-    "tags": [
-      "Auxiliar",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T12:09:22.357Z",
-    "location": "Recife - PE",
-    "schedule": "Meio período"
-  },
-  {
-    "id": 1752093627681,
-    "title": "Auxiliar de Limpeza",
-    "company": "Família Sousa",
-    "salary": "R$ 1.280,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Limpeza profissional e organização de ambientes. Horário flexível. Disponibilidade de horário.",
-    "tags": [
-      "Auxiliar",
-      "CLT",
-      "Experiência"
-    ],
-    "createdAt": "2025-07-09T08:32:16.560Z",
-    "location": "Recife - PE",
-    "schedule": "Horário flexível"
-  },
-  {
-    "id": 1752093627629,
-    "title": "Cozinheira Doméstica",
-    "company": "Família Dias",
-    "salary": "R$ 1.579,00",
-    "type": "CLT",
-    "timeAgo": "Há 1 hora",
-    "description": "Experiência em serviços de limpeza e organização. Período integral. Experiência com animais domésticos.",
-    "tags": [
-      "Cozinheira",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T05:08:13.328Z",
-    "location": "São Bernardo - SP",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627613,
-    "title": "Diarista",
-    "company": "Família Rodrigues",
-    "salary": "R$ 113,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Há 1 hora",
-    "description": "Limpeza, organização e pequenos reparos domésticos. Segunda a Sábado. Disponibilidade para viagens.",
-    "tags": [
-      "Diarista",
-      "Diarista",
-      "Residencial"
-    ],
-    "createdAt": "2025-07-09T00:46:07.906Z",
-    "location": "Belo Horizonte - MG",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627695,
-    "title": "Caseiro",
-    "company": "Família Barbosa",
-    "salary": "R$ 1.627,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Serviços de limpeza e cuidados com a residência. 3x por semana. Experiência com crianças.",
-    "tags": [
-      "Caseiro",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T06:59:05.889Z",
-    "location": "São José dos Campos - SP",
-    "schedule": "3x por semana"
-  },
-  {
-    "id": 1752093627641,
-    "title": "Auxiliar de Limpeza",
-    "company": "Família Dias",
-    "salary": "R$ 1.194,00",
-    "type": "CLT",
-    "timeAgo": "Há 1 hora",
-    "description": "Experiência em limpeza e organização de residências. Período integral. Conhecimento em organização.",
-    "tags": [
-      "Auxiliar",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T01:54:57.616Z",
-    "location": "Guarulhos - SP",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627668,
-    "title": "Diarista",
-    "company": "Residência Pinheiros",
-    "salary": "R$ 135,00/dia",
+    "salary": "R$ 77,00/dia",
     "type": "Diarista",
     "timeAgo": "Há 4 horas",
-    "description": "Manutenção da limpeza e organização do lar. Período integral. Conhecimento em organização.",
+    "description": "Cuidados com a casa e tarefas domésticas gerais. 2x por semana. Disponibilidade de horário.",
     "tags": [
+      "Passadeira",
       "Diarista",
-      "Diarista"
+      "Experiência"
     ],
-    "createdAt": "2025-07-09T07:01:41.398Z",
+    "createdAt": "2025-07-08T22:31:22.345Z",
     "location": "Curitiba - PR",
-    "schedule": "Período integral"
+    "schedule": "2x por semana",
+    "url": "https://www.vagas.com.br/vaga/passadeira-famlia-monteiro-1752094800075"
   },
   {
-    "id": 1752093627627,
-    "title": "Faxineira",
+    "id": 1752094800025,
+    "title": "Empregada Doméstica",
+    "company": "Família Almeida",
+    "salary": "R$ 1.093,00",
+    "type": "CLT",
+    "timeAgo": "Há 6 horas",
+    "description": "Serviços domésticos e cuidados com a residência. Segunda a Sábado. Experiência com animais domésticos.",
+    "tags": [
+      "Empregada",
+      "CLT",
+      "Doméstica"
+    ],
+    "createdAt": "2025-07-08T21:41:49.888Z",
+    "location": "Porto Alegre - RS",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.vagas.com.br/vaga/empregada-domstica-famlia-almeida-1752094800025"
+  },
+  {
+    "id": 1752094800087,
+    "title": "Cozinheira Doméstica",
+    "company": "Apartamento Copacabana",
+    "salary": "R$ 1.794,00",
+    "type": "CLT",
+    "timeAgo": "Há 6 horas",
+    "description": "Serviços de limpeza e cuidados com a residência. Fins de semana. Experiência em casas grandes.",
+    "tags": [
+      "Cozinheira",
+      "CLT",
+      "Limpeza"
+    ],
+    "createdAt": "2025-07-09T13:59:58.824Z",
+    "location": "São Bernardo - SP",
+    "schedule": "Fins de semana",
+    "url": "https://www.99jobs.com/vaga/cozinheira-domstica-apartamento-copacabana-1752094800087"
+  },
+  {
+    "id": 1752094800119,
+    "title": "Governanta",
     "company": "Casa Flamengo",
-    "salary": "R$ 83,00/dia",
+    "salary": "R$ 1.765,00",
+    "type": "CLT",
+    "timeAgo": "Há 5 horas",
+    "description": "Limpeza profissional e organização de ambientes. 2x por semana. Morar próximo à região.",
+    "tags": [
+      "Governanta",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T19:40:40.452Z",
+    "location": "Brasília - DF",
+    "schedule": "2x por semana",
+    "url": "https://www.trabalha.com.br/vaga/governanta-casa-flamengo-1752094800119"
+  },
+  {
+    "id": 1752094800065,
+    "title": "Cuidadora de Idosos",
+    "company": "Casa Flamengo",
+    "salary": "R$ 1.237,00",
+    "type": "CLT",
+    "timeAgo": "Ontem",
+    "description": "Experiência em serviços de limpeza e organização. Segunda a Sábado. Referências necessárias.",
+    "tags": [
+      "Cuidadora",
+      "CLT",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-08T22:58:31.620Z",
+    "location": "Niterói - RJ",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.empregos.com.br/vaga/cuidadora-de-idosos-casa-flamengo-1752094800065"
+  },
+  {
+    "id": 1752094800110,
+    "title": "Faxineira",
+    "company": "Residência Brooklin",
+    "salary": "R$ 92,00/dia",
     "type": "Diarista",
-    "timeAgo": "Há 1 hora",
-    "description": "Trabalhos domésticos e cuidados com a casa. Meio período. Conhecimento em cozinha básica.",
+    "timeAgo": "Há 2 horas",
+    "description": "Limpeza profissional e organização de ambientes. Horário flexível. Disponibilidade aos fins de semana.",
     "tags": [
       "Faxineira",
       "Diarista"
     ],
-    "createdAt": "2025-07-09T11:11:56.894Z",
-    "location": "Sorocaba - SP",
-    "schedule": "Meio período"
+    "createdAt": "2025-07-09T15:08:19.035Z",
+    "location": "Brasília - DF",
+    "schedule": "Horário flexível",
+    "url": "https://www.catho.com.br/vaga/faxineira-residncia-brooklin-1752094800110"
   },
   {
-    "id": 1752093627589,
-    "title": "Governanta",
-    "company": "Residência Brooklin",
-    "salary": "R$ 2.223,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 dias",
-    "description": "Serviços domésticos e cuidados com a residência. Segunda a Sábado. Disponibilidade aos fins de semana.",
-    "tags": [
-      "Governanta",
-      "CLT",
-      "Comercial"
-    ],
-    "createdAt": "2025-07-09T10:58:22.435Z",
-    "location": "São Bernardo - SP",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627599,
-    "title": "Diarista",
-    "company": "Família Gomes",
-    "salary": "R$ 109,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Há 4 horas",
-    "description": "Cuidados domésticos e manutenção da limpeza. Segunda a Sábado. Experiência comprovada.",
-    "tags": [
-      "Diarista",
-      "Diarista",
-      "Cuidadora"
-    ],
-    "createdAt": "2025-07-09T05:04:34.249Z",
-    "location": "Santo André - SP",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627619,
-    "title": "Cuidadora de Idosos",
-    "company": "Família Pereira",
-    "salary": "R$ 1.254,00",
+    "id": 1752094800117,
+    "title": "Auxiliar de Limpeza",
+    "company": "Família Costa",
+    "salary": "R$ 1.505,00",
     "type": "CLT",
     "timeAgo": "Há 4 horas",
-    "description": "Experiência em trabalhos domésticos e limpeza. Segunda a Sábado. Referências necessárias.",
+    "description": "Limpeza profissional e organização de ambientes. Período integral. Disponibilidade para viagens.",
     "tags": [
-      "Cuidadora",
-      "CLT"
-    ],
-    "createdAt": "2025-07-08T22:55:50.729Z",
-    "location": "Santo André - SP",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627686,
-    "title": "Zeladora",
-    "company": "Família Lima",
-    "salary": "R$ 1.335,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Limpeza geral da casa, organização e cuidados básicos. Segunda a Sábado. Experiência com crianças.",
-    "tags": [
-      "Zeladora",
-      "CLT"
-    ],
-    "createdAt": "2025-07-08T21:08:00.251Z",
-    "location": "Belo Horizonte - MG",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627647,
-    "title": "Babá",
-    "company": "Casa Perdizes",
-    "salary": "R$ 1.652,00",
-    "type": "CLT",
-    "timeAgo": "Ontem",
-    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Segunda a Sexta. Conhecimento em cozinha básica.",
-    "tags": [
-      "Babá",
+      "Auxiliar",
       "CLT",
-      "Comercial"
+      "Babá"
     ],
-    "createdAt": "2025-07-08T23:30:42.657Z",
-    "location": "Porto Alegre - RS",
-    "schedule": "Segunda a Sexta"
+    "createdAt": "2025-07-09T04:02:22.920Z",
+    "location": "Campinas - SP",
+    "schedule": "Período integral",
+    "url": "https://www.catho.com.br/vaga/auxiliar-de-limpeza-famlia-costa-1752094800117"
   },
   {
-    "id": 1752093627603,
-    "title": "Empregada Doméstica",
-    "company": "Família Cardoso",
-    "salary": "R$ 1.438,00",
-    "type": "CLT",
-    "timeAgo": "Ontem",
-    "description": "Limpeza geral da casa, organização e cuidados básicos. Segunda a Sábado. Referências necessárias.",
-    "tags": [
-      "Empregada",
-      "CLT",
-      "Limpeza"
-    ],
-    "createdAt": "2025-07-09T06:26:00.173Z",
-    "location": "Guarulhos - SP",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627673,
-    "title": "Cuidadora de Idosos",
-    "company": "Família Ribeiro",
+    "id": 1752094800020,
+    "title": "Caseiro",
+    "company": "Família Santos",
     "salary": "R$ 1.665,00",
     "type": "CLT",
-    "timeAgo": "Há 4 horas",
-    "description": "Limpeza profissional e organização de ambientes. 2x por semana. Disponibilidade aos fins de semana.",
-    "tags": [
-      "Cuidadora",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T00:27:13.018Z",
-    "location": "Porto Alegre - RS",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627594,
-    "title": "Auxiliar Doméstica",
-    "company": "Apartamento Barra",
-    "salary": "R$ 1.364,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Serviços domésticos e cuidados com a residência. Segunda a Sexta. Disponibilidade para viagens.",
-    "tags": [
-      "Auxiliar",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T00:03:50.440Z",
-    "location": "Niterói - RJ",
-    "schedule": "Segunda a Sexta"
-  },
-  {
-    "id": 1752093627643,
-    "title": "Cuidadora de Idosos",
-    "company": "Apartamento Centro",
-    "salary": "R$ 1.567,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Limpeza, organização e pequenos reparos domésticos. 2x por semana. Experiência com crianças.",
-    "tags": [
-      "Cuidadora",
-      "CLT",
-      "Doméstica"
-    ],
-    "createdAt": "2025-07-08T21:34:11.261Z",
-    "location": "São Bernardo - SP",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627640,
-    "title": "Governanta",
-    "company": "Casa Botafogo",
-    "salary": "R$ 1.683,00",
-    "type": "CLT",
-    "timeAgo": "Há 3 horas",
-    "description": "Responsável pela manutenção e limpeza do ambiente residencial. 3x por semana. Experiência comprovada.",
-    "tags": [
-      "Governanta",
-      "CLT",
-      "Limpeza"
-    ],
-    "createdAt": "2025-07-09T01:35:36.208Z",
-    "location": "Uberlândia - MG",
-    "schedule": "3x por semana"
-  },
-  {
-    "id": 1752093627637,
-    "title": "Auxiliar de Limpeza",
-    "company": "Residência Morumbi",
-    "salary": "R$ 1.581,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Trabalhos domésticos e cuidados com a casa. Segunda a Sábado. Experiência com crianças.",
-    "tags": [
-      "Auxiliar",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T09:46:13.265Z",
-    "location": "Uberlândia - MG",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627622,
-    "title": "Caseiro",
-    "company": "Família Lima",
-    "salary": "R$ 1.643,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Segunda a Sexta. Experiência com animais domésticos.",
+    "timeAgo": "Há 2 dias",
+    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Meio período. Conhecimento em cozinha básica.",
     "tags": [
       "Caseiro",
       "CLT",
-      "Flexível"
+      "CLT"
     ],
-    "createdAt": "2025-07-09T06:09:16.281Z",
+    "createdAt": "2025-07-09T17:49:25.498Z",
     "location": "Rio de Janeiro - RJ",
-    "schedule": "Segunda a Sexta"
+    "schedule": "Meio período",
+    "url": "https://www.glassdoor.com.br/vaga/caseiro-famlia-santos-1752094800020"
   },
   {
-    "id": 1752093627674,
-    "title": "Zeladora",
-    "company": "Família Monteiro",
-    "salary": "R$ 1.092,00",
-    "type": "CLT",
-    "timeAgo": "Há 6 horas",
-    "description": "Experiência em limpeza e organização de residências. Fins de semana. Disponibilidade aos fins de semana.",
-    "tags": [
-      "Zeladora",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T19:08:01.573Z",
-    "location": "Niterói - RJ",
-    "schedule": "Fins de semana"
-  },
-  {
-    "id": 1752093627611,
-    "title": "Cozinheira Doméstica",
-    "company": "Residência Particular",
-    "salary": "R$ 1.871,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Experiência em trabalhos domésticos e limpeza. Segunda a Sábado. Experiência com crianças.",
-    "tags": [
-      "Cozinheira",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T01:14:49.443Z",
-    "location": "Campinas - SP",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627596,
-    "title": "Cozinheira Doméstica",
-    "company": "Família Cardoso",
-    "salary": "R$ 1.646,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Limpeza profissional e organização de ambientes. 2x por semana. Experiência com idosos.",
-    "tags": [
-      "Cozinheira",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T13:46:58.501Z",
-    "location": "Belo Horizonte - MG",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627699,
-    "title": "Babá",
-    "company": "Família Santos",
-    "salary": "R$ 1.498,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Trabalhos domésticos e cuidados com a casa. Segunda a Sexta. Morar próximo à região.",
-    "tags": [
-      "Babá",
-      "CLT",
-      "Cuidadora"
-    ],
-    "createdAt": "2025-07-09T13:05:51.082Z",
-    "location": "Contagem - MG",
-    "schedule": "Segunda a Sexta"
-  },
-  {
-    "id": 1752093627655,
-    "title": "Faxineira",
-    "company": "Família Barbosa",
-    "salary": "R$ 119,00/dia",
+    "id": 1752094800109,
+    "title": "Diarista",
+    "company": "Casa da Dona Maria",
+    "salary": "R$ 139,00/dia",
     "type": "Diarista",
     "timeAgo": "Há 1 hora",
-    "description": "Cuidados com o ambiente doméstico e limpeza geral. Segunda a Sábado. Disponibilidade para viagens.",
+    "description": "Experiência em trabalhos domésticos e limpeza. Período integral. Conhecimento em produtos de limpeza.",
     "tags": [
-      "Faxineira",
       "Diarista",
-      "Residencial"
+      "Diarista",
+      "Cuidadora"
     ],
-    "createdAt": "2025-07-09T15:57:20.368Z",
-    "location": "Santo André - SP",
-    "schedule": "Segunda a Sábado"
+    "createdAt": "2025-07-09T05:04:33.613Z",
+    "location": "Recife - PE",
+    "schedule": "Período integral",
+    "url": "https://www.vagas.com.br/vaga/diarista-casa-da-dona-maria-1752094800109"
   },
   {
-    "id": 1752093627608,
-    "title": "Porteiro Residencial",
-    "company": "Casa Higienópolis",
-    "salary": "R$ 1.377,00",
+    "id": 1752094800028,
+    "title": "Governanta",
+    "company": "Família Lima",
+    "salary": "R$ 2.188,00",
     "type": "CLT",
-    "timeAgo": "Há 3 horas",
-    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Fins de semana. Morar próximo à região.",
+    "timeAgo": "Há 6 horas",
+    "description": "Trabalhos domésticos e cuidados com a casa. Fins de semana. Referências necessárias.",
     "tags": [
-      "Porteiro",
+      "Governanta",
       "CLT"
     ],
-    "createdAt": "2025-07-09T02:31:09.321Z",
+    "createdAt": "2025-07-09T14:08:59.343Z",
     "location": "Brasília - DF",
-    "schedule": "Fins de semana"
+    "schedule": "Fins de semana",
+    "url": "https://www.glassdoor.com.br/vaga/governanta-famlia-lima-1752094800028"
   },
   {
-    "id": 1752093627658,
-    "title": "Zeladora",
-    "company": "Casa da Dona Maria",
-    "salary": "R$ 1.223,00",
+    "id": 1752094800128,
+    "title": "Jardineiro",
+    "company": "Família Gomes",
+    "salary": "R$ 1.331,00",
     "type": "CLT",
     "timeAgo": "Há 5 horas",
-    "description": "Limpeza, organização e pequenos reparos domésticos. Fins de semana. Experiência com crianças.",
-    "tags": [
-      "Zeladora",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T16:12:10.762Z",
-    "location": "Curitiba - PR",
-    "schedule": "Fins de semana"
-  },
-  {
-    "id": 1752093627648,
-    "title": "Diarista",
-    "company": "Família Oliveira",
-    "salary": "R$ 117,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Há 2 horas",
-    "description": "Trabalhos domésticos e cuidados com a casa. Horário flexível. Conhecimento em produtos de limpeza.",
-    "tags": [
-      "Diarista",
-      "Diarista",
-      "Flexível"
-    ],
-    "createdAt": "2025-07-09T04:53:03.502Z",
-    "location": "Belo Horizonte - MG",
-    "schedule": "Horário flexível"
-  },
-  {
-    "id": 1752093627616,
-    "title": "Cuidadora de Idosos",
-    "company": "Casa Flamengo",
-    "salary": "R$ 1.518,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 dias",
-    "description": "Serviços de limpeza e cuidados com a residência. Período integral. Conhecimento em cozinha básica.",
-    "tags": [
-      "Cuidadora",
-      "CLT",
-      "Limpeza"
-    ],
-    "createdAt": "2025-07-09T06:04:43.545Z",
-    "location": "São Bernardo - SP",
-    "schedule": "Período integral"
-  },
-  {
-    "id": 1752093627631,
-    "title": "Auxiliar de Limpeza",
-    "company": "Residência Particular",
-    "salary": "R$ 1.373,00",
-    "type": "CLT",
-    "timeAgo": "Há 4 horas",
-    "description": "Experiência em serviços de limpeza e organização. Horário flexível. Experiência comprovada.",
-    "tags": [
-      "Auxiliar",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T05:39:06.236Z",
-    "location": "Salvador - BA",
-    "schedule": "Horário flexível"
-  },
-  {
-    "id": 1752093627692,
-    "title": "Jardineiro",
-    "company": "Família Pereira",
-    "salary": "R$ 1.459,00",
-    "type": "CLT",
-    "timeAgo": "Há 4 horas",
-    "description": "Experiência em serviços de limpeza e organização. Período integral. Disponibilidade para viagens.",
+    "description": "Limpeza profissional e organização de ambientes. Fins de semana. Conhecimento em produtos de limpeza.",
     "tags": [
       "Jardineiro",
-      "CLT",
-      "Comercial"
+      "CLT"
     ],
-    "createdAt": "2025-07-09T07:58:13.613Z",
-    "location": "São Bernardo - SP",
-    "schedule": "Período integral"
+    "createdAt": "2025-07-09T08:50:13.454Z",
+    "location": "Uberlândia - MG",
+    "schedule": "Fins de semana",
+    "url": "https://www.trabalha.com.br/vaga/jardineiro-famlia-gomes-1752094800128"
   },
   {
-    "id": 1752093627621,
-    "title": "Auxiliar Doméstica",
-    "company": "Família Dias",
-    "salary": "R$ 1.201,00",
-    "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Cuidados com o ambiente doméstico e limpeza geral. 3x por semana. Pontualidade e responsabilidade.",
-    "tags": [
-      "Auxiliar",
-      "CLT",
-      "Babá"
-    ],
-    "createdAt": "2025-07-09T06:57:38.304Z",
-    "location": "São Bernardo - SP",
-    "schedule": "3x por semana"
-  },
-  {
-    "id": 1752093627693,
-    "title": "Porteiro Residencial",
-    "company": "Família Lima",
-    "salary": "R$ 1.526,00",
-    "type": "CLT",
-    "timeAgo": "Há 5 horas",
-    "description": "Serviços domésticos e cuidados com a residência. 2x por semana. Conhecimento em cozinha básica.",
-    "tags": [
-      "Porteiro",
-      "CLT",
-      "Residencial"
-    ],
-    "createdAt": "2025-07-08T21:31:35.686Z",
-    "location": "Salvador - BA",
-    "schedule": "2x por semana"
-  },
-  {
-    "id": 1752093627601,
-    "title": "Diarista",
-    "company": "Família Rodrigues",
-    "salary": "R$ 101,00/dia",
-    "type": "Diarista",
-    "timeAgo": "Há 2 dias",
-    "description": "Cuidados com a casa e tarefas domésticas gerais. Segunda a Sábado. Experiência com animais domésticos.",
-    "tags": [
-      "Diarista",
-      "Diarista",
-      "Comercial"
-    ],
-    "createdAt": "2025-07-09T19:33:05.252Z",
-    "location": "Rio de Janeiro - RJ",
-    "schedule": "Segunda a Sábado"
-  },
-  {
-    "id": 1752093627660,
+    "id": 1752094800027,
     "title": "Porteiro Residencial",
     "company": "Residência Morumbi",
-    "salary": "R$ 1.279,00",
+    "salary": "R$ 1.328,00",
     "type": "CLT",
-    "timeAgo": "Há 2 dias",
-    "description": "Experiência em limpeza e organização de residências. Meio período. Experiência em casas grandes.",
+    "timeAgo": "Há 3 horas",
+    "description": "Trabalhos domésticos e cuidados com a casa. Segunda a Sexta. Conhecimento em produtos de limpeza.",
     "tags": [
       "Porteiro",
-      "CLT",
-      "Limpeza"
+      "CLT"
     ],
-    "createdAt": "2025-07-09T03:47:24.041Z",
-    "location": "Guarulhos - SP",
-    "schedule": "Meio período"
+    "createdAt": "2025-07-09T05:45:03.506Z",
+    "location": "Osasco - SP",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.indeed.com.br/vaga/porteiro-residencial-residncia-morumbi-1752094800027"
   },
   {
-    "id": 1752093627591,
+    "id": 1752094800112,
     "title": "Passadeira",
-    "company": "Casa Perdizes",
-    "salary": "R$ 85,00/dia",
+    "company": "Família Cardoso",
+    "salary": "R$ 78,00/dia",
     "type": "Diarista",
-    "timeAgo": "Ontem",
-    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Horário flexível. Experiência mínima de 1 ano.",
+    "timeAgo": "Há 3 horas",
+    "description": "Cuidados domésticos e manutenção da limpeza. 2x por semana. Experiência comprovada.",
     "tags": [
       "Passadeira",
       "Diarista",
       "Limpeza"
     ],
-    "createdAt": "2025-07-09T11:57:07.376Z",
-    "location": "Santo André - SP",
-    "schedule": "Horário flexível"
+    "createdAt": "2025-07-09T14:36:29.806Z",
+    "location": "Contagem - MG",
+    "schedule": "2x por semana",
+    "url": "https://www.99jobs.com/vaga/passadeira-famlia-cardoso-1752094800112"
   },
   {
-    "id": 1752093627654,
-    "title": "Auxiliar Doméstica",
-    "company": "Casa Flamengo",
-    "salary": "R$ 1.365,00",
-    "type": "CLT",
-    "timeAgo": "Há 4 horas",
-    "description": "Limpeza profissional e organização de ambientes. Meio período. Disponibilidade para viagens.",
-    "tags": [
-      "Auxiliar",
-      "CLT"
-    ],
-    "createdAt": "2025-07-09T20:15:18.890Z",
-    "location": "Fortaleza - CE",
-    "schedule": "Meio período"
-  },
-  {
-    "id": 1752093627632,
+    "id": 1752094800081,
     "title": "Caseiro",
-    "company": "Família Monteiro",
-    "salary": "R$ 1.840,00",
+    "company": "Família Gomes",
+    "salary": "R$ 1.614,00",
     "type": "CLT",
-    "timeAgo": "Há 2 horas",
-    "description": "Serviços domésticos e cuidados com a residência. Horário flexível. Disponibilidade de horário.",
+    "timeAgo": "Ontem",
+    "description": "Limpeza geral da casa, organização e cuidados básicos. Segunda a Sábado. Experiência com animais domésticos.",
     "tags": [
       "Caseiro",
       "CLT"
     ],
-    "createdAt": "2025-07-09T15:12:49.759Z",
-    "location": "Fortaleza - CE",
-    "schedule": "Horário flexível"
+    "createdAt": "2025-07-09T10:43:31.555Z",
+    "location": "Porto Alegre - RS",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.vagas.com.br/vaga/caseiro-famlia-gomes-1752094800081"
   },
   {
-    "id": 1752093627669,
+    "id": 1752094800056,
+    "title": "Acompanhante de Idosos",
+    "company": "Família Rodrigues",
+    "salary": "R$ 1.310,00",
+    "type": "CLT",
+    "timeAgo": "Há 1 hora",
+    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Fins de semana. Disponibilidade de horário.",
+    "tags": [
+      "Acompanhante",
+      "CLT",
+      "Doméstica"
+    ],
+    "createdAt": "2025-07-08T23:55:24.661Z",
+    "location": "Sorocaba - SP",
+    "schedule": "Fins de semana",
+    "url": "https://www.empregos.com.br/vaga/acompanhante-de-idosos-famlia-rodrigues-1752094800056"
+  },
+  {
+    "id": 1752094800122,
+    "title": "Passadeira",
+    "company": "Família Barbosa",
+    "salary": "R$ 70,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 3 horas",
+    "description": "Limpeza, organização e pequenos reparos domésticos. Segunda a Sábado. Disponibilidade para viagens.",
+    "tags": [
+      "Passadeira",
+      "Diarista",
+      "Experiência"
+    ],
+    "createdAt": "2025-07-09T05:51:46.632Z",
+    "location": "Rio de Janeiro - RJ",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.empregos.com.br/vaga/passadeira-famlia-barbosa-1752094800122"
+  },
+  {
+    "id": 1752094800046,
+    "title": "Passadeira",
+    "company": "Família Correia",
+    "salary": "R$ 80,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 5 horas",
+    "description": "Serviços de limpeza e cuidados com a residência. Fins de semana. Experiência mínima de 1 ano.",
+    "tags": [
+      "Passadeira",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-09T13:59:01.758Z",
+    "location": "Niterói - RJ",
+    "schedule": "Fins de semana",
+    "url": "https://www.99jobs.com/vaga/passadeira-famlia-correia-1752094800046"
+  },
+  {
+    "id": 1752094800077,
+    "title": "Babá",
+    "company": "Família Costa",
+    "salary": "R$ 1.473,00",
+    "type": "CLT",
+    "timeAgo": "Há 3 horas",
+    "description": "Serviços de limpeza e cuidados com a residência. 3x por semana. Conhecimento em organização.",
+    "tags": [
+      "Babá",
+      "CLT",
+      "Cuidadora"
+    ],
+    "createdAt": "2025-07-09T04:34:46.991Z",
+    "location": "Brasília - DF",
+    "schedule": "3x por semana",
+    "url": "https://www.trabalha.com.br/vaga/bab-famlia-costa-1752094800077"
+  },
+  {
+    "id": 1752094800101,
+    "title": "Faxineira",
+    "company": "Família Barbosa",
+    "salary": "R$ 118,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Ontem",
+    "description": "Experiência em serviços de limpeza e organização. Horário flexível. Conhecimento em produtos de limpeza.",
+    "tags": [
+      "Faxineira",
+      "Diarista",
+      "Comercial"
+    ],
+    "createdAt": "2025-07-09T01:16:44.551Z",
+    "location": "Salvador - BA",
+    "schedule": "Horário flexível",
+    "url": "https://www.vagas.com.br/vaga/faxineira-famlia-barbosa-1752094800101"
+  },
+  {
+    "id": 1752094800053,
+    "title": "Babá",
+    "company": "Família Rodrigues",
+    "salary": "R$ 1.664,00",
+    "type": "CLT",
+    "timeAgo": "Há 4 horas",
+    "description": "Serviços de limpeza e cuidados com a residência. 3x por semana. Experiência mínima de 1 ano.",
+    "tags": [
+      "Babá",
+      "CLT",
+      "Doméstica"
+    ],
+    "createdAt": "2025-07-09T03:46:21.073Z",
+    "location": "Santo André - SP",
+    "schedule": "3x por semana",
+    "url": "https://www.linkedin.com/jobs/vaga/bab-famlia-rodrigues-1752094800053"
+  },
+  {
+    "id": 1752094800042,
+    "title": "Acompanhante de Idosos",
+    "company": "Família Silva",
+    "salary": "R$ 1.359,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 dias",
+    "description": "Experiência em limpeza e organização de residências. Segunda a Sábado. Pontualidade e responsabilidade.",
+    "tags": [
+      "Acompanhante",
+      "CLT",
+      "Limpeza"
+    ],
+    "createdAt": "2025-07-08T21:44:24.113Z",
+    "location": "Belo Horizonte - MG",
+    "schedule": "Segunda a Sábado",
+    "url": "https://www.99jobs.com/vaga/acompanhante-de-idosos-famlia-silva-1752094800042"
+  },
+  {
+    "id": 1752094800045,
     "title": "Empregada Doméstica",
-    "company": "Casa Flamengo",
-    "salary": "R$ 1.343,00",
+    "company": "Casa Botafogo",
+    "salary": "R$ 1.580,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 dias",
+    "description": "Limpeza geral da casa, organização e cuidados básicos. Meio período. Disponibilidade para viagens.",
+    "tags": [
+      "Empregada",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T01:37:03.578Z",
+    "location": "São Paulo - SP",
+    "schedule": "Meio período",
+    "url": "https://www.sine.com.br/vaga/empregada-domstica-casa-botafogo-1752094800045"
+  },
+  {
+    "id": 1752094800076,
+    "title": "Porteiro Residencial",
+    "company": "Casa Vila Madalena",
+    "salary": "R$ 1.729,00",
+    "type": "CLT",
+    "timeAgo": "Ontem",
+    "description": "Cuidados com a casa e tarefas domésticas gerais. Fins de semana. Conhecimento em organização.",
+    "tags": [
+      "Porteiro",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T05:03:09.404Z",
+    "location": "Uberlândia - MG",
+    "schedule": "Fins de semana",
+    "url": "https://www.linkedin.com/jobs/vaga/porteiro-residencial-casa-vila-madalena-1752094800076"
+  },
+  {
+    "id": 1752094800097,
+    "title": "Governanta",
+    "company": "Apartamento Tijuca",
+    "salary": "R$ 1.952,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 horas",
+    "description": "Serviços de limpeza e cuidados com a residência. Segunda a Sexta. Disponibilidade para viagens.",
+    "tags": [
+      "Governanta",
+      "CLT",
+      "Experiência"
+    ],
+    "createdAt": "2025-07-09T03:15:40.167Z",
+    "location": "Rio de Janeiro - RJ",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.empregos.com.br/vaga/governanta-apartamento-tijuca-1752094800097"
+  },
+  {
+    "id": 1752094800039,
+    "title": "Diarista",
+    "company": "Família Martins",
+    "salary": "R$ 137,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 3 horas",
+    "description": "Cuidados com a casa e tarefas domésticas gerais. Segunda a Sexta. Disponibilidade aos fins de semana.",
+    "tags": [
+      "Diarista",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-08T21:08:27.204Z",
+    "location": "Contagem - MG",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.linkedin.com/jobs/vaga/diarista-famlia-martins-1752094800039"
+  },
+  {
+    "id": 1752094800070,
+    "title": "Auxiliar de Limpeza",
+    "company": "Família Costa",
+    "salary": "R$ 1.265,00",
+    "type": "CLT",
+    "timeAgo": "Há 3 horas",
+    "description": "Cuidados com o ambiente doméstico e limpeza geral. Meio período. Conhecimento em produtos de limpeza.",
+    "tags": [
+      "Auxiliar",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T14:28:21.969Z",
+    "location": "São José dos Campos - SP",
+    "schedule": "Meio período",
+    "url": "https://www.infojobs.com.br/vaga/auxiliar-de-limpeza-famlia-costa-1752094800070"
+  },
+  {
+    "id": 1752094800121,
+    "title": "Acompanhante de Idosos",
+    "company": "Família Barbosa",
+    "salary": "R$ 1.639,00",
     "type": "CLT",
     "timeAgo": "Há 6 horas",
     "description": "Serviços de limpeza e cuidados com a residência. Horário flexível. Experiência mínima de 1 ano.",
     "tags": [
-      "Empregada",
+      "Acompanhante",
       "CLT"
     ],
-    "createdAt": "2025-07-09T12:29:29.506Z",
-    "location": "São Bernardo - SP",
-    "schedule": "Horário flexível"
+    "createdAt": "2025-07-09T06:05:25.123Z",
+    "location": "São Paulo - SP",
+    "schedule": "Horário flexível",
+    "url": "https://www.catho.com.br/vaga/acompanhante-de-idosos-famlia-barbosa-1752094800121"
+  },
+  {
+    "id": 1752094800067,
+    "title": "Auxiliar Doméstica",
+    "company": "Apartamento Centro",
+    "salary": "R$ 1.325,00",
+    "type": "CLT",
+    "timeAgo": "Há 6 horas",
+    "description": "Limpeza, organização e pequenos reparos domésticos. Segunda a Sexta. Conhecimento em cozinha básica.",
+    "tags": [
+      "Auxiliar",
+      "CLT",
+      "Babá"
+    ],
+    "createdAt": "2025-07-09T11:51:03.478Z",
+    "location": "Campinas - SP",
+    "schedule": "Segunda a Sexta",
+    "url": "https://www.linkedin.com/jobs/vaga/auxiliar-domstica-apartamento-centro-1752094800067"
+  },
+  {
+    "id": 1752094800127,
+    "title": "Passadeira",
+    "company": "Residência Santa Teresa",
+    "salary": "R$ 93,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 6 horas",
+    "description": "Experiência em serviços de limpeza e organização. Fins de semana. Conhecimento em cozinha básica.",
+    "tags": [
+      "Passadeira",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-09T13:39:41.211Z",
+    "location": "Campinas - SP",
+    "schedule": "Fins de semana",
+    "url": "https://www.sine.com.br/vaga/passadeira-residncia-santa-teresa-1752094800127"
+  },
+  {
+    "id": 1752094800125,
+    "title": "Cuidadora de Idosos",
+    "company": "Casa Flamengo",
+    "salary": "R$ 1.367,00",
+    "type": "CLT",
+    "timeAgo": "Há 4 horas",
+    "description": "Cuidados com a casa e tarefas domésticas gerais. 3x por semana. Experiência com animais domésticos.",
+    "tags": [
+      "Cuidadora",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T18:03:01.350Z",
+    "location": "São José dos Campos - SP",
+    "schedule": "3x por semana",
+    "url": "https://www.linkedin.com/jobs/vaga/cuidadora-de-idosos-casa-flamengo-1752094800125"
+  },
+  {
+    "id": 1752094800129,
+    "title": "Passadeira",
+    "company": "Família Correia",
+    "salary": "R$ 84,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 6 horas",
+    "description": "Experiência em limpeza e organização de residências. Horário flexível. Conhecimento em organização.",
+    "tags": [
+      "Passadeira",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-09T07:22:09.674Z",
+    "location": "Uberlândia - MG",
+    "schedule": "Horário flexível",
+    "url": "https://www.infojobs.com.br/vaga/passadeira-famlia-correia-1752094800129"
+  },
+  {
+    "id": 1752094800105,
+    "title": "Cuidadora de Idosos",
+    "company": "Família Gomes",
+    "salary": "R$ 1.568,00",
+    "type": "CLT",
+    "timeAgo": "Há 2 horas",
+    "description": "Trabalhos domésticos e cuidados com a casa. Meio período. Morar próximo à região.",
+    "tags": [
+      "Cuidadora",
+      "CLT",
+      "Experiência"
+    ],
+    "createdAt": "2025-07-09T15:18:02.253Z",
+    "location": "Ribeirão Preto - SP",
+    "schedule": "Meio período",
+    "url": "https://www.99jobs.com/vaga/cuidadora-de-idosos-famlia-gomes-1752094800105"
+  },
+  {
+    "id": 1752094800124,
+    "title": "Faxineira",
+    "company": "Residência Morumbi",
+    "salary": "R$ 92,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 6 horas",
+    "description": "Responsável pela manutenção e limpeza do ambiente residencial. Período integral. Conhecimento em produtos de limpeza.",
+    "tags": [
+      "Faxineira",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-09T09:47:37.547Z",
+    "location": "Rio de Janeiro - RJ",
+    "schedule": "Período integral",
+    "url": "https://www.infojobs.com.br/vaga/faxineira-residncia-morumbi-1752094800124"
+  },
+  {
+    "id": 1752094800012,
+    "title": "Porteiro Residencial",
+    "company": "Casa da Dona Maria",
+    "salary": "R$ 1.713,00",
+    "type": "CLT",
+    "timeAgo": "Há 3 horas",
+    "description": "Limpeza, organização e pequenos reparos domésticos. 3x por semana. Disponibilidade aos fins de semana.",
+    "tags": [
+      "Porteiro",
+      "CLT",
+      "Babá"
+    ],
+    "createdAt": "2025-07-09T16:55:28.385Z",
+    "location": "Contagem - MG",
+    "schedule": "3x por semana",
+    "url": "https://www.99jobs.com/vaga/porteiro-residencial-casa-da-dona-maria-1752094800013"
+  },
+  {
+    "id": 1752094800066,
+    "title": "Babá",
+    "company": "Residência Particular",
+    "salary": "R$ 1.568,00",
+    "type": "CLT",
+    "timeAgo": "Ontem",
+    "description": "Cuidados domésticos e manutenção da limpeza. 3x por semana. Morar próximo à região.",
+    "tags": [
+      "Babá",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T06:42:13.861Z",
+    "location": "Contagem - MG",
+    "schedule": "3x por semana",
+    "url": "https://www.catho.com.br/vaga/bab-residncia-particular-1752094800066"
+  },
+  {
+    "id": 1752094800031,
+    "title": "Passadeira",
+    "company": "Família Costa",
+    "salary": "R$ 71,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 4 horas",
+    "description": "Manutenção da limpeza e organização do lar. 2x por semana. Conhecimento em produtos de limpeza.",
+    "tags": [
+      "Passadeira",
+      "Diarista"
+    ],
+    "createdAt": "2025-07-09T01:55:10.599Z",
+    "location": "Contagem - MG",
+    "schedule": "2x por semana",
+    "url": "https://www.empregos.com.br/vaga/passadeira-famlia-costa-1752094800031"
+  },
+  {
+    "id": 1752094800048,
+    "title": "Babá",
+    "company": "Família Ferreira",
+    "salary": "R$ 1.349,00",
+    "type": "CLT",
+    "timeAgo": "Há 5 horas",
+    "description": "Responsável por manter a casa organizada e limpa. Horário flexível. Experiência mínima de 1 ano.",
+    "tags": [
+      "Babá",
+      "CLT"
+    ],
+    "createdAt": "2025-07-09T10:25:17.219Z",
+    "location": "Sorocaba - SP",
+    "schedule": "Horário flexível",
+    "url": "https://www.vagas.com.br/vaga/bab-famlia-ferreira-1752094800048"
+  },
+  {
+    "id": 1752094800047,
+    "title": "Faxineira",
+    "company": "Família Barbosa",
+    "salary": "R$ 113,00/dia",
+    "type": "Diarista",
+    "timeAgo": "Há 1 hora",
+    "description": "Trabalhos domésticos e cuidados com a casa. 3x por semana. Experiência comprovada.",
+    "tags": [
+      "Faxineira",
+      "Diarista",
+      "Cuidadora"
+    ],
+    "createdAt": "2025-07-09T09:21:36.222Z",
+    "location": "Niterói - RJ",
+    "schedule": "3x por semana",
+    "url": "https://www.empregos.com.br/vaga/faxineira-famlia-barbosa-1752094800047"
   }
 ]
