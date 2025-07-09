@@ -230,26 +230,17 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
       
       if (response.ok && (result.status === 'success' || result.success === true || result.message?.includes('sucesso'))) {
         console.log('🎉 SUCESSO! Dados enviados com sucesso!')
-        // Preparar mensagem de sucesso
-        let successMessage = `✅ Pesquisa trabalhista enviada com sucesso!`
-        successMessage += `\n\n📋 Dados registrados:`
-        successMessage += `\n👤 Nome: ${formData.name}`
-        successMessage += `\n📱 WhatsApp: ${formData.whatsapp}`
-        successMessage += `\n🏢 Última empresa: ${formData.lastCompany}`
-        successMessage += `\n💼 Vaga: ${jobData?.title || 'Vaga de Emprego'}`
+        console.log('📋 Dados registrados:', {
+          nome: formData.name,
+          whatsapp: formData.whatsapp,
+          empresa: formData.lastCompany,
+          vaga: jobData?.title || 'Vaga de Emprego'
+        })
 
-        if (jobData?.company?.name || jobData?.company) {
-          successMessage += `\n🏢 Empresa da vaga: ${jobData.company?.name || jobData.company}`
-        }
-
-        successMessage += '\n\n🔗 Redirecionando para a vaga original...'
-
-        alert(successMessage)
-
-        // Fechar modal
+        // Fechar modal IMEDIATAMENTE
         onClose()
 
-        // Tentar redirecionar para vaga real
+        // Redirecionar IMEDIATAMENTE (sem setTimeout para evitar popup blocker)
         const redirectUrl = jobData?.url || 
                            jobData?.link || 
                            jobData?.apply_url || 
@@ -257,19 +248,15 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
                            jobData?.jobLink
 
         if (redirectUrl && redirectUrl !== '#') {
-          // Redirecionamento para vaga real
-          setTimeout(() => {
-            window.open(redirectUrl, '_blank')
-          }, 1000)
+          // Redirecionamento direto para vaga real
+          window.open(redirectUrl, '_blank')
         } else {
           // Fallback: buscar vaga similar no Indeed
           const encodedTitle = encodeURIComponent((jobData?.title || 'emprego').replace(/[^\w\s]/gi, '').replace(/\s+/g, '+'))
           const encodedLocation = encodeURIComponent((jobData?.location || 'Brasil').split(',')[0].replace(/\s+/g, '+'))
           const fallbackUrl = `https://www.indeed.com.br/jobs?q=${encodedTitle}&l=${encodedLocation}`
-
-          setTimeout(() => {
-            window.open(fallbackUrl, '_blank')
-          }, 1000)
+          
+          window.open(fallbackUrl, '_blank')
         }
 
       } else {
