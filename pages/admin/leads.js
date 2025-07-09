@@ -620,7 +620,8 @@ export default function AdminLeads() {
                       }`}>
                         {selectedLead.dadosCompletos?.aceitaConsultoria === 'sim' ? 'Sim, quer consultoria' :
                          selectedLead.dadosCompletos?.aceitaConsultoria === 'nao' ? 'Não quer consultoria' :
-                         'Não informado'}
+                         'Não informado'}```text
+
                       </p>
                     </div>
                     <div className="col-span-2">
