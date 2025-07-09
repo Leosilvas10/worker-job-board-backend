@@ -657,7 +657,8 @@ const Vagas = () => {
                 Não há vagas disponíveis no momento. Nossas fontes estão sendo atualizadas constantemente.
               </p>
             </div>
-          </section        )}
+          </section>
+        )}
 
         {/* Seção Dicas para o Candidato */}
         {!loading && !error && (
