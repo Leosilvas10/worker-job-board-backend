@@ -84,9 +84,9 @@ export default function AdminLeads() {
   }, [])
 
   const filteredLeads = leads.filter(lead => {
-    const matchesSearch = lead.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         lead.phone?.includes(searchTerm)
+    const matchesSearch = (lead.nome || lead.name)?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (lead.email)?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (lead.telefone || lead.phone)?.includes(searchTerm)
     
     const matchesStatus = statusFilter === 'all' || lead.status === statusFilter
     
@@ -264,17 +264,17 @@ export default function AdminLeads() {
                 {filteredLeads.length > 0 ? filteredLeads.map((lead) => (
                   <tr key={lead.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{lead.name}</div>
+                      <div className="text-sm font-medium text-gray-900">{lead.nome || lead.name}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">{lead.email}</div>
-                      <div className="text-sm text-gray-500">{lead.phone}</div>
+                      <div className="text-sm text-gray-500">{lead.telefone || lead.phone}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {lead.interesse}
+                      {lead.vaga?.titulo || lead.interesse || 'Candidatura'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {lead.source}
+                      {lead.fonte || lead.source || 'Site'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <select
@@ -294,7 +294,7 @@ export default function AdminLeads() {
                       </select>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(lead.createdAt).toLocaleDateString('pt-BR')}
+                      {new Date(lead.criadoEm || lead.data_criacao || lead.createdAt).toLocaleDateString('pt-BR')}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button 

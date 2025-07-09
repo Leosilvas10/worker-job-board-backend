@@ -86,12 +86,19 @@ export default async function handler(req, res) {
     
     let leadsReais = []
     try {
-      const backendResponse = await fetch(`${backendUrl}/api/leads`)
+      const backendResponse = await fetch(`${backendUrl}/api/leads`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      })
       console.log('📡 Status da resposta do backend:', backendResponse.status)
       
       if (backendResponse.ok) {
         const backendData = await backendResponse.json()
-        console.log('✅', backendData.leads?.length, 'leads reais carregados do backend')
+        console.log('📊 Dados completos do backend:', backendData)
+        console.log('✅', backendData.leads?.length || 0, 'leads reais carregados do backend')
         
         if (backendData.success && backendData.leads) {
           leadsReais = backendData.leads.map(lead => {
