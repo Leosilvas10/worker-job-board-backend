@@ -13,20 +13,56 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false)
   const [selectedJob, setSelectedJob] = useState(null)
 
+  // Debug logs para produção
+  useEffect(() => {
+    console.log('🏠 Homepage State:', { 
+      jobsCount: jobs.length, 
+      loading, 
+      showModal,
+      environment: process.env.NODE_ENV 
+    })
+  }, [jobs, loading, showModal])
+
   // Buscar vagas em destaque - mesma estrutura da página de vagas
   useEffect(() => {
     let mounted = true
+    let timeoutId = null
 
     const loadJobs = async () => {
       try {
         console.log('🔍 Buscando vagas para destaque na homepage...')
         setLoading(true)
 
-        const response = await fetch('/api/all-jobs-combined')
+        // Timeout de segurança para garantir que o loading seja removido
+        timeoutId = setTimeout(() => {
+          if (mounted) {
+            console.log('⏰ Timeout de segurança ativado, removendo loading')
+            setLoading(false)
+          }
+        }, 10000) // 10 segundos máximo
+
+        const response = await fetch('/api/all-jobs-combined', {
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        })
+
+        if (timeoutId) {
+          clearTimeout(timeoutId)
+          timeoutId = null
+        }
+
         if (response.ok && mounted) {
           const data = await response.json()
+          console.log('📊 Dados recebidos da API:', { 
+            success: data.success, 
+            jobsLength: data.jobs?.length,
+            dataLength: data.data?.length,
+            total: data.total 
+          })
 
-          // Verificar se temos dados válidos
+          // Verificar múltiplas propriedades para garantir compatibilidade
           const jobsArray = data.jobs || data.data || []
           
           if (jobsArray && Array.isArray(jobsArray) && jobsArray.length > 0) {
@@ -38,34 +74,41 @@ export default function Home() {
 
             if (mounted) {
               setJobs(featured)
-              console.log('🔥 6 vagas selecionadas para destaque')
+              setLoading(false) // Garantir que loading seja removido
+              console.log('🔥 6 vagas selecionadas para destaque:', featured.map(j => j.title))
             }
           } else {
             if (mounted) {
               console.log('⚠️ Nenhuma vaga encontrada, dados recebidos:', data)
               setJobs([])
+              setLoading(false)
             }
           }
         } else if (mounted) {
           console.error('❌ Erro na resposta da API:', response.status)
           setJobs([])
+          setLoading(false)
         }
       } catch (error) {
         if (mounted) {
           console.error('❌ Erro ao carregar vagas:', error)
           setJobs([])
-        }
-      } finally {
-        if (mounted) {
           setLoading(false)
+        }
+        if (timeoutId) {
+          clearTimeout(timeoutId)
         }
       }
     }
 
+    // Carregar imediatamente
     loadJobs()
 
     return () => {
       mounted = false
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
     }
   }, [])
 
@@ -120,7 +163,7 @@ export default function Home() {
             {loading ? (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[...Array(6)].map((_, index) => (
-                  <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 animate-pulse">
+                  <div key={`skeleton-${index}`} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 animate-pulse">
                     <div className="flex items-start gap-4 mb-4">
                       <div className="w-12 h-12 bg-gray-300 rounded"></div>
                       <div className="flex-1">
@@ -138,15 +181,24 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-            ) : (
+            ) : jobs.length > 0 ? (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                 {jobs.map((job, index) => (
                   <JobCard
-                    key={index}
+                    key={`job-${job.id || index}`}
                     job={job}
                     onApplyClick={() => handleApplyClick(job)}
                   />
                 ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">⚠️</div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">Carregando vagas...</h3>
+                <p className="text-gray-600">Aguarde um momento enquanto buscamos as melhores oportunidades</p>
+                <div className="mt-4">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                </div>
               </div>
             )}
 
