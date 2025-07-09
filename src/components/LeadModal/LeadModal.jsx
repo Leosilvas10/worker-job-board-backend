@@ -87,28 +87,62 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         return
       }
 
+      if (!formData.lastCompany) {
+        alert('❌ Por favor, informe o nome da última empresa')
+        setIsSubmitting(false)
+        return
+      }
+
+      if (!formData.workStatus) {
+        alert('❌ Por favor, informe o tipo de carteira de trabalho')
+        setIsSubmitting(false)
+        return
+      }
+
+      if (!formData.receivedRights) {
+        alert('❌ Por favor, informe se recebeu os direitos trabalhistas')
+        setIsSubmitting(false)
+        return
+      }
+
+      if (!formData.wantConsultation) {
+        alert('❌ Por favor, informe se deseja consultoria jurídica')
+        setIsSubmitting(false)
+        return
+      }
+
       if (!formData.lgpdConsent) {
         alert('❌ É necessário aceitar os termos de uso para continuar')
         setIsSubmitting(false)
         return
       }
 
-      // Preparar dados no formato que o backend /api/labor-research espera
+      // Preparar dados no formato EXATO que o backend espera
       const leadData = {
-        ultimaEmpresa: formData.lastCompany,
+        ultimaEmpresa: formData.lastCompany || '',
         tipoCarteira: formData.workStatus === 'Com carteira assinada' ? 'sim' : 
-                     formData.workStatus === 'Sem carteira assinada' ? 'nao' : 'parcial',
+                     formData.workStatus === 'Sem carteira assinada' ? 'nao' : 
+                     formData.workStatus === 'Começei sem, depois registraram' ? 'parcial' : 'nao',
         recebeuTudoCertinho: formData.receivedRights === 'Sim, recebi tudo certinho' ? 'sim' : 
-                           formData.receivedRights === 'Não recebi nada' ? 'nao' : 'parcial',
-        situacoesDuranteTrabalho: formData.workProblems || [],
+                           formData.receivedRights === 'Não recebi nada' ? 'nao' : 
+                           formData.receivedRights === 'Recebi só uma parte' ? 'parcial' : 'nao',
+        situacoesDuranteTrabalho: Array.isArray(formData.workProblems) ? formData.workProblems : [],
         aceitaConsultoria: formData.wantConsultation === 'Sim, quero saber meus direitos' ? 'sim' : 'nao',
-        nomeCompleto: formData.name,
-        whatsapp: formData.whatsapp
+        nomeCompleto: formData.name || '',
+        whatsapp: formData.whatsapp || ''
       }
 
       console.log('📤 DADOS DO FORMULÁRIO ANTES DO ENVIO:', formData)
       console.log('📋 DADOS DA VAGA:', jobData)
       console.log('🚀 DADOS FORMATADOS PARA BACKEND:', leadData)
+      console.log('🔍 VERIFICANDO CAMPOS OBRIGATÓRIOS:')
+      console.log('- Nome:', leadData.nomeCompleto)
+      console.log('- WhatsApp:', leadData.whatsapp)
+      console.log('- Empresa:', leadData.ultimaEmpresa)
+      console.log('- Carteira:', leadData.tipoCarteira)
+      console.log('- Recebeu:', leadData.recebeuTudoCertinho)
+      console.log('- Situações:', leadData.situacoesDuranteTrabalho)
+      console.log('- Consultoria:', leadData.aceitaConsultoria)
 
       // Enviar direto para o backend
       const response = await fetch('https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research', {
@@ -119,9 +153,21 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         body: JSON.stringify(leadData)
       })
 
-      const result = await response.json()
+      const responseText = await response.text()
+      console.log('📋 RESPOSTA BRUTA DO BACKEND:', responseText)
 
-      if (response.ok && result.status === 'success') {
+      let result
+      try {
+        result = JSON.parse(responseText)
+      } catch (parseError) {
+        console.error('❌ ERRO AO FAZER PARSE DA RESPOSTA:', parseError)
+        console.error('📋 RESPOSTA ORIGINAL:', responseText)
+        throw new Error('Resposta inválida do servidor')
+      }
+
+      console.log('✅ RESPOSTA PARSEADA:', result)
+
+      if (response.ok && (result.status === 'success' || result.success === true)) {
         // Preparar mensagem de sucesso
         let successMessage = `✅ Pesquisa trabalhista enviada com sucesso!`
         successMessage += `\n\n📋 Dados registrados:`
