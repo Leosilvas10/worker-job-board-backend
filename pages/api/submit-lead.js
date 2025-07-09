@@ -8,42 +8,103 @@ export default async function handler(req, res) {
   }
 
   try {
-    console.log('🎯 MODAL ÚNICO - Dados recebidos:', req.body)
+    console.log('🎯 PESQUISA TRABALHISTA COMPLETA - Dados recebidos:', req.body)
 
     const {
-      nome,
-      telefone,
+      // Dados pessoais
+      nomeCompleto,
+      whatsapp,
       email,
+      idade,
+      cidade,
+      estado,
+      
+      // Informações trabalhistas
       ultimaEmpresa,
+      cargo,
+      tempoTrabalho,
       tipoCarteira,
-      recebeuTudoCertinho,
-      situacoesDuranteTrabalho,
+      
+      // Verbas trabalhistas
+      fgts,
+      ferias,
+      decimoTerceiro,
+      horasExtras,
+      verbasRescisao,
+      
+      // Problemas enfrentados
+      assedio,
+      humilhacoes,
+      acumuloFuncoes,
+      semRegistro,
+      atrasoSalario,
+      
+      // Situações específicas
+      situacoesEnfrentadas,
+      recebeuDireitos,
       aceitaConsultoria,
+      mensagem,
+      
+      // Dados da vaga (se houver)
       vaga,
       fonte,
       timestamp
     } = req.body
 
-    // Preparar dados para envio ao backend
+    // Preparar dados completos para envio ao backend
     const leadData = {
-      nomeCompleto: nome,
-      whatsapp: telefone,
-      email: email || `${nome.toLowerCase().replace(/\s+/g, '')}@contato.com`,
-      ultimaEmpresa,
-      tipoCarteira,
-      recebeuTudoCertinho,
-      situacoesDuranteTrabalho: Array.isArray(situacoesDuranteTrabalho) 
-        ? situacoesDuranteTrabalho 
-        : [situacoesDuranteTrabalho],
-      aceitaConsultoria,
-      vagaTitulo: vaga?.titulo || 'Pesquisa Trabalhista',
-      fonte: fonte || 'modal_unico',
-      createdAt: timestamp || new Date().toISOString()
+      // Dados pessoais
+      nome: nomeCompleto,
+      telefone: whatsapp,
+      email: email || `${nomeCompleto.toLowerCase().replace(/\s+/g, '')}@contato.com`,
+      idade: idade || null,
+      cidade: cidade || '',
+      estado: estado || '',
+      
+      // Informações trabalhistas
+      ultima_empresa: ultimaEmpresa || '',
+      cargo: cargo || '',
+      tempo_trabalho: tempoTrabalho || '',
+      tipo_carteira: tipoCarteira || '',
+      
+      // Verbas trabalhistas (formato esperado pelo backend)
+      fgts: fgts || 'Não informado',
+      ferias: ferias || 'Não informado',
+      decimo_terceiro: decimoTerceiro || 'Não informado',
+      horas_extras: horasExtras || 'Não informado',
+      verbas_rescisao: verbasRescisao || 'Não informado',
+      
+      // Problemas enfrentados
+      assedio: assedio || 'Não informado',
+      humilhacoes: humilhacoes || 'Não informado',
+      acumulo_funcoes: acumuloFuncoes || 'Não informado',
+      sem_registro: semRegistro || 'Não informado',
+      atraso_salario: atrasoSalario || 'Não informado',
+      
+      // Situações específicas
+      situacoes_enfrentadas: situacoesEnfrentadas || '',
+      recebeu_direitos: recebeuDireitos || 'Não informado',
+      aceita_consultoria: aceitaConsultoria || 'Não informado',
+      mensagem: mensagem || '',
+      
+      // Dados da vaga (se aplicável)
+      vaga_id: vaga?.id || null,
+      vaga_titulo: vaga?.titulo || 'Pesquisa Trabalhista',
+      vaga_empresa: vaga?.empresa || '',
+      vaga_localizacao: vaga?.localizacao || '',
+      
+      // Controle e rastreamento
+      fonte: fonte || 'modal_pesquisa_trabalhista',
+      status: 'novo',
+      contatado: false,
+      convertido: false,
+      data_criacao: timestamp || new Date().toISOString(),
+      created_at: new Date().toISOString()
     }
 
-    console.log('📤 Enviando para backend:', leadData)
+    console.log('📤 Enviando dados completos para backend:', leadData)
 
-    // Enviar para o backend correto - ENDPOINT CORRIGIDO
+    // Enviar para o endpoint correto do backend
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app'
     const endpoint = `${backendUrl}/api/labor-research`
 
@@ -52,34 +113,41 @@ export default async function handler(req, res) {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'User-Agent': 'SiteDoTrabalhador-Modal'
+        'User-Agent': 'SiteDoTrabalhador-PesquisaTrabalhista'
       },
       body: JSON.stringify(leadData)
     })
 
     const responseText = await response.text()
-    console.log('📥 Resposta do backend:', responseText.substring(0, 200))
+    console.log('📥 Resposta do backend:', responseText.substring(0, 500))
 
     if (!response.ok) {
       throw new Error(`Backend erro: ${response.status} - ${responseText}`)
     }
 
-    const result = JSON.parse(responseText)
-    console.log('✅ SUCESSO! Lead salvo:', result)
+    let result
+    try {
+      result = JSON.parse(responseText)
+    } catch (parseError) {
+      console.error('❌ Erro ao parsear resposta JSON:', parseError)
+      throw new Error('Resposta inválida do backend')
+    }
+
+    console.log('✅ SUCESSO! Pesquisa trabalhista salva:', result)
 
     return res.status(200).json({
       success: true,
-      message: 'Pesquisa trabalhista enviada com sucesso!',
+      message: 'Pesquisa trabalhista enviada com sucesso! Entraremos em contato em breve.',
       data: result,
       timestamp: new Date().toISOString()
     })
 
   } catch (error) {
-    console.error('❌ ERRO no envio:', error)
+    console.error('❌ ERRO no envio da pesquisa trabalhista:', error)
 
     return res.status(500).json({
       success: false,
-      message: 'Erro interno do servidor',
+      message: 'Erro interno do servidor ao processar pesquisa trabalhista',
       error: error.message,
       timestamp: new Date().toISOString()
     })
