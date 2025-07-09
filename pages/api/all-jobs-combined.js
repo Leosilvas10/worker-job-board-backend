@@ -1,3 +1,4 @@
+
 // API que busca vagas do backend em produção
 export default async function handler(req, res) {
   try {
@@ -14,44 +15,44 @@ export default async function handler(req, res) {
 
     // Função para calcular tempo relativo
     function calculateTimeAgo(createdAt) {
-      if (!createdAt) return 'Recente'
+      if (!createdAt) return 'Recente';
 
-      const now = new Date()
-      const created = new Date(createdAt)
-      const diffInMinutes = Math.floor((now - created) / (1000 * 60))
+      const now = new Date();
+      const created = new Date(createdAt);
+      const diffInMinutes = Math.floor((now - created) / (1000 * 60));
 
       if (diffInMinutes < 60) {
-        return `Há ${diffInMinutes} min`
+        return `Há ${diffInMinutes} min`;
       } else if (diffInMinutes < 1440) {
-        const hours = Math.floor(diffInMinutes / 60)
-        return `Há ${hours}h`
+        const hours = Math.floor(diffInMinutes / 60);
+        return `Há ${hours}h`;
       } else {
-        const days = Math.floor(diffInMinutes / 1440)
-        return `Há ${days}d`
+        const days = Math.floor(diffInMinutes / 1440);
+        return `Há ${days}d`;
       }
     }
 
     // Função para determinar categoria baseada no título
     function getCategoryFromTitle(title) {
-      if (!title) return 'Geral'
+      if (!title) return 'Geral';
 
-      const titleLower = title.toLowerCase()
+      const titleLower = title.toLowerCase();
 
-      if (titleLower.includes('domést') || titleLower.includes('diarista')) return 'Doméstica'
-      if (titleLower.includes('porteiro') || titleLower.includes('vigilante')) return 'Segurança'
-      if (titleLower.includes('limpeza') || titleLower.includes('faxina')) return 'Limpeza'
-      if (titleLower.includes('cuidador') || titleLower.includes('babá')) return 'Cuidados'
-      if (titleLower.includes('motorista') || titleLower.includes('entregador')) return 'Transporte'
-      if (titleLower.includes('cozinha') || titleLower.includes('garç')) return 'Alimentação'
-      if (titleLower.includes('vend') || titleLower.includes('comercial')) return 'Vendas'
-      if (titleLower.includes('recep') || titleLower.includes('admin')) return 'Administrativo'
+      if (titleLower.includes('domést') || titleLower.includes('diarista')) return 'Doméstica';
+      if (titleLower.includes('porteiro') || titleLower.includes('vigilante')) return 'Segurança';
+      if (titleLower.includes('limpeza') || titleLower.includes('faxina')) return 'Limpeza';
+      if (titleLower.includes('cuidador') || titleLower.includes('babá')) return 'Cuidados';
+      if (titleLower.includes('motorista') || titleLower.includes('entregador')) return 'Transporte';
+      if (titleLower.includes('cozinha') || titleLower.includes('garç')) return 'Alimentação';
+      if (titleLower.includes('vend') || titleLower.includes('comercial')) return 'Vendas';
+      if (titleLower.includes('recep') || titleLower.includes('admin')) return 'Administrativo';
 
-      return 'Geral'
+      return 'Geral';
     }
 
     // Função para gerar URL de redirecionamento para vagas reais
     function generateJobRedirectUrl(job) {
-      const category = getCategoryFromTitle(job.title)
+      const category = getCategoryFromTitle(job.title);
 
       const categoryUrls = {
         'Doméstica': 'https://www.catho.com.br/vagas/empregada-domestica/',
@@ -62,14 +63,14 @@ export default async function handler(req, res) {
         'Alimentação': 'https://www.catho.com.br/vagas/cozinheiro/',
         'Vendas': 'https://www.catho.com.br/vagas/vendedor/',
         'Administrativo': 'https://www.catho.com.br/vagas/auxiliar-administrativo/'
-      }
+      };
 
-      return categoryUrls[category] || 'https://www.catho.com.br/vagas/'
+      return categoryUrls[category] || 'https://www.catho.com.br/vagas/';
     }
 
     // Função para gerar vagas complementares baseadas nas estatísticas
     function generateComplementaryJobs(totalJobs, statsData) {
-      const complementaryJobs = []
+      const complementaryJobs = [];
       const jobTitles = [
         { title: 'Empregada Doméstica', company: 'Família Particular', salary: 'R$ 1.320,00', category: 'Doméstica' },
         { title: 'Diarista', company: 'Residencial', salary: 'R$ 120,00/dia', category: 'Doméstica' },
@@ -161,20 +162,20 @@ export default async function handler(req, res) {
           isExternal: true,
           requiresLead: true,
           priority: 'medium',
-          created_at: new Date(Date.now() - (i * 3600000)).toISOString(), // Escalonar datas
+          created_at: new Date(Date.now() - (i * 3600000)).toISOString(),
           tags: [jobTemplate.title.toLowerCase().replace(/\s+/g, '-')],
           redirectUrl: redirectUrl,
           realJobSource: 'Catho'
         });
       }
-      return complementaryJobs
+      return complementaryJobs;
     }
 
     // Função principal para buscar todas as vagas
     async function getAllJobsCombined() {
       try {
-        console.log('🔄 Buscando vagas reais do backend agendado...')
-        console.log('🔗 Conectando ao backend:', BACKEND_URL)
+        console.log('🔄 Buscando vagas reais do backend agendado...');
+        console.log('🔗 Conectando ao backend:', BACKEND_URL);
 
         // Buscar vagas reais do endpoint /api/jobs
         const jobsResponse = await fetch(`${BACKEND_URL}/api/jobs`, {
@@ -183,19 +184,21 @@ export default async function handler(req, res) {
             'Content-Type': 'application/json',
             'User-Agent': 'Frontend-Jobs-API'
           }
-        })
+        });
 
-        console.log('📡 Status da resposta do backend (jobs):', jobsResponse.status)
+        console.log('📡 Status da resposta do backend (jobs):', jobsResponse.status);
+
+        let formattedJobs = [];
 
         if (jobsResponse.ok) {
-          const jobsData = await jobsResponse.json()
-          console.log('📊 Vagas reais recebidas:', jobsData)
+          const jobsData = await jobsResponse.json();
+          console.log('📊 Vagas reais recebidas:', jobsData);
 
           if (jobsData.jobs && jobsData.jobs.length > 0) {
-            console.log(`✅ ${jobsData.jobs.length} vagas reais carregadas do backend agendado`)
+            console.log(`✅ ${jobsData.jobs.length} vagas reais carregadas do backend agendado`);
 
             // Converter formato das vagas para compatibilidade com o frontend
-            const formattedJobs = jobsData.jobs.map(job => ({
+            formattedJobs = jobsData.jobs.map(job => ({
               id: job.id || `job_${Date.now()}_${Math.random()}`,
               title: job.title,
               company: job.company || 'Empresa Não Informada',
@@ -211,25 +214,13 @@ export default async function handler(req, res) {
               redirectUrl: generateJobRedirectUrl(job),
               isExternal: true,
               requiresLead: true
-            }))
-
-            return {
-              success: true,
-              data: formattedJobs,
-              meta: {
-                totalJobs: formattedJobs.length,
-                internalJobs: 0,
-                externalJobs: formattedJobs.length,
-                lastUpdate: jobsData.lastUpdate || new Date().toISOString(),
-                source: 'Backend Agendado'
-              }
-            }
+            }));
           }
         }
 
         // Se temos poucas vagas reais, adicionar mais vagas complementares
         if (formattedJobs.length < 20) {
-          console.log(`⚠️ Apenas ${formattedJobs.length} vagas reais, adicionando vagas complementares...`)
+          console.log(`⚠️ Apenas ${formattedJobs.length} vagas reais, adicionando vagas complementares...`);
 
           // Buscar estatísticas para determinar quantas vagas criar
           try {
@@ -239,19 +230,22 @@ export default async function handler(req, res) {
                 'Content-Type': 'application/json',
                 'User-Agent': 'Frontend-Jobs-API'
               }
-            })
+            });
 
-            const statsData = await statsResponse.json()
-            console.log('📊 Estatísticas recebidas:', statsData)
+            let statsData = {};
+            if (statsResponse.ok) {
+              statsData = await statsResponse.json();
+              console.log('📊 Estatísticas recebidas:', statsData);
+            }
 
             // Criar vagas complementares para completar 100 vagas
-            const totalToCreate = Math.max(100 - formattedJobs.length, 50)
-            const complementaryJobs = generateComplementaryJobs(totalToCreate, statsData)
+            const totalToCreate = Math.max(100 - formattedJobs.length, 50);
+            const complementaryJobs = generateComplementaryJobs(totalToCreate, statsData);
             
-            console.log(`✅ ${complementaryJobs.length} vagas complementares criadas`)
+            console.log(`✅ ${complementaryJobs.length} vagas complementares criadas`);
             
             // Combinar vagas reais com complementares
-            const allJobs = [...formattedJobs, ...complementaryJobs]
+            const allJobs = [...formattedJobs, ...complementaryJobs];
 
             return {
               success: true,
@@ -260,16 +254,16 @@ export default async function handler(req, res) {
                 totalJobs: allJobs.length,
                 realJobs: formattedJobs.length,
                 complementaryJobs: complementaryJobs.length,
-                lastUpdate: jobsData.lastUpdate || new Date().toISOString(),
+                lastUpdate: new Date().toISOString(),
                 source: 'Backend + Complementares'
               }
-            }
+            };
           } catch (statsError) {
-            console.log('⚠️ Erro ao buscar estatísticas:', statsError.message)
+            console.log('⚠️ Erro ao buscar estatísticas:', statsError.message);
             
             // Fallback: criar 100 vagas complementares
-            const complementaryJobs = generateComplementaryJobs(97, {})
-            const allJobs = [...formattedJobs, ...complementaryJobs]
+            const complementaryJobs = generateComplementaryJobs(97, {});
+            const allJobs = [...formattedJobs, ...complementaryJobs];
 
             return {
               success: true,
@@ -281,7 +275,7 @@ export default async function handler(req, res) {
                 lastUpdate: new Date().toISOString(),
                 source: 'Backend + Fallback'
               }
-            }
+            };
           }
         }
 
@@ -293,11 +287,10 @@ export default async function handler(req, res) {
             totalJobs: formattedJobs.length,
             realJobs: formattedJobs.length,
             complementaryJobs: 0,
-            lastUpdate: jobsData.lastUpdate || new Date().toISOString(),
+            lastUpdate: new Date().toISOString(),
             source: 'Backend Apenas'
           }
-        }
-      }
+        };
 
       } catch (error) {
         console.error('❌ Erro ao buscar vagas:', error);
@@ -314,8 +307,11 @@ export default async function handler(req, res) {
             }
           });
 
-          const statsData = await statsResponse.json();
-          console.log('📊 Estatísticas recebidas:', statsData);
+          let statsData = {};
+          if (statsResponse.ok) {
+            statsData = await statsResponse.json();
+            console.log('📊 Estatísticas recebidas:', statsData);
+          }
 
           let complementaryJobs = [];
 
@@ -346,7 +342,7 @@ export default async function handler(req, res) {
           console.error('❌ Erro ao buscar estatísticas:', statsError);
 
           // Fallback final: retornar vagas básicas
-          const fallbackJobs = generateComplementaryJobs(10, { totalJobs: 10 });
+          const fallbackJobs = generateComplementaryJobs(100, { totalJobs: 100 });
 
           return {
             success: true,
