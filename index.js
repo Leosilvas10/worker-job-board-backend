@@ -260,6 +260,116 @@ app.get('/api/jobs', (req, res) => {
   });
 });
 
+// Rota para candidaturas às vagas
+app.post('/api/job-applications', (req, res) => {
+  console.log('Candidatura recebida:', req.body);
+
+  const {
+    // Dados da vaga
+    jobId,
+    jobTitle,
+    jobCompany,
+    jobUrl,
+    jobSalary,
+    jobType,
+    
+    // Dados do candidato
+    nomeCompleto,
+    email,
+    telefone,
+    whatsapp,
+    cidade,
+    estado,
+    idade,
+    experiencia,
+    disponibilidade,
+    observacoes,
+    
+    ...outrosDados
+  } = req.body;
+
+  // Salvar candidatura
+  const applicationData = {
+    id: Date.now(),
+    
+    // Dados da vaga
+    jobId,
+    jobTitle,
+    jobCompany,
+    jobUrl,
+    jobSalary,
+    jobType,
+    
+    // Dados do candidato
+    nomeCompleto,
+    email,
+    telefone,
+    whatsapp,
+    cidade,
+    estado,
+    idade,
+    experiencia,
+    disponibilidade,
+    observacoes,
+    
+    ...outrosDados,
+    
+    createdAt: new Date().toISOString(),
+    status: 'Pendente'
+  };
+
+  // Carregar candidaturas existentes
+  let applications = [];
+  try {
+    if (fs.existsSync('job-applications.json')) {
+      const data = fs.readFileSync('job-applications.json', 'utf8');
+      applications = JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Erro ao carregar candidaturas:', error);
+  }
+
+  // Adicionar nova candidatura
+  applications.push(applicationData);
+
+  // Salvar candidaturas
+  try {
+    fs.writeFileSync('job-applications.json', JSON.stringify(applications, null, 2));
+    console.log(`✅ Candidatura salva! Total: ${applications.length}`);
+  } catch (error) {
+    console.error('Erro ao salvar candidatura:', error);
+  }
+
+  console.log(`📋 Candidato: ${nomeCompleto} se candidatou para ${jobTitle} na ${jobCompany}`);
+  console.log(`🔗 URL da vaga: ${jobUrl}`);
+
+  res.json({
+    message: 'Candidatura enviada com sucesso!',
+    data: applicationData,
+    status: 'success',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Rota para listar candidaturas
+app.get('/api/job-applications', (req, res) => {
+  let applications = [];
+  try {
+    if (fs.existsSync('job-applications.json')) {
+      const data = fs.readFileSync('job-applications.json', 'utf8');
+      applications = JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Erro ao carregar candidaturas:', error);
+  }
+
+  res.json({
+    applications,
+    total: applications.length,
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Rota para receber dados da pesquisa trabalhista + dados pessoais
 app.post('/api/labor-research', (req, res) => {
   console.log('Dados da pesquisa trabalhista recebidos:', req.body);

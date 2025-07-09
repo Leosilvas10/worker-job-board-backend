@@ -109,7 +109,8 @@ async function fetchJobsFromAPIs() {
         tags: jobTags,
         createdAt: new Date(Date.now() - Math.random() * 86400000).toISOString(), // Últimas 24h
         location: getRandomLocation(),
-        schedule: schedule
+        schedule: schedule,
+        url: generateJobUrl(jobType.title, company, Date.now() + i)
       });
     }
     
@@ -156,6 +157,29 @@ function getRandomLocation() {
   ];
   
   return locations[Math.floor(Math.random() * locations.length)];
+}
+
+// Função para gerar URLs das vagas
+function generateJobUrl(title, company, id) {
+  // Simular URLs de diferentes sites de emprego
+  const jobSites = [
+    'https://www.catho.com.br',
+    'https://www.indeed.com.br',
+    'https://www.vagas.com.br',
+    'https://www.infojobs.com.br',
+    'https://www.linkedin.com/jobs',
+    'https://www.empregos.com.br',
+    'https://www.glassdoor.com.br',
+    'https://www.99jobs.com',
+    'https://www.sine.com.br',
+    'https://www.trabalha.com.br'
+  ];
+  
+  const site = jobSites[Math.floor(Math.random() * jobSites.length)];
+  const titleSlug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  const companySlug = company.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  
+  return `${site}/vaga/${titleSlug}-${companySlug}-${id}`;
 }
 
 // Função principal para atualizar vagas
