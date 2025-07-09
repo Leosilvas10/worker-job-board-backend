@@ -20,6 +20,7 @@ const Vagas = () => {
   const [filteredJobs, setFilteredJobs] = useState([])
   const jobsPerPage = 9
   const [isClient, setIsClient] = useState(false)
+  const [lastUpdate, setLastUpdate] = useState(new Date())
 
   // Hook para estatísticas reais
   const { stats: jobStats } = useJobStats()
@@ -27,8 +28,40 @@ const Vagas = () => {
 
   useEffect(() => {
     setIsClient(true) // Set isClient to true on the client-side
-    // VAGAS FIXAS - SEMPRE DISPONÍVEIS
-    const vagasFixas = [
+    
+    // Função para buscar vagas
+    const fetchJobs = async () => {
+      try {
+        console.log('🔄 Buscando vagas atualizadas...')
+        const response = await fetch(`/api/all-jobs-combined?t=${Date.now()}`, {
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        }
+
+        const data = await response.json()
+        console.log('📋 Dados recebidos da API:', data)
+
+        if (data.success && data.data && data.data.length > 0) {
+          console.log(`✅ ${data.data.length} vagas carregadas`)
+          setJobs(data.data)
+          setFilteredJobs(data.data)
+          setLastUpdate(new Date())
+          setLoading(false)
+          return
+        }
+      } catch (err) {
+        console.log('⚠️ Erro ao buscar vagas da API:', err.message)
+      }
+      
+      // Fallback: VAGAS FIXAS - SEMPRE DISPONÍVEIS
+      console.log('🔄 Carregando vagas fallback...')
+      const vagasFixas = [
       {
         id: 'fixo_1',
         title: 'Doméstica',
@@ -171,47 +204,28 @@ const Vagas = () => {
       }
     ];
 
-    console.log('✅ Carregando vagas fixas:', vagasFixas.length)
-    setJobs(vagasFixas)
-    setFilteredJobs(vagasFixas)
-    setLoading(false)
-
-    // Buscar vagas da API em paralelo (opcional)
-    const fetchAPIJobs = async () => {
-      try {
-        console.log('🔄 Buscando vagas da API...')
-        const response = await fetch(`/api/all-jobs-combined?t=${Date.now()}`, {
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache'
-          }
-        })
-
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-        }
-
-        const data = await response.json()
-        console.log('📋 Dados recebidos da API:', data)
-
-        // Só atualizar se realmente tiver vagas da API
-        if (data.success && ((data.jobs && data.jobs.length > 0) || (data.data && data.data.length > 0))) {
-          const vagasAPI = data.jobs || data.data || []
-          console.log(`🔄 Substituindo vagas fixas por ${vagasAPI.length} vagas da API`)
-
-          // Usar apenas vagas da API (não mesclar com fixas)
-          setJobs(vagasAPI)
-          setFilteredJobs(vagasAPI)
-        } else {
-          console.log('⚠️ API retornou dados vazios, mantendo vagas fixas')
-        }
-      } catch (err) {
-        console.log('⚠️ Erro ao buscar API:', err.message)
-        // Manter vagas fixas em caso de erro
-      }
+    console.log('✅ Carregando vagas fixas de fallback:', vagasFixas.length)
+      setJobs(vagasFixas)
+      setFilteredJobs(vagasFixas)
+      setLastUpdate(new Date())
+      setLoading(false)
     }
 
-    fetchAPIJobs()
+    // Buscar vagas na inicialização
+    fetchJobs()
+
+    // Configurar refresh automático a cada 30 minutos
+    const refreshInterval = setInterval(() => {
+      console.log('🔄 Atualizando vagas automaticamente...')
+      fetchJobs()
+    }, 30 * 60 * 1000) // 30 minutos
+
+    // Cleanup do interval
+    return () => {
+      if (refreshInterval) {
+        clearInterval(refreshInterval)
+      }
+    }
   }, [])
 
   // Effect para aplicar filtros
@@ -432,16 +446,16 @@ const Vagas = () => {
               {isClient && (
                 <>
                   <p className="text-blue-200 text-sm">
-                    Última atualização: {new Date().toLocaleDateString('pt-BR')} às {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                    Última atualização: {lastUpdate.toLocaleDateString('pt-BR')} às {lastUpdate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                   </p>
                   <p className="text-blue-200 text-sm mt-1">
-                    🔄 As vagas são atualizadas automaticamente a cada 1 hora!
+                    🔄 Vagas atualizadas automaticamente pelo backend agendado + refresh a cada 30min
                   </p>
                 </>
               )}
               {!isClient && (
                 <p className="text-blue-200 text-sm">
-                  🔄 As vagas são atualizadas automaticamente a cada 1 hora!
+                  🔄 Vagas atualizadas automaticamente pelo backend agendado + refresh a cada 30min
                 </p>
               )}
               </div>
