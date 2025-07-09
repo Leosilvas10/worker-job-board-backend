@@ -5,14 +5,14 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
     // Dados de contato
     name: '',
     whatsapp: '',
-    
+
     // Perguntas obrigatórias
     lastCompany: '',
     workStatus: '',
     receivedRights: '',
     workProblems: [],
     wantConsultation: '',
-    
+
     // Consentimento
     lgpdConsent: false
   })
@@ -24,7 +24,7 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target
-    
+
     if (name === 'whatsapp') {
       // Aplicar formatação automática no WhatsApp
       const formattedValue = formatWhatsApp(value)
@@ -59,7 +59,7 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
   const formatWhatsApp = (value) => {
     // Remove tudo que não é número
     const onlyNumbers = value.replace(/\D/g, '')
-    
+
     // Aplica formatação brasileira
     if (onlyNumbers.length === 0) {
       return ''
@@ -98,27 +98,27 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         // Dados pessoais - campo "nome" com dados completos
         name: formData.name,
         whatsapp: formData.whatsapp,
-        
+
         // Email não solicitado no formulário
         email: null,
-        
+
         // Respostas da pesquisa - TODAS OBRIGATÓRIAS
         lastCompany: formData.lastCompany || 'Não informado',
         workStatus: formData.workStatus || 'Não informado',
         receivedRights: formData.receivedRights || 'Não informado',
         workProblems: formData.workProblems || [],
         wantConsultation: formData.wantConsultation || 'Não informado',
-        
+
         // Consentimento LGPD - SEMPRE OBRIGATÓRIO
         lgpdConsent: formData.lgpdConsent,
-        
+
         // Dados da vaga para redirecionamento  
         jobId: jobData?.id || jobData?.jobId,
         jobTitle: jobData?.title || jobData?.jobTitle || 'Vaga não especificada',
         company: jobData?.company?.name || jobData?.company || 'Empresa não especificada',
         jobLink: jobData?.url || jobData?.link || jobData?.apply_url || jobData?.original_url || '#',
         originalLocation: jobData?.originalLocation || jobData?.location || 'Brasil',
-        
+
         // Metadados adicionais
         fonte: 'Site do Trabalhador - Pesquisa Trabalhista',
         paginaOrigem: window.location.href,
@@ -145,18 +145,18 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         successMessage += `\n👤 Nome: ${formData.name}`
         successMessage += `\n📱 WhatsApp: ${formData.whatsapp}`
         successMessage += `\n💼 Vaga: ${jobData?.title || 'Vaga de Emprego'}`
-        
+
         if (jobData?.company?.name || jobData?.company) {
           successMessage += `\n🏢 Empresa: ${jobData.company?.name || jobData.company}`
         }
-        
+
         successMessage += '\n\n🔗 Redirecionando para a vaga original...'
-        
+
         alert(successMessage)
-        
+
         // Fechar modal
         onClose()
-        
+
         // Tentar redirecionar para vaga real
         const redirectUrl = result.redirect?.url || 
                            jobData?.url || 
@@ -164,7 +164,7 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
                            jobData?.apply_url || 
                            jobData?.original_url ||
                            jobData?.jobLink
-        
+
         if (redirectUrl && redirectUrl !== '#') {
           // Redirecionamento para vaga real
           setTimeout(() => {
@@ -175,12 +175,12 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
           const encodedTitle = encodeURIComponent((jobData?.title || 'emprego').replace(/[^\w\s]/gi, '').replace(/\s+/g, '+'))
           const encodedLocation = encodeURIComponent((jobData?.location || 'Brasil').split(',')[0].replace(/\s+/g, '+'))
           const fallbackUrl = `https://www.indeed.com.br/jobs?q=${encodedTitle}&l=${encodedLocation}`
-          
+
           setTimeout(() => {
             window.open(fallbackUrl, '_blank')
           }, 1000)
         }
-        
+
       } else {
         alert('❌ Erro: ' + (result.message || 'Erro ao enviar candidatura'))
       }

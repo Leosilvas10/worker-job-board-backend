@@ -120,6 +120,28 @@ export default async function handler(req, res) {
               const jobTemplate = jobTitles[i % jobTitles.length];
               const location = locations[i % locations.length];
               
+              // Determinar URL real baseada no tipo de vaga
+              let redirectUrl = 'https://www.catho.com.br/vagas/';
+              const title = jobTemplate.title.toLowerCase();
+              
+              if (title.includes('doméstica') || title.includes('diarista')) {
+                redirectUrl = 'https://www.catho.com.br/vagas/empregada-domestica/';
+              } else if (title.includes('porteiro') || title.includes('vigilante')) {
+                redirectUrl = 'https://www.catho.com.br/vagas/porteiro/';
+              } else if (title.includes('cuidador') || title.includes('babá')) {
+                redirectUrl = 'https://www.catho.com.br/vagas/cuidador/';
+              } else if (title.includes('motorista')) {
+                redirectUrl = 'https://www.catho.com.br/vagas/motorista/';
+              } else if (title.includes('vendedor') || title.includes('atendente')) {
+                redirectUrl = 'https://www.catho.com.br/vagas/vendedor/';
+              } else if (title.includes('limpeza') || title.includes('faxineira')) {
+                redirectUrl = 'https://www.catho.com.br/vagas/auxiliar-limpeza/';
+              } else if (title.includes('jardineiro')) {
+                redirectUrl = 'https://www.catho.com.br/vagas/jardineiro/';
+              } else if (title.includes('cozinha') || title.includes('cozinheira')) {
+                redirectUrl = 'https://www.catho.com.br/vagas/cozinheiro/';
+              }
+              
               complementaryJobs.push({
                 id: `complementary_${i + 1}`,
                 title: jobTemplate.title,
@@ -134,7 +156,9 @@ export default async function handler(req, res) {
                 requiresLead: true,
                 priority: 'medium',
                 created_at: new Date(Date.now() - (i * 3600000)).toISOString(), // Escalonar datas
-                tags: [jobTemplate.title.toLowerCase().replace(/\s+/g, '-')]
+                tags: [jobTemplate.title.toLowerCase().replace(/\s+/g, '-')],
+                redirectUrl: redirectUrl,
+                realJobSource: 'Catho'
               });
             }
             
@@ -168,7 +192,9 @@ export default async function handler(req, res) {
           requiresLead: true,
           priority: 'high',
           created_at: new Date().toISOString(),
-          tags: ['doméstica', 'limpeza', 'cuidados']
+          tags: ['doméstica', 'limpeza', 'cuidados'],
+          redirectUrl: 'https://www.catho.com.br/vagas/empregada-domestica/',
+          realJobSource: 'Catho'
         },
         {
           id: 'fallback_2',
@@ -184,7 +210,9 @@ export default async function handler(req, res) {
           requiresLead: true,
           priority: 'high',
           created_at: new Date().toISOString(),
-          tags: ['diarista', 'limpeza', 'apartamento']
+          tags: ['diarista', 'limpeza', 'apartamento'],
+          redirectUrl: 'https://www.catho.com.br/vagas/empregada-domestica/',
+          realJobSource: 'Catho'
         }
       ];
       
