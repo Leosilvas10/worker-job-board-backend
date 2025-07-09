@@ -6,6 +6,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
   const [formData, setFormData] = useState({
     // Dados pessoais
     nomeCompleto: '',
+    email: '',
     whatsapp: '',
     idade: 18,
     cidade: '',
@@ -130,6 +131,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
         // Reset form
         setFormData({
           nomeCompleto: '',
+          email: '',
           whatsapp: '',
           idade: 18,
           cidade: '',
@@ -372,6 +374,20 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
                         onChange={(e) => handleInputChange('nomeCompleto', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Seu nome completo"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="seu@email.com"
                       />
                     </div>
 

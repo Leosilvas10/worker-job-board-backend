@@ -13,6 +13,7 @@ export default async function handler(req, res) {
     const {
       // Dados pessoais
       nomeCompleto,
+      email,
       whatsapp,
       idade,
       cidade,
@@ -51,7 +52,7 @@ export default async function handler(req, res) {
       // Dados pessoais
       nome: nomeCompleto,
       telefone: whatsapp,
-      email: 'Não informado',
+      email: email || 'Não informado',
       idade: idade || 18,
       cidade: cidade || '',
       estado: estado || '',
@@ -93,6 +94,9 @@ export default async function handler(req, res) {
     // Enviar para o endpoint correto do backend
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app'
     const endpoint = `${backendUrl}/api/labor-research`
+
+    console.log('🔗 ENDPOINT USADO:', endpoint)
+    console.log('🌐 BACKEND URL:', backendUrl)
 
     const response = await fetch(endpoint, {
       method: 'POST',
