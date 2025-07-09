@@ -72,16 +72,21 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     // Remove tudo que não é número
     const numbers = value.replace(/\D/g, '')
     
+    // Limita a 11 dígitos
+    const limitedNumbers = numbers.substring(0, 11)
+    
     // Aplica a máscara (XX) XXXXX-XXXX
-    if (numbers.length <= 11) {
-      return numbers.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
-        .replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3')
-        .replace(/(\d{2})(\d{0,5})/, '($1) $2')
-        .replace(/(\d{0,2})/, '($1')
+    if (limitedNumbers.length >= 11) {
+      return limitedNumbers.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
+    } else if (limitedNumbers.length >= 7) {
+      return limitedNumbers.replace(/(\d{2})(\d{4,5})(\d{0,4})/, '($1) $2-$3')
+    } else if (limitedNumbers.length >= 3) {
+      return limitedNumbers.replace(/(\d{2})(\d{0,5})/, '($1) $2')
+    } else if (limitedNumbers.length >= 1) {
+      return limitedNumbers.replace(/(\d{0,2})/, '($1')
     }
     
-    // Limita a 15 caracteres no total
-    return value.substring(0, 15)
+    return limitedNumbers
   }
 
   const handleSubmit = async (e) => {
