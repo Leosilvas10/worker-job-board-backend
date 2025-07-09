@@ -23,6 +23,7 @@ export default async function handler(req, res) {
       vagaTitulo,
       vagaEmpresa,
       vagaLocalizacao,
+      vagaUrl,
       
       // Dados sobre trabalho anterior (para análise de demissão)
       trabalhouAntes,
@@ -63,6 +64,7 @@ Vaga: ${vagaTitulo}
 Empresa: ${vagaEmpresa}
 Localização: ${vagaLocalizacao}
 ID da Vaga: ${vagaId}
+URL da Vaga: ${vagaUrl}
 
 DADOS PESSOAIS:
 Idade: ${idade}
@@ -112,7 +114,13 @@ UTM Campaign: ${utm_campaign}`
 
     res.status(200).json({
       success: true,
-      message: 'Candidatura enviada com sucesso!'
+      message: 'Candidatura enviada com sucesso!',
+      data: {
+        vagaUrl: vagaUrl,
+        vagaTitulo: vagaTitulo,
+        vagaEmpresa: vagaEmpresa,
+        backendResponse: result
+      }
     })
 
   } catch (error) {

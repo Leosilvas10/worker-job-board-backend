@@ -246,7 +246,8 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
             id: vaga.id,
             titulo: vaga.title || vaga.titulo,
             empresa: vaga.company || vaga.empresa,
-            localizacao: vaga.location || vaga.localizacao
+            localizacao: vaga.location || vaga.localizacao,
+            vagaUrl: vaga?.url || vaga?.redirectUrl, // URL real da vaga
           } : null,
           fonte: 'modal_pesquisa_trabalhista_rapida',
           timestamp: new Date().toISOString()
@@ -280,6 +281,18 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
         // REDIRECIONAMENTO PRIORITÁRIO para vaga real
         setTimeout(() => {
           try {
+             // NOVO: Usar URL real da vaga retornada pela API
+            console.log('📋 Resposta completa da API:', result);
+
+            // 1. URL real da vaga (prioridade MÁXIMA - vem do backend)
+            if (result.data && result.data.vagaUrl) {
+              console.log('🎯 URL REAL da vaga encontrada no backend:', result.data.vagaUrl);
+              if (typeof window !== 'undefined') {
+                window.open(result.data.vagaUrl, '_blank', 'noopener,noreferrer');
+              }
+              return;
+            }
+
             // 1. Prioridade: redirectUrl (URL real da vaga)
             if (vaga && vaga.redirectUrl) {
               console.log('🔄 REDIRECIONAMENTO DIRETO para vaga real:', vaga.redirectUrl)

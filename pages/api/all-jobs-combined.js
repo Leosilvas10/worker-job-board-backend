@@ -1,4 +1,3 @@
-
 // API que busca vagas do backend em produção
 export default async function handler(req, res) {
   try {
@@ -179,7 +178,7 @@ export default async function handler(req, res) {
 
         // Buscar vagas reais do endpoint /api/jobs
         console.log('🔗 Tentando conectar ao backend:', `${BACKEND_URL}/api/jobs`);
-        
+
         const jobsResponse = await fetch(`${BACKEND_URL}/api/jobs`, {
           method: 'GET',
           headers: {
@@ -202,28 +201,29 @@ export default async function handler(req, res) {
           console.log('- Tipo de dados:', typeof jobsData);
           console.log('- Jobs array length:', jobsData.jobs?.length || 'N/A');
           console.log('- Total informado:', jobsData.total || 'N/A');
-          
+
           if (jobsData.jobs && Array.isArray(jobsData.jobs) && jobsData.jobs.length > 0) {
             console.log(`✅ ${jobsData.jobs.length} vagas REAIS carregadas do backend!`);
             console.log('📋 Primeira vaga de exemplo:', jobsData.jobs[0]);
 
             // Converter formato das vagas para compatibilidade com o frontend
             formattedJobs = jobsData.jobs.map(job => ({
-              id: job.id || `job_${Date.now()}_${Math.random()}`,
+              id: job.id,
               title: job.title,
-              company: job.company || 'Empresa Não Informada',
-              location: job.location || 'Brasil',
-              salary: job.salary || 'A combinar',
+              company: job.company,
+              location: job.location,
+              salary: job.salary,
+              type: job.type,
               description: job.description,
-              type: job.type || 'CLT',
-              category: job.category || getCategoryFromTitle(job.title),
-              source: 'Backend Agendado',
-              tags: job.tags || [job.title?.toLowerCase()],
-              timeAgo: job.timeAgo || calculateTimeAgo(job.createdAt),
-              created_at: job.createdAt || new Date().toISOString(),
-              redirectUrl: generateJobRedirectUrl(job),
+              source: 'Backend Real Jobs',
+              timeAgo: job.timeAgo || 'Recente',
+              tags: job.tags || [],
               isExternal: true,
-              requiresLead: true
+              requiresLead: true,
+              priority: 'high',
+              created_at: job.created_at || new Date().toISOString(),
+              url: job.url, // URL REAL da vaga vinda do backend
+              redirectUrl: job.url // Garantir compatibilidade
             }));
           }
         }
@@ -251,9 +251,9 @@ export default async function handler(req, res) {
             // Criar vagas complementares para completar 100 vagas
             const totalToCreate = Math.max(100 - formattedJobs.length, 50);
             const complementaryJobs = generateComplementaryJobs(totalToCreate, statsData);
-            
+
             console.log(`✅ ${complementaryJobs.length} vagas complementares criadas`);
-            
+
             // Combinar vagas reais com complementares
             const allJobs = [...formattedJobs, ...complementaryJobs];
 
@@ -270,7 +270,7 @@ export default async function handler(req, res) {
             };
           } catch (statsError) {
             console.log('⚠️ Erro ao buscar estatísticas:', statsError.message);
-            
+
             // Fallback: criar 100 vagas complementares
             const complementaryJobs = generateComplementaryJobs(97, {});
             const allJobs = [...formattedJobs, ...complementaryJobs];
