@@ -100,7 +100,7 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         lastCompany: formData.lastCompany,
         workStatus: formData.workStatus,
         receivedRights: formData.receivedRights,
-        workProblems: formData.workProblems,
+        workProblems: formData.workProblems || [],
         wantConsultation: formData.wantConsultation,
         lgpdConsent: formData.lgpdConsent,
         jobId: jobData?.id,
@@ -285,10 +285,10 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
             </label>
             <div className="space-y-2">
               {[
-                { value: 'hora-extra', label: 'Fazia hora extra sem receber' },
-                { value: 'domingos-feriados', label: 'Trabalhei domingos/feriados sem adicional ou folga' },
-                { value: 'assedio', label: 'Sofri assédio ou humilhações' },
-                { value: 'acumulo-funcoes', label: 'Acúmulo de funções sem aumento salarial' },
+                { value: 'horas_extras_nao_pagas', label: 'Fazia hora extra sem receber' },
+                { value: 'trabalho_domingos_feriados', label: 'Trabalhei domingos/feriados sem adicional ou folga' },
+                { value: 'assedio_moral', label: 'Sofri assédio ou humilhações' },
+                { value: 'acumulo_funcoes', label: 'Acúmulo de funções sem aumento salarial' },
                 { value: 'nenhuma', label: 'Nenhuma dessas' }
               ].map((option) => (
                 <label key={option.value} className="flex items-center text-govgray-300 cursor-pointer hover:text-white">

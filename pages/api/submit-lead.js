@@ -254,7 +254,7 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
       tipoCarteira: workStatus === 'Com carteira assinada' ? 'sim' : (workStatus === 'Sem carteira assinada' ? 'nao' : 'parcial'),
       recebeuTudoCertinho: receivedRights === 'Sim, recebi tudo certinho' ? 'sim' : (receivedRights === 'Não, tive problemas' ? 'nao' : 'parcial'),
       situacoesDuranteTrabalho: Array.isArray(workProblems) ? workProblems : (workProblems ? [workProblems] : ['nenhuma']),
-      aceitaConsultoria: wantConsultation === 'Sim' ? 'sim' : 'nao',
+      aceitaConsultoria: wantConsultation === 'Sim, quero saber meus direitos' ? 'sim' : 'nao',
       nomeCompleto: name,
       whatsapp: whatsapp
     }
@@ -266,18 +266,14 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
     console.log('📤 ENVIANDO LEAD PARA BACKEND CORRETO:', backendUrl)
     console.log('📋 DADOS FORMATADOS sendo enviados:', JSON.stringify(laborResearchData, null, 2))
     
-    const response = await fetch(`${backendUrl}/api/labor-research-leads`, {
+    const response = await fetch(`${backendUrl}/api/labor-research`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'User-Agent': 'SiteDoTrabalhador-Frontend'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(laborResearchData)
     })
 
-    console.log('📊 Status da resposta:', response.status)
-    
     if (!response.ok) {
       const errorText = await response.text()
       console.error('❌ ERRO do backend:', response.status, errorText)
@@ -288,27 +284,8 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
       })
     }
 
-    const responseText = await response.text()
-    console.log('📨 Status da resposta do backend:', response.status)
-    console.log('📨 Resposta bruta do backend:', responseText)
-    
-    let result
-    try {
-      result = JSON.parse(responseText)
-      console.log('✅ DADOS SALVOS COM SUCESSO NO BACKEND:', result)
-    } catch (parseError) {
-      console.error('❌ Erro ao fazer parse da resposta:', parseError)
-      console.error('❌ Resposta que causou erro:', responseText)
-      result = { success: false, message: 'Resposta inválida do servidor' }
-    }
-
-    if (!response.ok) {
-      console.error('❌ Erro HTTP:', response.status, response.statusText)
-      return res.status(response.status).json({
-        success: false,
-        message: result.message || `Erro HTTP ${response.status}`
-      })
-    }
+    const result = await response.json()
+    console.log('✅ DADOS SALVOS COM SUCESSO NO BACKEND:', result)
 
     // Resposta de sucesso com dados de redirecionamento
     res.status(200).json({
