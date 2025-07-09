@@ -19,12 +19,14 @@ const Vagas = () => {
   })
   const [filteredJobs, setFilteredJobs] = useState([])
   const jobsPerPage = 9
+  const [isClient, setIsClient] = useState(false)
 
   // Hook para estatísticas reais
   const { stats: jobStats } = useJobStats()
   const { formatJobCount } = useJobFormatting()
 
   useEffect(() => {
+    setIsClient(true) // Set isClient to true on the client-side
     // VAGAS FIXAS - SEMPRE DISPONÍVEIS
     const vagasFixas = [
       {
@@ -655,8 +657,7 @@ const Vagas = () => {
                 Não há vagas disponíveis no momento. Nossas fontes estão sendo atualizadas constantemente.
               </p>
             </div>
-          </section>
-        )}
+          </section        )}
 
         {/* Seção Dicas para o Candidato */}
         {!loading && !error && (

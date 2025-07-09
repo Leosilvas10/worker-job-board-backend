@@ -18,14 +18,14 @@ const JobCard = ({ job, onApplyClick }) => {
     if (!fullLocation || fullLocation === 'Local não informado') {
       return 'Brasil';
     }
-    
+
     // Extrair apenas o estado (parte depois da vírgula)
     const parts = fullLocation.split(',');
     if (parts.length > 1) {
       const state = parts[parts.length - 1].trim();
       return `${state} - Brasil`;
     }
-    
+
     return 'Brasil';
   };
 
@@ -36,34 +36,34 @@ const JobCard = ({ job, onApplyClick }) => {
       {/* Cabeçalho com logo e informações da empresa - Estilo Gov.br */}
       <div className="flex items-start gap-4 mb-4">
         <div className="w-12 h-12 bg-govblue-600 rounded flex items-center justify-center flex-shrink-0">
-          <span className="text-white font-bold text-lg">
+          <span className="text-white font-bold text-lg" suppressHydrationWarning>
             {companyName.charAt(0).toUpperCase()}
           </span>
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-lg font-bold text-govblue-800 mb-1 line-clamp-2">
+          <h3 className="text-lg font-bold text-govblue-800 mb-1 line-clamp-2" suppressHydrationWarning>
             {title}
           </h3>
-          <p className="text-govgray-600 text-sm mb-1 font-medium">{companyName}</p>
+          <p className="text-govgray-600 text-sm mb-1 font-medium" suppressHydrationWarning>{companyName}</p>
           <div className="flex items-center gap-3 text-xs text-govgray-500 font-medium">
-            <span>⏰ {timeAgo}</span>
+            <span suppressHydrationWarning>⏰ {timeAgo}</span>
           </div>
         </div>
       </div>
 
       {/* Informações de salário e tipo - Estilo Gov.br */}
       <div className="flex flex-wrap gap-2 mb-4">
-        <span className="px-3 py-1 bg-govgreen-100 text-govgreen-700 text-sm rounded border border-govgreen-300 font-medium">
+        <span className="px-3 py-1 bg-govgreen-100 text-govgreen-700 text-sm rounded border border-govgreen-300 font-medium" suppressHydrationWarning>
           💰 {salary}
         </span>
-        <span className="px-3 py-1 bg-govblue-100 text-govblue-700 text-sm rounded border border-govblue-300 font-medium">
+        <span className="px-3 py-1 bg-govblue-100 text-govblue-700 text-sm rounded border border-govblue-300 font-medium" suppressHydrationWarning>
           ⏰ {type}
         </span>
       </div>
 
       {/* Descrição */}
       <div className="mb-4">
-        <p className="text-govgray-700 text-sm line-clamp-3">
+        <p className="text-govgray-700 text-sm line-clamp-3" suppressHydrationWarning>
           {description}
         </p>
       </div>
@@ -75,7 +75,7 @@ const JobCard = ({ job, onApplyClick }) => {
             {(Array.isArray(tags) ? tags : tags.split(',')).slice(0, 3).map((tag, index) => (
               <span
                 key={index}
-                className="px-2 py-1 bg-govgray-100 text-govgray-600 text-xs rounded border border-govgray-300"
+                className="px-2 py-1 bg-govgray-100 text-govgray-600 text-xs rounded border border-govgray-300" suppressHydrationWarning
               >
                 {typeof tag === 'string' ? tag.trim() : tag}
               </span>
@@ -87,10 +87,10 @@ const JobCard = ({ job, onApplyClick }) => {
       {/* Rodapé com botão - Estilo Gov.br */}
       <div className="border-t border-govgray-200 pt-4">
         <div className="flex items-center justify-between mb-3">
-          <span className="inline-block bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">
+          <span className="inline-block bg-gray-100 px-2 py-1 rounded text-xs text-gray-600" suppressHydrationWarning>
             📅 Recente
           </span>
-          <span className="text-xs text-govgreen-600 font-bold">
+          <span className="text-xs text-govgreen-600 font-bold" suppressHydrationWarning>
             ✅ Verificada
           </span>
         </div>
@@ -98,7 +98,7 @@ const JobCard = ({ job, onApplyClick }) => {
         {/* Botão de candidatura - Estilo Gov.br */}
         <button
           onClick={onApplyClick}
-          className="w-full bg-govgreen-600 hover:bg-govgreen-700 text-white font-bold py-3 px-4 rounded transition-all duration-200 flex items-center justify-center gap-2 shadow-md"
+          className="w-full bg-govgreen-600 hover:bg-govgreen-700 text-white font-bold py-3 px-4 rounded transition-all duration-200 flex items-center justify-center gap-2 shadow-md" suppressHydrationWarning
         >
           <span>Quero me candidatar</span>
           <span>🔗</span>
