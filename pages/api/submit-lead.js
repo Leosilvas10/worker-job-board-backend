@@ -266,7 +266,7 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
     console.log('📤 ENVIANDO LEAD PARA BACKEND CORRETO:', backendUrl)
     console.log('📋 DADOS FORMATADOS sendo enviados:', JSON.stringify(laborResearchData, null, 2))
     
-    const response = await fetch(`${backendUrl}/api/labor-research`, {
+    const response = await fetch(`${backendUrl}/api/labor-research-leads`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

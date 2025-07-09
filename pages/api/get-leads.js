@@ -1,4 +1,3 @@
-
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ 
@@ -11,8 +10,7 @@ export default async function handler(req, res) {
     const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
     console.log('🎯 Buscando leads no endpoint CORRETO onde estão salvos...')
 
-    // BUSCAR NO ENDPOINT CORRETO: /api/labor-research-leads
-    const laborLeadsResponse = await fetch(`${backendUrl}/api/labor-research-leads`, {
+    const response = await fetch(`${backendUrl}/api/labor-research-leads`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -21,29 +19,20 @@ export default async function handler(req, res) {
       }
     })
 
-    console.log('📊 Status da resposta:', laborLeadsResponse.status)
-    console.log('📊 Headers:', Object.fromEntries(laborLeadsResponse.headers.entries()))
+    console.log('📊 Status da resposta:', response.status)
+    console.log('📊 Headers:', Object.fromEntries(response.headers.entries()))
 
-    if (laborLeadsResponse.ok) {
-      const responseText = await laborLeadsResponse.text()
+    if (response.ok) {
+      const responseText = await response.text()
       console.log('📋 Resposta bruta do /api/labor-research-leads:', responseText)
-      
+
       try {
-        const laborLeadsData = JSON.parse(responseText)
-        console.log('✅ Dados CORRETOS recebidos do /api/labor-research-leads:', laborLeadsData)
+        const data = JSON.parse(responseText)
+        console.log('✅ Dados CORRETOS recebidos do /api/labor-research-leads:', data)
 
-        // Processar os dados conforme a estrutura do backend
-        let leads = []
-        
-        if (Array.isArray(laborLeadsData)) {
-          leads = laborLeadsData
-        } else if (laborLeadsData.leads && Array.isArray(laborLeadsData.leads)) {
-          leads = laborLeadsData.leads
-        } else if (laborLeadsData.data && Array.isArray(laborLeadsData.data)) {
-          leads = laborLeadsData.data
-        }
-
-        console.log(`🔥 ${leads.length} leads encontrados!`)
+        // O backend retorna um array direto ou um objeto com leads
+        const leads = Array.isArray(data) ? data : (data.leads || data.data || [])
+        console.log('🔥 ' + leads.length + ' leads encontrados!')
 
         // Converter dados para o formato esperado pelo painel admin
         const formattedLeads = leads.map(lead => ({
@@ -59,7 +48,7 @@ export default async function handler(req, res) {
           contatado: lead.contatado || false,
           convertido: lead.convertido || false,
           data: lead.createdAt || new Date().toISOString(),
-          
+
           // Dados específicos da pesquisa trabalhista
           dadosCompletos: {
             ultimaEmpresa: lead.ultimaEmpresa,
@@ -87,7 +76,7 @@ export default async function handler(req, res) {
       } catch (parseError) {
         console.error('❌ Erro ao fazer parse da resposta:', parseError)
         console.error('📋 Resposta que causou erro:', responseText)
-        
+
         return res.status(500).json({
           success: false,
           leads: [],
@@ -99,21 +88,21 @@ export default async function handler(req, res) {
     }
 
     // Se não conseguiu buscar os dados
-    console.error('❌ Erro HTTP:', laborLeadsResponse.status, laborLeadsResponse.statusText)
-    const errorText = await laborLeadsResponse.text()
+    console.error('❌ Erro HTTP:', response.status, response.statusText)
+    const errorText = await response.text()
     console.error('❌ Resposta de erro:', errorText)
 
-    return res.status(laborLeadsResponse.status).json({
+    return res.status(response.status).json({
       success: false,
       leads: [],
       stats: { total: 0, novos: 0, contatados: 0, convertidos: 0 },
-      message: `Erro ao buscar leads: ${laborLeadsResponse.status} - ${errorText}`,
+      message: `Erro ao buscar leads: ${response.status} - ${errorText}`,
       error: errorText
     })
 
   } catch (error) {
     console.error('❌ ERRO CRÍTICO ao buscar leads:', error)
-    
+
     return res.status(500).json({
       success: false,
       leads: [],
