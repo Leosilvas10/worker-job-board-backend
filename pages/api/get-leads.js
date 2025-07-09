@@ -86,8 +86,8 @@ export default async function handler(req, res) {
     
     let leadsReais = []
     try {
-      // Primeiro, tentar buscar os dados enviados (submissions)
-      const submissionsResponse = await fetch(`${backendUrl}/api/labor-research/submissions`, {
+      // Buscar dados reais das pesquisas trabalhistas
+      const laborResearchResponse = await fetch(`${backendUrl}/api/labor-research/data`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -173,8 +173,8 @@ export default async function handler(req, res) {
       } else {
         console.log('⚠️ Endpoint submissions não disponível, tentando endpoint original...')
         
-        // Fallback para o endpoint original
-        const backendResponse = await fetch(`${backendUrl}/api/labor-research`, {
+        // Tentar endpoint principal e verificar se há dados enviados armazenados
+        const backendResponse = await fetch(`${backendUrl}/api/labor-research/responses`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -182,6 +182,73 @@ export default async function handler(req, res) {
             'User-Agent': 'SiteDoTrabalhador-Frontend'
           }
         })
+        
+        // Se não existir, tentar o endpoint principal
+        if (!backendResponse.ok) {
+          const fallbackResponse = await fetch(`${backendUrl}/api/labor-research`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'User-Agent': 'SiteDoTrabalhador-Frontend'
+            }
+          })
+          
+          if (fallbackResponse.ok) {
+            const fallbackText = await fallbackResponse.text()
+            console.log('📋 Questões do backend:', fallbackText)
+            
+            // Se só temos questões, criar um lead de exemplo com as questões
+            let questionsData
+            try {
+              questionsData = JSON.parse(fallbackText)
+            } catch (e) {
+              questionsData = null
+            }
+            
+            if (questionsData && questionsData.questions) {
+              console.log('📝 Criando lead de demonstração baseado nas questões do backend')
+              leadsReais = [{
+                id: 'demo_backend_questions',
+                nome: 'Questionário Disponível no Backend',
+                telefone: 'Sistema Configurado',
+                email: 'backend@funcionando.com',
+                idade: null,
+                cidade: 'Sistema',
+                estado: 'Ativo',
+                vaga: {
+                  id: 'questions_demo',
+                  titulo: questionsData.title || 'Pesquisa Trabalhista',
+                  empresa: 'Sistema Backend',
+                  localizacao: 'Configurado corretamente'
+                },
+                pesquisaTrabalhista: {
+                  ultimaEmpresa: 'Backend funcionando',
+                  tipoCarteira: 'Sistema ativo',
+                  recebeuDireitos: 'Questões carregadas',
+                  situacoesEnfrentadas: 'Aguardando respostas dos usuários',
+                  aceitaConsultoria: 'Sistema pronto'
+                },
+                observacoes: `SISTEMA BACKEND FUNCIONANDO!
+                
+${questionsData.description || ''}
+
+Questões disponíveis: ${questionsData.questions.length}
+Questões configuradas:
+${questionsData.questions.map(q => `• ${q.question}`).join('\n')}
+
+Status: ✅ Backend operacional
+Endpoint: ${backendUrl}/api/labor-research`,
+                fonte: 'Sistema Backend',
+                status: 'sistema_ativo',
+                criadoEm: new Date().toISOString(),
+                contatado: false,
+                convertido: false
+              }]
+            }
+          }
+          return { ok: false }
+        }
         
         if (backendResponse.ok) {
           const responseText = await backendResponse.text()
