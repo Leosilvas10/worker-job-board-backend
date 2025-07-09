@@ -96,10 +96,21 @@ app.post('/api/leads', (req, res) => {
 
 // Rota para estatísticas de vagas
 app.get('/api/jobs-stats', (req, res) => {
+  const jobs = loadJobsFromFile();
+  const now = new Date();
+  const last24Hours = new Date(now - 24 * 60 * 60 * 1000);
+  const last7Days = new Date(now - 7 * 24 * 60 * 60 * 1000);
+  
+  const recentJobs = jobs.filter(job => new Date(job.createdAt) > last24Hours).length;
+  const weeklyJobs = jobs.filter(job => new Date(job.createdAt) > last7Days).length;
+  
   res.json({
-    totalJobs: 120,
-    recentJobs: 25,
-    activeJobs: 95,
+    totalJobs: jobs.length,
+    recentJobs: recentJobs,
+    weeklyJobs: weeklyJobs,
+    activeJobs: jobs.length,
+    cltJobs: jobs.filter(job => job.type === 'CLT').length,
+    diaristaJobs: jobs.filter(job => job.type === 'Diarista').length,
     timestamp: new Date().toISOString()
   });
 });
@@ -442,52 +453,39 @@ app.use((req, res) => {
   });
 });
 
+// Importar o módulo de atualização de vagas
+const { updateJobs } = require('./update-jobs.js');
+
 // Função para atualizar vagas automaticamente
 async function updateJobsAutomatically() {
-  console.log('🔄 Atualizando vagas automaticamente...');
+  console.log('🔄 Atualizando vagas automaticamente de múltiplas fontes...');
   
-  const updatedJobs = [
-    {
-      id: Date.now(),
-      title: "Empregada Doméstica",
-      company: "Família Silva",
-      salary: "R$ 1.400,00",
-      type: "CLT",
-      timeAgo: "Há 1 hora",
-      description: "Limpeza, organização e cuidados com a casa. Experiência de 2 anos.",
-      tags: ["Doméstica", "CLT"],
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: Date.now() + 1,
-      title: "Diarista - 3x por semana",
-      company: "Residência Particular",
-      salary: "R$ 150,00/dia",
-      type: "Diarista",
-      timeAgo: "Há 2 horas",
-      description: "Limpeza residencial. Disponibilidade para segunda, quarta e sexta.",
-      tags: ["Diarista", "Flexível"],
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: Date.now() + 2,
-      title: "Cuidadora de Idosos",
-      company: "Família Oliveira",
-      salary: "R$ 1.600,00",
-      type: "CLT",
-      timeAgo: "Há 3 horas",
-      description: "Cuidados com idoso. Experiência e paciência necessárias.",
-      tags: ["Cuidadora", "Idoso"],
-      createdAt: new Date().toISOString()
-    }
-  ];
-
   try {
-    fs.writeFileSync('jobs-data.json', JSON.stringify(updatedJobs, null, 2));
+    // Usar o sistema robusto de atualização
+    const updatedJobs = await updateJobs();
     console.log(`✅ ${updatedJobs.length} vagas atualizadas automaticamente!`);
     console.log(`📅 Última atualização: ${new Date().toISOString()}`);
+    return updatedJobs;
   } catch (error) {
     console.error('❌ Erro ao atualizar vagas automaticamente:', error);
+    
+    // Fallback com algumas vagas básicas
+    const fallbackJobs = [
+      {
+        id: Date.now(),
+        title: "Empregada Doméstica",
+        company: "Família Silva",
+        salary: "R$ 1.400,00",
+        type: "CLT",
+        timeAgo: "Há 1 hora",
+        description: "Limpeza, organização e cuidados com a casa. Experiência de 2 anos.",
+        tags: ["Doméstica", "CLT"],
+        createdAt: new Date().toISOString()
+      }
+    ];
+    
+    fs.writeFileSync('jobs-data.json', JSON.stringify(fallbackJobs, null, 2));
+    return fallbackJobs;
   }
 }
 
