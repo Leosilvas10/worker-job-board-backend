@@ -14,12 +14,53 @@ export default async function handler(req, res) {
     const allJobs = [];
     const sources = [];
 
-    // Buscar vagas diretamente do backend em produção
+    // Buscar vagas do backend usando as URLs corretas
     try {
       const BACKEND_URL = 'https://worker-job-board-backend-leonardosilvas2.replit.app';
       console.log('🔗 Conectando ao backend:', BACKEND_URL);
       
-      // Buscar estatísticas de vagas
+      // Buscar leads (vagas) usando o endpoint correto
+      const leadsResponse = await fetch(`${BACKEND_URL}/api/leads`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'User-Agent': 'SiteDoTrabalhador-Frontend'
+        }
+      });
+      
+      console.log('📡 Status da resposta do backend (leads):', leadsResponse.status);
+      
+      if (leadsResponse.ok) {
+        const leadsData = await leadsResponse.json();
+        console.log('📊 Dados de leads recebidos:', leadsData);
+        
+        // Processar os leads como vagas
+        if (leadsData.success && leadsData.data && Array.isArray(leadsData.data)) {
+          const jobsFromLeads = leadsData.data.map((lead, index) => ({
+            id: lead.id || `lead_${index}`,
+            title: lead.cargo || lead.title || 'Vaga Disponível',
+            company: lead.empresa || lead.company || 'Empresa Parceira',
+            location: lead.cidade || lead.location || 'Brasil',
+            salary: lead.salario || lead.salary || 'A combinar',
+            description: lead.descricao || lead.description || `Vaga para ${lead.cargo || 'profissional qualificado'}`,
+            type: lead.tipo || lead.type || 'CLT',
+            category: lead.categoria || lead.category || 'Geral',
+            source: 'Backend Leads',
+            isExternal: true,
+            requiresLead: true,
+            priority: 'high',
+            created_at: lead.created_at || lead.dataCreated || new Date().toISOString(),
+            tags: [lead.cargo?.toLowerCase() || 'emprego', lead.categoria?.toLowerCase() || 'geral']
+          }));
+          
+          allJobs.push(...jobsFromLeads);
+          sources.push('Backend Leads');
+          console.log(`✅ ${jobsFromLeads.length} vagas carregadas do backend (leads)`);
+        }
+      }
+
+      // Buscar estatísticas das vagas
       const statsResponse = await fetch(`${BACKEND_URL}/api/jobs-stats`, {
         method: 'GET',
         headers: {
@@ -29,39 +70,36 @@ export default async function handler(req, res) {
         }
       });
       
-      console.log('📡 Status da resposta do backend:', statsResponse.status);
+      console.log('📡 Status da resposta do backend (stats):', statsResponse.status);
       
       if (statsResponse.ok) {
         const statsData = await statsResponse.json();
-        console.log('📊 Dados recebidos do backend:', Object.keys(statsData));
+        console.log('📊 Estatísticas recebidas:', statsData);
         
-        // Se o backend retornar as vagas diretamente
+        // Se as estatísticas contiverem vagas adicionais, processar
         if (statsData.jobs && Array.isArray(statsData.jobs)) {
-          const backendJobs = statsData.jobs.map(job => ({
-            id: job.id || `job_${Date.now()}_${Math.random()}`,
-            title: job.title || job.titulo || 'Vaga Disponível',
-            company: job.company || job.empresa || 'Empresa Parceira',
-            location: job.location || job.localizacao || 'Não informado',
-            salary: job.salary || job.salario || 'A combinar',
-            description: job.description || job.descricao || 'Descrição não disponível',
-            type: job.type || job.tipo || 'CLT',
-            category: job.category || job.categoria || 'Geral',
-            source: 'Backend Produção',
+          const additionalJobs = statsData.jobs.map((job, index) => ({
+            id: job.id || `stats_job_${index}`,
+            title: job.titulo || job.title || 'Vaga Disponível',
+            company: job.empresa || job.company || 'Empresa Parceira',
+            location: job.local || job.location || 'Brasil',
+            salary: job.salario || job.salary || 'A combinar',
+            description: job.descricao || job.description || `Vaga para ${job.titulo || 'profissional qualificado'}`,
+            type: job.tipo || job.type || 'CLT',
+            category: job.categoria || job.category || 'Geral',
+            source: 'Backend Stats',
             isExternal: true,
             requiresLead: true,
-            priority: 'high',
-            created_at: job.created_at || job.data_criacao || new Date().toISOString()
+            priority: 'medium',
+            created_at: job.created_at || job.dataCreated || new Date().toISOString()
           }));
           
-          allJobs.push(...backendJobs);
-          sources.push('Backend Produção');
-          console.log(`✅ ${backendJobs.length} vagas carregadas do backend`);
-        } else {
-          console.log('⚠️ Backend não retornou vagas no formato esperado');
+          allJobs.push(...additionalJobs);
+          sources.push('Backend Stats');
+          console.log(`✅ ${additionalJobs.length} vagas adicionais carregadas do backend (stats)`);
         }
-      } else {
-        console.log(`⚠️ Erro no backend: ${statsResponse.status} ${statsResponse.statusText}`);
       }
+
     } catch (error) {
       console.error('❌ Erro ao conectar com o backend:', error.message);
     }
@@ -84,7 +122,8 @@ export default async function handler(req, res) {
           isExternal: true,
           requiresLead: true,
           priority: 'high',
-          created_at: new Date().toISOString()
+          created_at: new Date().toISOString(),
+          tags: ['doméstica', 'limpeza', 'cuidados']
         },
         {
           id: 'fallback_2',
@@ -99,7 +138,8 @@ export default async function handler(req, res) {
           isExternal: true,
           requiresLead: true,
           priority: 'high',
-          created_at: new Date().toISOString()
+          created_at: new Date().toISOString(),
+          tags: ['diarista', 'limpeza', 'apartamento']
         }
       ];
       
@@ -108,15 +148,23 @@ export default async function handler(req, res) {
       console.log(`✅ ${fallbackJobs.length} vagas fallback carregadas`);
     }
 
-    // Remover duplicatas
+    // Remover duplicatas por ID
     const uniqueJobs = allJobs.filter((job, index, self) =>
       index === self.findIndex((j) => j.id === job.id)
     );
 
-    // Ordenar por prioridade
+    // Ordenar por prioridade e data
     uniqueJobs.sort((a, b) => {
-      if (a.priority === 'high' && b.priority !== 'high') return -1;
-      if (b.priority === 'high' && a.priority !== 'high') return 1;
+      // Prioridade: high > medium > low
+      const priorityOrder = { high: 3, medium: 2, low: 1 };
+      const aPriority = priorityOrder[a.priority] || 1;
+      const bPriority = priorityOrder[b.priority] || 1;
+      
+      if (aPriority !== bPriority) {
+        return bPriority - aPriority;
+      }
+      
+      // Se mesma prioridade, ordenar por data
       return new Date(b.created_at || new Date()) - new Date(a.created_at || new Date());
     });
 
@@ -133,7 +181,8 @@ export default async function handler(req, res) {
         totalSources: sources.length,
         lastUpdate: new Date().toISOString(),
         cached: false,
-        backendUrl: 'https://worker-job-board-backend-leonardosilvas2.replit.app'
+        backendUrl: 'https://worker-job-board-backend-leonardosilvas2.replit.app',
+        availableEndpoints: ['/api/leads', '/api/jobs-stats']
       }
     });
 
