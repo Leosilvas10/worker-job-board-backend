@@ -80,8 +80,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Buscar dados reais do backend
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+    // Buscar dados reais do backend em produção
+    const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
     console.log('🔍 Tentando conectar ao backend:', backendUrl)
     
     let leadsReais = []
