@@ -310,6 +310,76 @@ app.get('/api/labor-research-leads', (req, res) => {
   });
 });
 
+// Rota para deletar um lead específico
+app.delete('/api/labor-research-leads/:id', (req, res) => {
+  const leadId = parseInt(req.params.id);
+  
+  console.log(`🗑️ Tentando deletar lead com ID: ${leadId}`);
+  
+  const leadIndex = laborResearchLeads.findIndex(lead => lead.id === leadId);
+  
+  if (leadIndex === -1) {
+    return res.status(404).json({
+      error: 'Lead não encontrado',
+      id: leadId,
+      timestamp: new Date().toISOString()
+    });
+  }
+  
+  // Remover lead do array
+  const deletedLead = laborResearchLeads.splice(leadIndex, 1)[0];
+  
+  // SALVAR NO ARQUIVO PARA PERSISTIR A EXCLUSÃO
+  saveLeadsToFile(laborResearchLeads);
+  
+  console.log(`✅ Lead deletado permanentemente! Total restante: ${laborResearchLeads.length}`);
+  console.log(`📋 Lead deletado: ${deletedLead.nomeCompleto} (${deletedLead.email})`);
+  
+  res.json({
+    message: 'Lead deletado com sucesso',
+    deletedLead: deletedLead,
+    totalRemaining: laborResearchLeads.length,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Rota para deletar múltiplos leads
+app.delete('/api/labor-research-leads', (req, res) => {
+  const { ids } = req.body;
+  
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({
+      error: 'IDs devem ser fornecidos como array',
+      timestamp: new Date().toISOString()
+    });
+  }
+  
+  console.log(`🗑️ Tentando deletar ${ids.length} leads:`, ids);
+  
+  const deletedLeads = [];
+  
+  // Deletar cada lead pelos IDs fornecidos
+  ids.forEach(id => {
+    const leadIndex = laborResearchLeads.findIndex(lead => lead.id === parseInt(id));
+    if (leadIndex !== -1) {
+      const deletedLead = laborResearchLeads.splice(leadIndex, 1)[0];
+      deletedLeads.push(deletedLead);
+    }
+  });
+  
+  // SALVAR NO ARQUIVO PARA PERSISTIR AS EXCLUSÕES
+  saveLeadsToFile(laborResearchLeads);
+  
+  console.log(`✅ ${deletedLeads.length} leads deletados permanentemente! Total restante: ${laborResearchLeads.length}`);
+  
+  res.json({
+    message: `${deletedLeads.length} leads deletados com sucesso`,
+    deletedLeads: deletedLeads,
+    totalRemaining: laborResearchLeads.length,
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Middleware de erro
 app.use((err, req, res, next) => {
   console.error('Erro:', err);
