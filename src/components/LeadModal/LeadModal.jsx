@@ -144,13 +144,14 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
       console.log('- Situações:', leadData.situacoesDuranteTrabalho)
       console.log('- Consultoria:', leadData.aceitaConsultoria)
 
-      const apiUrl = '/api/submit-lead'
-      console.log('🎯 ENVIANDO PARA URL:', apiUrl)
+      // Enviar DIRETAMENTE para o backend, sem passar pela API local
+      const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research'
+      console.log('🎯 ENVIANDO DIRETAMENTE PARA BACKEND:', backendUrl)
       console.log('📋 PAYLOAD COMPLETO:', JSON.stringify(leadData, null, 2))
 
-      // Enviar através da API local que repassa para o backend
-      console.log('⏳ INICIANDO REQUISIÇÃO...')
-      const response = await fetch(apiUrl, {
+      // Enviar DIRETAMENTE para o backend onde o painel admin busca
+      console.log('⏳ INICIANDO REQUISIÇÃO DIRETA...')
+      const response = await fetch(backendUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -190,7 +191,7 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
       console.log('- result.success:', result.success)
       console.log('- result.message:', result.message)
 
-      if (response.ok && (result.status === 'success' || result.success === true)) {
+      if (response.ok && (result.status === 'success' || result.success === true || result.message?.includes('sucesso'))) {
         console.log('🎉 SUCESSO! Dados enviados com sucesso!')
         // Preparar mensagem de sucesso
         let successMessage = `✅ Pesquisa trabalhista enviada com sucesso!`
