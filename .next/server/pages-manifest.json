@@ -2,7 +2,5 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/admin/leads": "pages/admin/leads.js",
-  "/": "pages/index.js",
-  "/api/jobs-stats": "pages/api/jobs-stats.js"
+  "/": "pages/index.js"
 }
