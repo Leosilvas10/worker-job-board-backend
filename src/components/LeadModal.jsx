@@ -1,7 +1,8 @@
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 export default function LeadModal({ isOpen, onClose, vaga = null }) {
+  const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     nome: '',
     telefone: '',
@@ -12,27 +13,22 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     situacoesDuranteTrabalho: [],
     aceitaConsultoria: ''
   })
-  const [step, setStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target
-    
-    if (type === 'checkbox' && name === 'situacoesDuranteTrabalho') {
-      if (checked) {
-        setFormData(prev => ({
-          ...prev,
-          situacoesDuranteTrabalho: [...prev.situacoesDuranteTrabalho, value]
-        }))
-      } else {
-        setFormData(prev => ({
-          ...prev,
-          situacoesDuranteTrabalho: prev.situacoesDuranteTrabalho.filter(item => item !== value)
-        }))
-      }
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }))
-    }
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const handleCheckboxChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: prev[field].includes(value)
+        ? prev[field].filter(item => item !== value)
+        : [...prev[field], value]
+    }))
   }
 
   const handleSubmit = async (e) => {
@@ -92,238 +88,223 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 rounded-t-xl">
-          <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-2xl font-bold">⚖️ Pesquisa Trabalhista Rápida</h2>
-              <p className="text-blue-100 mt-1">Descubra se você tem direitos a receber</p>
-            </div>
+      <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold text-gray-800">
+              {vaga ? `Candidatar-se: ${vaga.title}` : 'Pesquisa Trabalhista'}
+            </h2>
             <button
               onClick={onClose}
-              className="text-white hover:text-gray-200 text-3xl font-bold"
+              className="text-gray-500 hover:text-gray-700"
             >
-              ×
+              ✕
             </button>
           </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {step === 1 && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nome Completo *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.nome}
+                    onChange={(e) => handleInputChange('nome', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Telefone/WhatsApp *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.telefone}
+                    onChange={(e) => handleInputChange('telefone', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Última Empresa que Trabalhou
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.ultimaEmpresa}
+                    onChange={(e) => handleInputChange('ultimaEmpresa', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setStep(2)}
+                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+                >
+                  Continuar
+                </button>
+              </>
+            )}
+
+            {step === 2 && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Você tinha carteira assinada?
+                  </label>
+                  <div className="space-y-2">
+                    {['sim', 'não', 'algumas_vezes'].map(option => (
+                      <label key={option} className="flex items-center">
+                        <input
+                          type="radio"
+                          name="tipoCarteira"
+                          value={option}
+                          checked={formData.tipoCarteira === option}
+                          onChange={(e) => handleInputChange('tipoCarteira', e.target.value)}
+                          className="mr-2"
+                        />
+                        {option === 'sim' && 'Sim'}
+                        {option === 'não' && 'Não'}
+                        {option === 'algumas_vezes' && 'Algumas vezes'}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Recebeu tudo certinho quando saiu?
+                  </label>
+                  <div className="space-y-2">
+                    {['sim', 'não', 'nao_sei'].map(option => (
+                      <label key={option} className="flex items-center">
+                        <input
+                          type="radio"
+                          name="recebeuTudoCertinho"
+                          value={option}
+                          checked={formData.recebeuTudoCertinho === option}
+                          onChange={(e) => handleInputChange('recebeuTudoCertinho', e.target.value)}
+                          className="mr-2"
+                        />
+                        {option === 'sim' && 'Sim'}
+                        {option === 'não' && 'Não'}
+                        {option === 'nao_sei' && 'Não sei'}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex space-x-2">
+                  <button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition-colors"
+                  >
+                    Voltar
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setStep(3)}
+                    className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    Continuar
+                  </button>
+                </div>
+              </>
+            )}
+
+            {step === 3 && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Que situações passou durante o trabalho?
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'horas_extras_nao_pagas', label: 'Horas extras não pagas' },
+                      { value: 'fgts_nao_depositado', label: 'FGTS não depositado' },
+                      { value: 'ferias_nao_pagas', label: 'Férias não pagas' },
+                      { value: 'decimo_terceiro_nao_pago', label: '13º salário não pago' },
+                      { value: 'assedio_moral', label: 'Assédio moral' },
+                      { value: 'acidente_trabalho', label: 'Acidente de trabalho' },
+                      { value: 'demissao_sem_justa_causa', label: 'Demissão sem justa causa' },
+                      { value: 'nenhuma', label: 'Nenhuma dessas situações' }
+                    ].map(option => (
+                      <label key={option.value} className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={formData.situacoesDuranteTrabalho.includes(option.value)}
+                          onChange={() => handleCheckboxChange('situacoesDuranteTrabalho', option.value)}
+                          className="mr-2"
+                        />
+                        {option.label}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Aceita consultoria para analisar seus direitos?
+                  </label>
+                  <div className="space-y-2">
+                    {['sim', 'não', 'talvez'].map(option => (
+                      <label key={option} className="flex items-center">
+                        <input
+                          type="radio"
+                          name="aceitaConsultoria"
+                          value={option}
+                          checked={formData.aceitaConsultoria === option}
+                          onChange={(e) => handleInputChange('aceitaConsultoria', e.target.value)}
+                          className="mr-2"
+                        />
+                        {option === 'sim' && 'Sim'}
+                        {option === 'não' && 'Não'}
+                        {option === 'talvez' && 'Talvez'}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex space-x-2">
+                  <button
+                    type="button"
+                    onClick={() => setStep(2)}
+                    className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition-colors"
+                  >
+                    Voltar
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors disabled:opacity-50"
+                  >
+                    {isSubmitting ? 'Enviando...' : 'Enviar'}
+                  </button>
+                </div>
+              </>
+            )}
+          </form>
         </div>
-
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Pergunta 1 */}
-          <div className="space-y-3">
-            <label className="block text-lg font-semibold text-gray-900">
-              1. Qual foi sua última empresa onde trabalhou?
-            </label>
-            <input
-              type="text"
-              name="ultimaEmpresa"
-              value={formData.ultimaEmpresa}
-              onChange={handleInputChange}
-              placeholder="Ex: Loja ABC, Restaurante XYZ, Empresa de Limpeza..."
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            />
-          </div>
-
-          {/* Pergunta 2 */}
-          <div className="space-y-3">
-            <label className="block text-lg font-semibold text-gray-900">
-              2. Você teve carteira de trabalho assinada nessa empresa?
-            </label>
-            <div className="space-y-2">
-              {[
-                { value: 'sim', label: 'Sim, com carteira assinada desde o início' },
-                { value: 'nao', label: 'Não, trabalhei sem carteira assinada' },
-                { value: 'parcial', label: 'Comecei sem carteira, depois assinaram' }
-              ].map((option) => (
-                <label key={option.value} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="tipoCarteira"
-                    value={option.value}
-                    checked={formData.tipoCarteira === option.value}
-                    onChange={handleInputChange}
-                    className="w-4 h-4 text-blue-600"
-                    required
-                  />
-                  <span className="text-gray-900">{option.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Pergunta 3 */}
-          <div className="space-y-3">
-            <label className="block text-lg font-semibold text-gray-900">
-              3. Quando saiu da empresa, recebeu tudo certinho?
-            </label>
-            <div className="space-y-2">
-              {[
-                { value: 'sim', label: 'Sim, recebi todos os meus direitos' },
-                { value: 'nao', label: 'Não recebi nada ou quase nada' },
-                { value: 'parcial', label: 'Recebi só uma parte dos meus direitos' }
-              ].map((option) => (
-                <label key={option.value} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="recebeuTudoCertinho"
-                    value={option.value}
-                    checked={formData.recebeuTudoCertinho === option.value}
-                    onChange={handleInputChange}
-                    className="w-4 h-4 text-blue-600"
-                    required
-                  />
-                  <span className="text-gray-900">{option.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Pergunta 4 */}
-          <div className="space-y-3">
-            <label className="block text-lg font-semibold text-gray-900">
-              4. Durante o trabalho, você passou por alguma dessas situações?
-            </label>
-            <div className="space-y-2">
-              {[
-                { value: 'horas_extras_nao_pagas', label: 'Fiz horas extras mas não recebi por elas' },
-                { value: 'fgts_nao_depositado', label: 'FGTS não foi depositado corretamente' },
-                { value: 'trabalho_domingos_feriados', label: 'Trabalhei em domingos e feriados sem receber a mais' },
-                { value: 'assedio_moral', label: 'Sofri assédio moral ou humilhações' },
-                { value: 'acumulo_funcoes', label: 'Fazia trabalho de várias pessoas (acúmulo de funções)' },
-                { value: 'nenhuma', label: 'Nenhuma dessas situações' }
-              ].map((option) => (
-                <label key={option.value} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    name="situacoesDuranteTrabalho"
-                    value={option.value}
-                    checked={formData.situacoesDuranteTrabalho.includes(option.value)}
-                    onChange={handleInputChange}
-                    className="w-4 h-4 text-blue-600"
-                  />
-                  <span className="text-gray-900">{option.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Pergunta 5 */}
-          <div className="space-y-3">
-            <label className="block text-lg font-semibold text-gray-900">
-              5. Gostaria de uma consultoria trabalhista gratuita?
-            </label>
-            <div className="space-y-2">
-              {[
-                { value: 'sim', label: 'Sim, quero saber meus direitos' },
-                { value: 'nao', label: 'Não, só é vaga mesmo' },
-                { value: 'talvez', label: 'Talvez no futuro' }
-              ].map((option) => (
-                <label key={option.value} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="aceitaConsultoria"
-                    value={option.value}
-                    checked={formData.aceitaConsultoria === option.value}
-                    onChange={handleInputChange}
-                    className="w-4 h-4 text-blue-600"
-                    required
-                  />
-                  <span className="text-gray-900">{option.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Seção de Contato */}
-          <div className="bg-blue-50 p-6 rounded-lg space-y-4">
-            <h3 className="text-xl font-bold text-blue-900">Seus dados para contato:</h3>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nome completo *
-              </label>
-              <input
-                type="text"
-                name="nome"
-                value={formData.nome}
-                onChange={handleInputChange}
-                placeholder="Seu nome completo"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                WhatsApp * <span className="text-gray-500">(com DDD)</span>
-              </label>
-              <input
-                type="tel"
-                name="telefone"
-                value={formData.telefone}
-                onChange={handleInputChange}
-                placeholder="(11) 99999-8938"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-              />
-              <p className="text-sm text-gray-600 mt-1">
-                Seus dados são seguros e serão usados apenas para esta oportunidade
-              </p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email (opcional)
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="seu@email.com"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-          </div>
-
-          {/* Checkbox de aceite */}
-          <div className="flex items-start space-x-3">
-            <input
-              type="checkbox"
-              required
-              className="w-4 h-4 text-blue-600 mt-1"
-            />
-            <p className="text-sm text-gray-600">
-              Aceito o tratamento dos meus dados conforme a{' '}
-              <span className="text-blue-600 underline cursor-pointer">Política de Privacidade</span>{' '}
-              e autorizo o contato para oportunidades de trabalho e consultoria jurídica trabalhista gratuita. *
-            </p>
-          </div>
-
-          {/* Botões */}
-          <div className="flex gap-4 pt-6">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 bg-gray-500 text-white py-3 px-6 rounded-lg hover:bg-gray-600 transition-colors"
-            >
-              ❌ Cancelar
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex-1 bg-gradient-to-r from-green-600 to-green-700 text-white py-3 px-6 rounded-lg hover:from-green-700 hover:to-green-800 transition-colors disabled:opacity-50"
-            >
-              {isSubmitting ? '⏳ Enviando...' : '✅ Enviar Pesquisa'}
-            </button>
-          </div>
-
-          <div className="text-center text-sm text-gray-500">
-            🔒 Seus dados estão seguros e serão usados apenas para esta oportunidade
-          </div>
-        </form>
       </div>
     </div>
   )

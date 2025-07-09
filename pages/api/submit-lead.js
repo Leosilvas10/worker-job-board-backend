@@ -1,3 +1,4 @@
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ 
@@ -42,9 +43,9 @@ export default async function handler(req, res) {
 
     console.log('📤 Enviando para backend:', leadData)
 
-    // Enviar para o backend correto
+    // Enviar para o backend correto - ENDPOINT CORRIGIDO
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app'
-    const endpoint = `${backendUrl}/api/labor-research-leads`
+    const endpoint = `${backendUrl}/api/labor-research`
 
     const response = await fetch(endpoint, {
       method: 'POST',
