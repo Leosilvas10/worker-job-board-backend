@@ -1,4 +1,3 @@
-
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -112,6 +111,22 @@ app.get('/api/jobs', (req, res) => {
   res.json({
     jobs,
     total: jobs.length,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Rota para receber dados da pesquisa trabalhista
+app.post('/api/labor-research', (req, res) => {
+  console.log('Dados da pesquisa trabalhista recebidos:', req.body);
+
+  // Dados esperados do formulário:
+  // ultimaEmpresa, tipoCarteira, recebeuTudoCertinho, situacoesDuranteTrabalho, 
+  // aceitaConsultoria, nomeCompleto, whatsapp
+
+  res.json({
+    message: 'Pesquisa trabalhista recebida com sucesso',
+    data: req.body,
+    status: 'success',
     timestamp: new Date().toISOString()
   });
 });
