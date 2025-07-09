@@ -232,14 +232,55 @@ app.get('/api/jobs', (req, res) => {
   });
 });
 
-// Rota para receber dados da pesquisa trabalhista
+// Rota para receber dados da pesquisa trabalhista + dados pessoais
 app.post('/api/labor-research', (req, res) => {
   console.log('Dados da pesquisa trabalhista recebidos:', req.body);
+
+  // Extrair dados pessoais e da pesquisa trabalhista
+  const {
+    // Dados pessoais
+    nomeCompleto,
+    email,
+    telefone,
+    cidade,
+    estado,
+    idade,
+    
+    // Dados da pesquisa trabalhista
+    ultimaEmpresa,
+    tipoCarteira,
+    recebeuTudoCertinho,
+    situacoesDuranteTrabalho,
+    aceitaConsultoria,
+    whatsapp,
+    
+    // Qualquer outro campo adicional
+    ...outrosDados
+  } = req.body;
 
   // Salvar dados no array com ID único
   const leadData = {
     id: Date.now(),
-    ...req.body,
+    
+    // Dados pessoais
+    nomeCompleto,
+    email,
+    telefone,
+    cidade,
+    estado,
+    idade,
+    
+    // Dados da pesquisa trabalhista
+    ultimaEmpresa,
+    tipoCarteira,
+    recebeuTudoCertinho,
+    situacoesDuranteTrabalho,
+    aceitaConsultoria,
+    whatsapp,
+    
+    // Outros dados
+    ...outrosDados,
+    
     createdAt: new Date().toISOString()
   };
   
@@ -248,7 +289,9 @@ app.post('/api/labor-research', (req, res) => {
   // SALVAR NO ARQUIVO PARA PERSISTÊNCIA
   saveLeadsToFile(laborResearchLeads);
   
-  console.log(`✅ Lead salvo! Total de leads: ${laborResearchLeads.length}`);
+  console.log(`✅ Lead completo salvo! Total de leads: ${laborResearchLeads.length}`);
+  console.log(`📋 Dados pessoais: ${nomeCompleto}, ${email}, ${telefone}, ${cidade}, ${estado}, ${idade}`);
+  console.log(`💼 Dados trabalhistas: ${ultimaEmpresa}, ${tipoCarteira}, ${aceitaConsultoria}`);
 
   res.json({
     message: 'Pesquisa trabalhista recebida com sucesso',
