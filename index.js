@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
   res.json({ 
     message: 'Backend Worker Job Board rodando!',
     timestamp: new Date().toISOString(),
-    endpoints: ['/api/leads', '/api/health', '/api/jobs-stats']
+    endpoints: ['/api/leads', '/api/health', '/api/jobs-stats', '/api/jobs']
   });
 });
 
@@ -70,6 +70,48 @@ app.get('/api/jobs-stats', (req, res) => {
     totalJobs: 120,
     recentJobs: 25,
     activeJobs: 95,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Rota para listar vagas (SEM cidade)
+app.get('/api/jobs', (req, res) => {
+  const jobs = [
+    {
+      id: 1,
+      title: "Empregada Doméstica",
+      company: "Família Particular",
+      salary: "R$ 1.320,00",
+      type: "CLT",
+      timeAgo: "Há 2 horas",
+      description: "Limpeza geral da casa, organização, preparo de refeições simples. Experiência mínima de 1 ano.",
+      tags: ["Doméstica", "CATHO"]
+    },
+    {
+      id: 2,
+      title: "Diarista",
+      company: "Residência Particular",
+      salary: "R$ 120,00/dia",
+      type: "Diarista",
+      timeAgo: "Há 3 horas",
+      description: "Limpeza e organização residencial. Disponibilidade para trabalhar 2x por semana.",
+      tags: ["Diarista", "Limpeza"]
+    },
+    {
+      id: 3,
+      title: "Auxiliar de Limpeza",
+      company: "Empresa de Serviços",
+      salary: "R$ 1.500,00",
+      type: "CLT",
+      timeAgo: "Há 1 hora",
+      description: "Limpeza de escritórios e áreas comuns. Experiência em limpeza comercial.",
+      tags: ["Limpeza", "Comercial"]
+    }
+  ];
+
+  res.json({
+    jobs,
+    total: jobs.length,
     timestamp: new Date().toISOString()
   });
 });
