@@ -144,30 +144,54 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
       console.log('- Situações:', leadData.situacoesDuranteTrabalho)
       console.log('- Consultoria:', leadData.aceitaConsultoria)
 
+      const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research'
+      console.log('🎯 ENVIANDO PARA URL:', backendUrl)
+      console.log('📋 PAYLOAD COMPLETO:', JSON.stringify(leadData, null, 2))
+
       // Enviar direto para o backend
-      const response = await fetch('https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research', {
+      console.log('⏳ INICIANDO REQUISIÇÃO...')
+      const response = await fetch(backendUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'User-Agent': 'SiteDoTrabalhador-Modal'
         },
         body: JSON.stringify(leadData)
       })
 
+      console.log('📊 STATUS DA RESPOSTA:', response.status)
+      console.log('📊 STATUS TEXT:', response.statusText)
+      console.log('📊 HEADERS DA RESPOSTA:', Object.fromEntries(response.headers.entries()))
+
       const responseText = await response.text()
       console.log('📋 RESPOSTA BRUTA DO BACKEND:', responseText)
+      console.log('📏 TAMANHO DA RESPOSTA:', responseText.length)
 
       let result
       try {
+        if (!responseText || responseText.trim() === '') {
+          throw new Error('Resposta vazia do servidor')
+        }
         result = JSON.parse(responseText)
+        console.log('✅ RESPOSTA PARSEADA COM SUCESSO:', result)
       } catch (parseError) {
         console.error('❌ ERRO AO FAZER PARSE DA RESPOSTA:', parseError)
         console.error('📋 RESPOSTA ORIGINAL:', responseText)
-        throw new Error('Resposta inválida do servidor')
+        console.error('📋 TIPO DA RESPOSTA:', typeof responseText)
+        alert(`❌ Erro ao processar resposta do servidor: ${parseError.message}`)
+        setIsSubmitting(false)
+        return
       }
 
-      console.log('✅ RESPOSTA PARSEADA:', result)
+      console.log('🔍 VERIFICANDO SUCESSO DA REQUISIÇÃO...')
+      console.log('- response.ok:', response.ok)
+      console.log('- result.status:', result.status)
+      console.log('- result.success:', result.success)
+      console.log('- result.message:', result.message)
 
       if (response.ok && (result.status === 'success' || result.success === true)) {
+        console.log('🎉 SUCESSO! Dados enviados com sucesso!')
         // Preparar mensagem de sucesso
         let successMessage = `✅ Pesquisa trabalhista enviada com sucesso!`
         successMessage += `\n\n📋 Dados registrados:`
@@ -211,11 +235,39 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         }
 
       } else {
-        alert('❌ Erro: ' + (result.message || 'Erro ao enviar pesquisa trabalhista'))
+        console.error('❌ FALHA NA REQUISIÇÃO!')
+        console.error('- Status:', response.status)
+        console.error('- Status Text:', response.statusText)
+        console.error('- Result:', result)
+        
+        const errorMessage = result?.message || result?.error || 'Erro desconhecido ao enviar pesquisa trabalhista'
+        alert('❌ Erro: ' + errorMessage)
+        
+        // Log para debug
+        console.error('📊 DETALHES DO ERRO:')
+        console.error('- URL:', backendUrl)
+        console.error('- Payload:', leadData)
+        console.error('- Response Status:', response.status)
+        console.error('- Response Text:', responseText)
       }
     } catch (error) {
-      console.error('❌ Erro ao enviar candidatura:', error)
-      alert('❌ Erro ao enviar candidatura. Tente novamente.')
+      console.error('❌ ERRO CRÍTICO ao enviar candidatura:', error)
+      console.error('📊 STACK TRACE:', error.stack)
+      console.error('📋 DADOS QUE ESTAVAM SENDO ENVIADOS:', leadData)
+      console.error('📋 DADOS DO FORMULÁRIO:', formData)
+      console.error('📋 DADOS DA VAGA:', jobData)
+      
+      // Mostrar erro mais detalhado
+      let errorMessage = 'Erro ao enviar candidatura. '
+      if (error.message.includes('fetch')) {
+        errorMessage += 'Problema de conexão com o servidor.'
+      } else if (error.message.includes('JSON')) {
+        errorMessage += 'Problema ao processar resposta do servidor.'
+      } else {
+        errorMessage += error.message
+      }
+      
+      alert('❌ ' + errorMessage + '\n\nTente novamente em alguns segundos.')
     } finally {
       setIsSubmitting(false)
     }
