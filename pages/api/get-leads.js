@@ -9,10 +9,10 @@ export default async function handler(req, res) {
 
   try {
     const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
-    console.log('🔍 Buscando leads do backend EXATO onde estão salvos...')
+    console.log('🎯 Buscando leads no endpoint CORRETO onde estão salvos...')
 
-    // Primeiro: tentar o endpoint principal de leads
-    const leadsResponse = await fetch(`${backendUrl}/api/leads`, {
+    // BUSCAR NO ENDPOINT CORRETO: /api/labor-research-leads
+    const laborLeadsResponse = await fetch(`${backendUrl}/api/labor-research-leads`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -21,123 +21,94 @@ export default async function handler(req, res) {
       }
     })
 
-    if (leadsResponse.ok) {
-      const leadsData = await leadsResponse.json()
-      console.log('✅ Dados EXATOS recebidos do /api/leads:', leadsData)
+    console.log('📊 Status da resposta:', laborLeadsResponse.status)
+    console.log('📊 Headers:', Object.fromEntries(laborLeadsResponse.headers.entries()))
 
-      // Se tem dados, processar
-      if (leadsData.leads && leadsData.leads.length > 0) {
-        return res.status(200).json({
-          success: true,
-          leads: leadsData.leads,
-          stats: {
-            total: leadsData.leads.length,
-            novos: leadsData.leads.filter(l => l.status === 'novo').length,
-            contatados: leadsData.leads.filter(l => l.contatado).length,
-            convertidos: leadsData.leads.filter(l => l.convertido).length
-          },
-          message: `${leadsData.leads.length} leads encontrados`
-        })
-      }
-    }
-
-    // Segundo: tentar o endpoint labor-research onde enviamos os dados
-    console.log('⚠️ Endpoint /api/leads vazio, buscando em /api/labor-research...')
-    const laborResponse = await fetch(`${backendUrl}/api/labor-research`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'User-Agent': 'SiteDoTrabalhador-Frontend'
-      }
-    })
-
-    if (laborResponse.ok) {
-      const laborText = await laborResponse.text()
-      console.log('📋 Resposta de /api/labor-research:', laborText)
+    if (laborLeadsResponse.ok) {
+      const responseText = await laborLeadsResponse.text()
+      console.log('📋 Resposta bruta do /api/labor-research-leads:', responseText)
       
       try {
-        const laborData = JSON.parse(laborText)
+        const laborLeadsData = JSON.parse(responseText)
+        console.log('✅ Dados CORRETOS recebidos do /api/labor-research-leads:', laborLeadsData)
+
+        // Processar os dados conforme a estrutura do backend
+        let leads = []
         
-        // Se tem submissions/responses/data
-        if (laborData.submissions || laborData.responses || laborData.data) {
-          const submissions = laborData.submissions || laborData.responses || laborData.data || []
-          
-          return res.status(200).json({
-            success: true,
-            leads: submissions,
-            stats: {
-              total: submissions.length,
-              novos: submissions.filter(l => l.status === 'novo').length,
-              contatados: submissions.filter(l => l.contatado).length,
-              convertidos: submissions.filter(l => l.convertido).length
-            },
-            message: `${submissions.length} leads encontrados em labor-research`
-          })
+        if (Array.isArray(laborLeadsData)) {
+          leads = laborLeadsData
+        } else if (laborLeadsData.leads && Array.isArray(laborLeadsData.leads)) {
+          leads = laborLeadsData.leads
+        } else if (laborLeadsData.data && Array.isArray(laborLeadsData.data)) {
+          leads = laborLeadsData.data
         }
-      } catch (e) {
-        console.log('⚠️ Não foi possível fazer parse da resposta labor-research')
-      }
-    }
 
-    // Terceiro: tentar endpoints alternativos onde os dados podem estar
-    const endpoints = [
-      '/api/labor-research/submissions',
-      '/api/labor-research/responses', 
-      '/api/labor-research/data',
-      '/api/submissions',
-      '/api/responses'
-    ]
+        console.log(`🔥 ${leads.length} leads encontrados!`)
 
-    for (const endpoint of endpoints) {
-      console.log(`🔎 Tentando endpoint: ${endpoint}`)
-      try {
-        const response = await fetch(`${backendUrl}${endpoint}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'User-Agent': 'SiteDoTrabalhador-Frontend'
+        // Converter dados para o formato esperado pelo painel admin
+        const formattedLeads = leads.map(lead => ({
+          id: lead.id || `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          nome: lead.nomeCompleto || lead.nome || 'Não informado',
+          email: lead.email || `${(lead.nomeCompleto || 'user').toLowerCase().replace(/\s+/g, '.')}@temporario.com`,
+          telefone: lead.whatsapp || lead.telefone || 'Não informado',
+          empresa: lead.ultimaEmpresa || 'Não informado',
+          vaga: 'Pesquisa Trabalhista',
+          interesse: lead.aceitaConsultoria === 'sim' ? 'Consultoria Trabalhista' : 'Informação',
+          fonte: 'Pesquisa Trabalhista',
+          status: lead.status || 'novo',
+          contatado: lead.contatado || false,
+          convertido: lead.convertido || false,
+          data: lead.createdAt || new Date().toISOString(),
+          
+          // Dados específicos da pesquisa trabalhista
+          dadosCompletos: {
+            ultimaEmpresa: lead.ultimaEmpresa,
+            tipoCarteira: lead.tipoCarteira,
+            recebeuTudoCertinho: lead.recebeuTudoCertinho,
+            situacoesDuranteTrabalho: lead.situacoesDuranteTrabalho,
+            aceitaConsultoria: lead.aceitaConsultoria,
+            nomeCompleto: lead.nomeCompleto,
+            whatsapp: lead.whatsapp
           }
+        }))
+
+        return res.status(200).json({
+          success: true,
+          leads: formattedLeads,
+          stats: {
+            total: formattedLeads.length,
+            novos: formattedLeads.filter(l => l.status === 'novo').length,
+            contatados: formattedLeads.filter(l => l.contatado).length,
+            convertidos: formattedLeads.filter(l => l.convertido).length
+          },
+          message: `${formattedLeads.length} leads encontrados na pesquisa trabalhista`
         })
 
-        if (response.ok) {
-          const data = await response.json()
-          console.log(`✅ DADOS ENCONTRADOS em ${endpoint}:`, data)
-          
-          const leads = data.submissions || data.responses || data.data || data.leads || []
-          
-          if (leads.length > 0) {
-            return res.status(200).json({
-              success: true,
-              leads: leads,
-              stats: {
-                total: leads.length,
-                novos: leads.filter(l => l.status === 'novo').length,
-                contatados: leads.filter(l => l.contatado).length,
-                convertidos: leads.filter(l => l.convertido).length
-              },
-              message: `${leads.length} leads encontrados em ${endpoint}`
-            })
-          }
-        }
-      } catch (e) {
-        console.log(`❌ Erro em ${endpoint}:`, e.message)
+      } catch (parseError) {
+        console.error('❌ Erro ao fazer parse da resposta:', parseError)
+        console.error('📋 Resposta que causou erro:', responseText)
+        
+        return res.status(500).json({
+          success: false,
+          leads: [],
+          stats: { total: 0, novos: 0, contatados: 0, convertidos: 0 },
+          message: 'Erro ao processar dados do backend',
+          error: parseError.message
+        })
       }
     }
 
-    // Se chegou aqui, não encontrou dados
-    console.log('❌ NENHUM DADO ENCONTRADO em nenhum endpoint')
-    return res.status(200).json({
-      success: true,
+    // Se não conseguiu buscar os dados
+    console.error('❌ Erro HTTP:', laborLeadsResponse.status, laborLeadsResponse.statusText)
+    const errorText = await laborLeadsResponse.text()
+    console.error('❌ Resposta de erro:', errorText)
+
+    return res.status(laborLeadsResponse.status).json({
+      success: false,
       leads: [],
-      stats: {
-        total: 0,
-        novos: 0,
-        contatados: 0,
-        convertidos: 0
-      },
-      message: 'Nenhum lead encontrado. Verifique se os dados estão sendo salvos corretamente no backend.'
+      stats: { total: 0, novos: 0, contatados: 0, convertidos: 0 },
+      message: `Erro ao buscar leads: ${laborLeadsResponse.status} - ${errorText}`,
+      error: errorText
     })
 
   } catch (error) {
@@ -146,12 +117,7 @@ export default async function handler(req, res) {
     return res.status(500).json({
       success: false,
       leads: [],
-      stats: {
-        total: 0,
-        novos: 0,
-        contatados: 0,
-        convertidos: 0
-      },
+      stats: { total: 0, novos: 0, contatados: 0, convertidos: 0 },
       message: 'Erro de conexão com o backend',
       error: error.message
     })

@@ -253,59 +253,41 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
       convertido: false
     }
 
-    // Enviar para o backend usando a URL correta
-    const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
-    console.log('📤 ENVIANDO LEAD PARA BACKEND:', backendUrl)
-    console.log('📋 DADOS COMPLETOS sendo enviados:', JSON.stringify(leadData, null, 2))
-    
-    // Endpoints para tentar em ordem
-    const endpoints = [
-      '/api/leads',                    // Endpoint principal
-      '/api/labor-research',           // Endpoint alternativo
-      '/api/labor-research/submit',    // Possível endpoint de submissão
-      '/api/submissions'               // Outro possível endpoint
-    ]
-
-    let response = null
-    let lastError = null
-
-    for (const endpoint of endpoints) {
-      console.log(`📡 Tentando enviar para: ${backendUrl}${endpoint}`)
-      
-      try {
-        response = await fetch(`${backendUrl}${endpoint}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'User-Agent': 'SiteDoTrabalhador-Frontend'
-          },
-          body: JSON.stringify(leadData)
-        })
-
-        console.log(`📊 Status ${endpoint}:`, response.status)
-        
-        if (response.ok) {
-          console.log(`✅ SUCESSO! Dados salvos em ${endpoint}`)
-          break
-        } else {
-          const errorText = await response.text()
-          console.log(`❌ ERRO em ${endpoint}:`, response.status, errorText)
-          lastError = `${endpoint}: ${response.status} ${errorText}`
-        }
-      } catch (error) {
-        console.log(`💥 EXCEÇÃO em ${endpoint}:`, error.message)
-        lastError = `${endpoint}: ${error.message}`
-      }
+    // Preparar dados no formato EXATO que o backend espera
+    const laborResearchData = {
+      ultimaEmpresa: lastCompany || 'Não informado',
+      tipoCarteira: workStatus === 'Com carteira assinada' ? 'sim' : (workStatus === 'Sem carteira assinada' ? 'nao' : 'parcial'),
+      recebeuTudoCertinho: receivedRights === 'Sim, recebi tudo certinho' ? 'sim' : (receivedRights === 'Não, tive problemas' ? 'nao' : 'parcial'),
+      situacoesDuranteTrabalho: Array.isArray(workProblems) ? workProblems : (workProblems ? [workProblems] : ['nenhuma']),
+      aceitaConsultoria: wantConsultation === 'Sim' ? 'sim' : 'nao',
+      nomeCompleto: name,
+      whatsapp: whatsapp
     }
 
-    if (!response || !response.ok) {
-      console.error('💀 FALHA TOTAL EM TODOS OS ENDPOINTS!')
-      console.error('🔥 Último erro:', lastError)
+    // Enviar para o backend usando o endpoint CORRETO
+    const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
+    console.log('📤 ENVIANDO LEAD PARA BACKEND CORRETO:', backendUrl)
+    console.log('📋 DADOS FORMATADOS sendo enviados:', JSON.stringify(laborResearchData, null, 2))
+    
+    const response = await fetch(`${backendUrl}/api/labor-research`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'User-Agent': 'SiteDoTrabalhador-Frontend'
+      },
+      body: JSON.stringify(laborResearchData)
+    })
+
+    console.log('📊 Status da resposta:', response.status)
+    
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('❌ ERRO do backend:', response.status, errorText)
       
-      return res.status(500).json({
+      return res.status(response.status).json({
         success: false,
-        message: 'Falha ao salvar no backend. Último erro: ' + lastError
+        message: 'Falha ao salvar no backend: ' + errorText
       })
     }
 
