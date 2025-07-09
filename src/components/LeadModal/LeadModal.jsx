@@ -144,13 +144,13 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
       console.log('- Situações:', leadData.situacoesDuranteTrabalho)
       console.log('- Consultoria:', leadData.aceitaConsultoria)
 
-      const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research'
-      console.log('🎯 ENVIANDO PARA URL:', backendUrl)
+      const apiUrl = '/api/submit-lead'
+      console.log('🎯 ENVIANDO PARA URL:', apiUrl)
       console.log('📋 PAYLOAD COMPLETO:', JSON.stringify(leadData, null, 2))
 
-      // Enviar direto para o backend
+      // Enviar através da API local que repassa para o backend
       console.log('⏳ INICIANDO REQUISIÇÃO...')
-      const response = await fetch(backendUrl, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
