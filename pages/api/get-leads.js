@@ -42,15 +42,17 @@ export default async function handler(req, res) {
       nome: lead.nomeCompleto || lead.nome || 'Nome não informado',
       telefone: lead.whatsapp || lead.telefone || 'Não informado',
       email: lead.email || 'Não informado',
-      empresa: lead.ultimaEmpresa || lead.empresa || 'Não informado',
-      vaga: lead.vagaTitulo || 'Pesquisa Trabalhista',
+      empresa: lead.nome_ultima_empresa || lead.ultimaEmpresa || lead.empresa || 'Não informado',
+      vaga: lead.vaga_titulo || lead.vagaTitulo || 'Pesquisa Trabalhista',
       status: lead.status || 'novo',
       created_at: lead.createdAt || lead.created_at || new Date().toISOString(),
-      // Dados específicos da pesquisa trabalhista
-      tipoCarteira: lead.tipoCarteira,
-      recebeuTudoCertinho: lead.recebeuTudoCertinho,
-      situacoesDuranteTrabalho: lead.situacoesDuranteTrabalho,
-      aceitaConsultoria: lead.aceitaConsultoria,
+      // Dados específicos da pesquisa trabalhista - múltiplos formatos
+      tipoCarteira: lead.tipo_carteira || lead.tipoCarteira,
+      recebeuTudoCertinho: lead.recebeu_tudo_certinho || lead.recebeuTudoCertinho,
+      situacoesDuranteTrabalho: Array.isArray(lead.situacoes_enfrentadas) ? lead.situacoes_enfrentadas :
+                                typeof lead.situacoes_enfrentadas === 'string' ? lead.situacoes_enfrentadas.split(', ') :
+                                lead.situacoesDuranteTrabalho || [],
+      aceitaConsultoria: lead.aceita_consultoria || lead.aceitaConsultoria,
       fonte: 'Pesquisa Trabalhista'
     }))
 

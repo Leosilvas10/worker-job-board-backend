@@ -392,23 +392,29 @@ export default function AdminLeads() {
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Última Empresa</label>
                       <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.nome_ultima_empresa || 'Não informado'}
+                        {selectedLead.empresa || selectedLead.nome_ultima_empresa || selectedLead.ultimaEmpresa || 'Não informado'}
                       </p>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Tipo de Carteira</label>
                       <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.tipo_carteira === 'com_carteira' ? 'Com carteira assinada' :
+                        {selectedLead.tipoCarteira === 'com_carteira' ? 'Com carteira assinada' :
+                         selectedLead.tipoCarteira === 'sem_carteira' ? 'Sem carteira assinada' :
+                         selectedLead.tipoCarteira === 'comecou_sem_depois_registrou' ? 'Comecei sem, depois registraram' :
+                         selectedLead.tipoCarteira === 'nao_tenho_certeza' ? 'Não tenho certeza' :
+                         selectedLead.tipo_carteira === 'com_carteira' ? 'Com carteira assinada' :
                          selectedLead.tipo_carteira === 'sem_carteira' ? 'Sem carteira assinada' :
-                         selectedLead.tipo_carteira === 'comecou_sem_depois_registrou' ? 'Comecei sem, depois registraram' :
-                         selectedLead.tipo_carteira === 'nao_tenho_certeza' ? 'Não tenho certeza' :
                          'Não informado'}
                       </p>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Recebeu Direitos Trabalhistas</label>
                       <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.recebeu_tudo_certinho === 'sim' ? 'Sim' :
+                        {selectedLead.recebeuTudoCertinho === 'sim' ? 'Sim' :
+                         selectedLead.recebeuTudoCertinho === 'nao_recebi_nada' ? 'Não recebi nada' :
+                         selectedLead.recebeuTudoCertinho === 'recebi_so_uma_parte' ? 'Recebi só uma parte' :
+                         selectedLead.recebeuTudoCertinho === 'nao_sei_dizer' ? 'Não sei dizer' :
+                         selectedLead.recebeu_tudo_certinho === 'sim' ? 'Sim' :
                          selectedLead.recebeu_tudo_certinho === 'nao_recebi_nada' ? 'Não recebi nada' :
                          selectedLead.recebeu_tudo_certinho === 'recebi_so_uma_parte' ? 'Recebi só uma parte' :
                          selectedLead.recebeu_tudo_certinho === 'nao_sei_dizer' ? 'Não sei dizer' :
@@ -418,7 +424,9 @@ export default function AdminLeads() {
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Aceita Consultoria</label>
                       <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.aceita_consultoria === 'sim' ? 'Sim, quero saber se tenho algo a receber' :
+                        {selectedLead.aceitaConsultoria === 'sim' ? 'Sim, quero saber se tenho algo a receber' :
+                         selectedLead.aceitaConsultoria === 'nao' ? 'Não, obrigado(a)' :
+                         selectedLead.aceita_consultoria === 'sim' ? 'Sim, quero saber se tenho algo a receber' :
                          selectedLead.aceita_consultoria === 'nao' ? 'Não, obrigado(a)' :
                          'Não informado'}
                       </p>
@@ -426,9 +434,34 @@ export default function AdminLeads() {
                   </div>
                   <div className="mt-4">
                     <label className="block text-sm font-medium text-gray-700">Situações Enfrentadas</label>
-                    <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                      {selectedLead.situacoes_enfrentadas || 'Não informado'}
-                    </p>
+                    <div className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
+                      {(() => {
+                        const situacoes = selectedLead.situacoesDuranteTrabalho || 
+                                        selectedLead.situacoes_enfrentadas || 
+                                        selectedLead.situacoesEnfrentadas || [];
+
+                        if (situacoes && situacoes.length > 0) {
+                          return (
+                            <ul className="list-disc list-inside space-y-1">
+                              {situacoes.map((situacao, index) => (
+                                <li key={index}>
+                                  {situacao === 'hora_extra_sem_receber' ? 'Fazia hora extra sem receber' :
+                                   situacao === 'domingos_feriados_sem_adicional' ? 'Trabalhei domingos/feriados sem adicional ou folga' :
+                                   situacao === 'assedio_humilhacoes' ? 'Sofri assédio ou humilhações' :
+                                   situacao === 'acumulo_funcoes_sem_aumento' ? 'Acúmulo de funções sem aumento salarial' :
+                                   situacao === 'nenhuma_dessas' ? 'Nenhuma dessas' :
+                                   situacao === 'horas_extras_nao_pagas' ? 'Horas extras não pagas' :
+                                   situacao === 'fgts_nao_depositado' ? 'FGTS não depositado' :
+                                   situacao}
+                                </li>
+                              ))}
+                            </ul>
+                          );
+                        } else {
+                          return 'Nenhuma situação informada';
+                        }
+                      })()}
+                    </div>
                   </div>
                 </div>
 
