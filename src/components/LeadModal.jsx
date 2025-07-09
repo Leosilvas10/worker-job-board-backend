@@ -162,32 +162,73 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
         // Fechar modal
         onClose()
         
-        // REDIRECIONAMENTO MELHORADO com verificação de segurança
+        // REDIRECIONAMENTO PRIORITÁRIO para vaga real
         setTimeout(() => {
           try {
+            // 1. Prioridade: redirectUrl (URL real da vaga)
             if (vaga && vaga.redirectUrl) {
-              console.log('🔄 REDIRECIONAMENTO ATIVO para:', vaga.redirectUrl)
+              console.log('🔄 REDIRECIONAMENTO DIRETO para vaga real:', vaga.redirectUrl)
               if (typeof window !== 'undefined') {
                 window.open(vaga.redirectUrl, '_blank', 'noopener,noreferrer')
               }
-            } else if (vaga && (vaga.external_url || vaga.externalUrl)) {
+              return
+            }
+            
+            // 2. Alternativa: external_url
+            if (vaga && (vaga.external_url || vaga.externalUrl)) {
               const url = vaga.external_url || vaga.externalUrl
-              console.log('🔄 REDIRECIONAMENTO ATIVO para URL externa:', url)
+              console.log('🔄 REDIRECIONAMENTO para URL externa:', url)
               if (typeof window !== 'undefined') {
                 window.open(url, '_blank', 'noopener,noreferrer')
               }
-            } else {
-              // Fallback: redirecionar para página de vagas
-              console.log('🔄 REDIRECIONAMENTO FALLBACK para /vagas')
-              if (typeof window !== 'undefined') {
-                window.location.href = '/vagas'
-              }
+              return
             }
+            
+            // 3. Construir URL da vaga baseada no título/categoria
+            if (vaga && vaga.title) {
+              const title = vaga.title.toLowerCase()
+              let vagaUrl = 'https://www.catho.com.br/vagas/'
+              
+              if (title.includes('doméstica') || title.includes('diarista')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/empregada-domestica/'
+              } else if (title.includes('porteiro') || title.includes('vigilante')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/porteiro/'
+              } else if (title.includes('cuidador') || title.includes('babá')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/cuidador/'
+              } else if (title.includes('motorista')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/motorista/'
+              } else if (title.includes('limpeza') || title.includes('faxina')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/auxiliar-limpeza/'
+              } else if (title.includes('vendedor') || title.includes('atendente')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/vendedor/'
+              } else if (title.includes('segurança')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/vigilante/'
+              } else if (title.includes('cozinheiro') || title.includes('garçom')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/cozinheiro/'
+              } else if (title.includes('jardineiro')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/jardineiro/'
+              } else {
+                vagaUrl = 'https://www.catho.com.br/vagas/emprego/'
+              }
+              
+              console.log('🔄 REDIRECIONAMENTO por categoria:', vagaUrl)
+              if (typeof window !== 'undefined') {
+                window.open(vagaUrl, '_blank', 'noopener,noreferrer')
+              }
+              return
+            }
+            
+            // 4. Fallback extremo: Catho geral
+            console.log('🔄 REDIRECIONAMENTO FALLBACK para Catho geral')
+            if (typeof window !== 'undefined') {
+              window.open('https://www.catho.com.br/vagas/', '_blank', 'noopener,noreferrer')
+            }
+            
           } catch (error) {
             console.error('❌ Erro no redirecionamento:', error)
-            // Fallback final
+            // Fallback final seguro
             if (typeof window !== 'undefined') {
-              window.location.href = '/vagas'
+              window.open('https://www.catho.com.br/vagas/', '_blank', 'noopener,noreferrer')
             }
           }
         }, 200)

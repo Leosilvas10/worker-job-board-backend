@@ -40,6 +40,7 @@ const Vagas = () => {
         category: 'Doméstica',
         source: 'Site do Trabalhador',
         tags: ['doméstica', 'limpeza', 'organização', 'clt'],
+        redirectUrl: 'https://www.catho.com.br/vagas/empregada-domestica/',
         created_at: new Date().toISOString()
       },
       {
@@ -53,6 +54,7 @@ const Vagas = () => {
         category: 'Doméstica',
         source: 'Site do Trabalhador',
         tags: ['diarista', 'limpeza', 'apartamento'],
+        redirectUrl: 'https://www.catho.com.br/vagas/diarista/',
         created_at: new Date().toISOString()
       },
       {
@@ -66,6 +68,7 @@ const Vagas = () => {
         category: 'Portaria',
         source: 'Site do Trabalhador',
         tags: ['porteiro', 'diurno', 'atendimento'],
+        redirectUrl: 'https://www.catho.com.br/vagas/porteiro/',
         created_at: new Date().toISOString()
       },
       {
@@ -79,6 +82,7 @@ const Vagas = () => {
         category: 'Cuidados',
         source: 'Site do Trabalhador',
         tags: ['cuidador', 'idosos', 'saúde'],
+        redirectUrl: 'https://www.catho.com.br/vagas/cuidador/',
         created_at: new Date().toISOString()
       },
       {
@@ -92,6 +96,7 @@ const Vagas = () => {
         category: 'Limpeza',
         source: 'Site do Trabalhador',
         tags: ['limpeza', 'escritório', 'organização'],
+        redirectUrl: 'https://www.catho.com.br/vagas/auxiliar-limpeza/',
         created_at: new Date().toISOString()
       },
       {
@@ -105,6 +110,7 @@ const Vagas = () => {
         category: 'Cuidados',
         source: 'Site do Trabalhador',
         tags: ['babá', 'crianças', 'cuidados'],
+        redirectUrl: 'https://www.catho.com.br/vagas/baba/',
         created_at: new Date().toISOString()
       },
       {
@@ -118,6 +124,7 @@ const Vagas = () => {
         category: 'Jardinagem',
         source: 'Site do Trabalhador',
         tags: ['jardineiro', 'plantas', 'manutenção'],
+        redirectUrl: 'https://www.catho.com.br/vagas/jardineiro/',
         created_at: new Date().toISOString()
       },
       {
@@ -131,6 +138,7 @@ const Vagas = () => {
         category: 'Segurança',
         source: 'Site do Trabalhador',
         tags: ['segurança', 'vigilância', 'controle'],
+        redirectUrl: 'https://www.catho.com.br/vagas/vigilante/',
         created_at: new Date().toISOString()
       },
       {
@@ -144,6 +152,7 @@ const Vagas = () => {
         category: 'Transporte',
         source: 'Site do Trabalhador',
         tags: ['motorista', 'executivo', 'cnh'],
+        redirectUrl: 'https://www.catho.com.br/vagas/motorista/',
         created_at: new Date().toISOString()
       },
       {
@@ -157,6 +166,7 @@ const Vagas = () => {
         category: 'Atendimento',
         source: 'Site do Trabalhador',
         tags: ['recepção', 'atendimento', 'saúde'],
+        redirectUrl: 'https://www.catho.com.br/vagas/recepcionista/',
         created_at: new Date().toISOString()
       }
     ];
