@@ -75,80 +75,89 @@ app.get('/api/jobs-stats', (req, res) => {
 
 // Rota para dados de pesquisa trabalhista
 app.get('/api/labor-research', (req, res) => {
-  const laborResearchData = {
-    salaryRanges: {
-      "Empregada Doméstica": {
-        min: 1320,
-        max: 2500,
-        average: 1850,
-        currency: "BRL"
+  const laborResearchQuestions = {
+    questions: [
+      {
+        id: 1,
+        type: "text",
+        question: "Qual foi a última empresa que você trabalhou?",
+        field: "ultimaEmpresa",
+        required: true
       },
-      "Diarista": {
-        min: 80,
-        max: 150,
-        average: 120,
-        currency: "BRL",
-        unit: "day"
+      {
+        id: 2,
+        type: "radio",
+        question: "Você tinha carteira assinada?",
+        field: "tipoCarteira",
+        options: [
+          { value: "sim", label: "Sim" },
+          { value: "nao", label: "Não" },
+          { value: "parcial", label: "Parcialmente" }
+        ],
+        required: true
       },
-      "Auxiliar de Limpeza": {
-        min: 1400,
-        max: 2200,
-        average: 1650,
-        currency: "BRL"
+      {
+        id: 3,
+        type: "radio",
+        question: "Você recebeu tudo certinho quando saiu?",
+        field: "recebeuTudoCertinho",
+        options: [
+          { value: "sim", label: "Sim" },
+          { value: "nao", label: "Não" },
+          { value: "parcial", label: "Parcialmente" }
+        ],
+        required: true
       },
-      "Cuidadora de Idosos": {
-        min: 1500,
-        max: 3000,
-        average: 2100,
-        currency: "BRL"
+      {
+        id: 4,
+        type: "checkbox",
+        question: "Você passou por alguma dessas situações durante o trabalho?",
+        field: "situacoesDuranteTrabalho",
+        options: [
+          { value: "horas_extras_nao_pagas", label: "Horas extras não pagas" },
+          { value: "ferias_nao_concedidas", label: "Férias não concedidas" },
+          { value: "fgts_nao_depositado", label: "FGTS não depositado" },
+          { value: "13_salario_nao_pago", label: "13º salário não pago" },
+          { value: "desconto_indevido", label: "Desconto indevido no salário" },
+          { value: "assedio_moral", label: "Assédio moral" },
+          { value: "acidente_trabalho", label: "Acidente de trabalho" },
+          { value: "nenhuma", label: "Nenhuma dessas situações" }
+        ],
+        required: true
+      },
+      {
+        id: 5,
+        type: "radio",
+        question: "Gostaria de receber uma consultoria gratuita sobre seus direitos trabalhistas?",
+        field: "aceitaConsultoria",
+        options: [
+          { value: "sim", label: "Sim" },
+          { value: "nao", label: "Não" }
+        ],
+        required: true
+      },
+      {
+        id: 6,
+        type: "text",
+        question: "Nome completo:",
+        field: "nomeCompleto",
+        required: true
+      },
+      {
+        id: 7,
+        type: "text",
+        question: "WhatsApp:",
+        field: "whatsapp",
+        required: true,
+        placeholder: "(11) 99999-9999"
       }
-    },
-    marketTrends: {
-      mostDemandedJobs: [
-        { position: "Empregada Doméstica", demand: 85, growth: "+12%" },
-        { position: "Diarista", demand: 78, growth: "+8%" },
-        { position: "Cuidadora de Idosos", demand: 72, growth: "+15%" },
-        { position: "Auxiliar de Limpeza", demand: 65, growth: "+5%" }
-      ],
-      regionalData: {
-        "São Paulo": { averageSalary: 1950, jobOpenings: 1250 },
-        "Rio de Janeiro": { averageSalary: 1800, jobOpenings: 890 },
-        "Belo Horizonte": { averageSalary: 1650, jobOpenings: 450 },
-        "Brasília": { averageSalary: 2100, jobOpenings: 320 }
-      }
-    },
-    benefits: {
-      common: [
-        "Vale Transporte",
-        "Vale Alimentação", 
-        "13º Salário",
-        "Férias Remuneradas",
-        "FGTS"
-      ],
-      optional: [
-        "Plano de Saúde",
-        "Vale Refeição",
-        "Auxílio Creche",
-        "Cesta Básica"
-      ]
-    },
-    workingHours: {
-      "Empregada Doméstica": "44h/semana",
-      "Diarista": "8h/dia",
-      "Auxiliar de Limpeza": "44h/semana",
-      "Cuidadora de Idosos": "12x36h ou 44h/semana"
-    },
-    statistics: {
-      totalWorkers: 6200000,
-      formalJobs: 3850000,
-      informalJobs: 2350000,
-      unemploymentRate: 8.5,
-      lastUpdated: new Date().toISOString()
-    },
+    ],
+    title: "Pesquisa sobre Direitos Trabalhistas",
+    description: "Ajude-nos a entender melhor a situação dos trabalhadores domésticos",
     timestamp: new Date().toISOString()
   };
 
-  res.json(laborResearchData);
+  res.json(laborResearchQuestions);
 });
 
 // Rota para listar vagas (SEM cidade)
