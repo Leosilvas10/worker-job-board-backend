@@ -129,6 +129,8 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log('📥 DADOS RECEBIDOS NO FRONTEND:', JSON.stringify(req.body, null, 2))
+    
     const {
       // Dados pessoais obrigatórios
       name,
@@ -163,13 +165,6 @@ export default async function handler(req, res) {
       return res.status(400).json({
         success: false,
         message: 'Nome e WhatsApp são obrigatórios'
-      })
-    }
-
-    if (!lgpdConsent) {
-      return res.status(400).json({
-        success: false,
-        message: 'É necessário aceitar os termos de uso'
       })
     }
 
@@ -255,7 +250,7 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
 
     // Preparar dados no formato EXATO que o backend espera
     const laborResearchData = {
-      ultimaEmpresa: lastCompany || 'Não informado',
+      ultimaEmpresa: lastCompany || jobTitle || 'Vaga de Interesse',
       tipoCarteira: workStatus === 'Com carteira assinada' ? 'sim' : (workStatus === 'Sem carteira assinada' ? 'nao' : 'parcial'),
       recebeuTudoCertinho: receivedRights === 'Sim, recebi tudo certinho' ? 'sim' : (receivedRights === 'Não, tive problemas' ? 'nao' : 'parcial'),
       situacoesDuranteTrabalho: Array.isArray(workProblems) ? workProblems : (workProblems ? [workProblems] : ['nenhuma']),
@@ -263,6 +258,8 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
       nomeCompleto: name,
       whatsapp: whatsapp
     }
+    
+    console.log('🔄 DADOS FORMATADOS PARA ENVIO:', JSON.stringify(laborResearchData, null, 2))
 
     // Enviar para o backend usando o endpoint CORRETO
     const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
@@ -292,19 +289,18 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
     }
 
     const responseText = await response.text()
-    console.log('📨 Status da resposta:', response.status)
-    console.log('📨 Headers da resposta:', Object.fromEntries(response.headers.entries()))
+    console.log('📨 Status da resposta do backend:', response.status)
     console.log('📨 Resposta bruta do backend:', responseText)
     
     let result
     try {
       result = JSON.parse(responseText)
+      console.log('✅ DADOS SALVOS COM SUCESSO NO BACKEND:', result)
     } catch (parseError) {
       console.error('❌ Erro ao fazer parse da resposta:', parseError)
+      console.error('❌ Resposta que causou erro:', responseText)
       result = { success: false, message: 'Resposta inválida do servidor' }
     }
-    
-    console.log('📊 Resultado processado:', result)
 
     if (!response.ok) {
       console.error('❌ Erro HTTP:', response.status, response.statusText)
