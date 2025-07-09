@@ -46,6 +46,12 @@ export default async function handler(req, res) {
       vaga: lead.vaga_titulo || lead.vagaTitulo || 'Pesquisa Trabalhista',
       status: lead.status || 'novo',
       created_at: lead.createdAt || lead.created_at || new Date().toISOString(),
+      
+      // Informações pessoais
+      idade: lead.idade || 'Não informada',
+      cidade: lead.cidade || 'Não informada',
+      estado: lead.estado || 'Não informado',
+      
       // Dados específicos da pesquisa trabalhista - múltiplos formatos
       tipoCarteira: lead.tipo_carteira || lead.tipoCarteira,
       recebeuTudoCertinho: lead.recebeu_tudo_certinho || lead.recebeuTudoCertinho,
