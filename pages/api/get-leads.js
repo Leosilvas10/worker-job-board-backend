@@ -86,8 +86,8 @@ export default async function handler(req, res) {
     
     let leadsReais = []
     try {
-      // Buscar dados reais das pesquisas trabalhistas
-      const laborResearchResponse = await fetch(`${backendUrl}/api/labor-research/data`, {
+      // Primeiro tentar buscar responses/submissions
+      const laborResearchResponse = await fetch(`${backendUrl}/api/labor-research/submissions`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -96,10 +96,10 @@ export default async function handler(req, res) {
         }
       })
       
-      console.log('📡 Status da resposta do backend (submissions):', submissionsResponse.status)
+      console.log('📡 Status da resposta do backend (labor-research/data):', laborResearchResponse.status)
       
-      if (submissionsResponse.ok) {
-        const submissionsText = await submissionsResponse.text()
+      if (laborResearchResponse.ok) {
+        const submissionsText = await laborResearchResponse.text()
         console.log('📄 Resposta bruta (submissions):', submissionsText)
         
         let submissionsData
@@ -171,10 +171,10 @@ export default async function handler(req, res) {
           console.log('📋 Resposta completa do backend (submissions):', JSON.stringify(submissionsData, null, 2))
         }
       } else {
-        console.log('⚠️ Endpoint submissions não disponível, tentando endpoint original...')
+        console.log('⚠️ Endpoint submissions não disponível, tentando endpoint principal...')
         
-        // Tentar endpoint principal e verificar se há dados enviados armazenados
-        const backendResponse = await fetch(`${backendUrl}/api/labor-research/responses`, {
+        // Tentar endpoint principal labor-research (que sabemos que funciona)
+        const backendResponse = await fetch(`${backendUrl}/api/labor-research`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -183,71 +183,61 @@ export default async function handler(req, res) {
           }
         })
         
-        // Se não existir, tentar o endpoint principal
-        if (!backendResponse.ok) {
-          const fallbackResponse = await fetch(`${backendUrl}/api/labor-research`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'User-Agent': 'SiteDoTrabalhador-Frontend'
-            }
-          })
+        // Se o endpoint labor-research funcionar, usar as questões para criar lead de demo
+        if (backendResponse.ok) {
+          const fallbackText = await backendResponse.text()
+          console.log('📋 Questões do backend funcionando:', fallbackText)
           
-          if (fallbackResponse.ok) {
-            const fallbackText = await fallbackResponse.text()
-            console.log('📋 Questões do backend:', fallbackText)
-            
-            // Se só temos questões, criar um lead de exemplo com as questões
-            let questionsData
-            try {
-              questionsData = JSON.parse(fallbackText)
-            } catch (e) {
-              questionsData = null
-            }
-            
-            if (questionsData && questionsData.questions) {
-              console.log('📝 Criando lead de demonstração baseado nas questões do backend')
-              leadsReais = [{
-                id: 'demo_backend_questions',
-                nome: 'Questionário Disponível no Backend',
-                telefone: 'Sistema Configurado',
-                email: 'backend@funcionando.com',
-                idade: null,
-                cidade: 'Sistema',
-                estado: 'Ativo',
-                vaga: {
-                  id: 'questions_demo',
-                  titulo: questionsData.title || 'Pesquisa Trabalhista',
-                  empresa: 'Sistema Backend',
-                  localizacao: 'Configurado corretamente'
-                },
-                pesquisaTrabalhista: {
-                  ultimaEmpresa: 'Backend funcionando',
-                  tipoCarteira: 'Sistema ativo',
-                  recebeuDireitos: 'Questões carregadas',
-                  situacoesEnfrentadas: 'Aguardando respostas dos usuários',
-                  aceitaConsultoria: 'Sistema pronto'
-                },
-                observacoes: `SISTEMA BACKEND FUNCIONANDO!
-                
+          let questionsData
+          try {
+            questionsData = JSON.parse(fallbackText)
+          } catch (e) {
+            questionsData = null
+          }
+          
+          if (questionsData && questionsData.questions) {
+            console.log('✅ Backend funcionando! Criando lead de demonstração com as questões')
+            leadsReais = [{
+              id: 'backend_conectado',
+              nome: '✅ Sistema Backend Conectado',
+              telefone: '(11) 99999-9999',
+              email: 'backend@funcionando.com',
+              idade: null,
+              cidade: 'São Paulo',
+              estado: 'SP',
+              vaga: {
+                id: 'backend_demo',
+                titulo: questionsData.title || 'Pesquisa Trabalhista',
+                empresa: 'Sistema Online',
+                localizacao: 'Plataforma Digital'
+              },
+              pesquisaTrabalhista: {
+                ultimaEmpresa: 'Backend configurado',
+                tipoCarteira: 'Sistema ativo',
+                recebeuDireitos: 'Questões carregadas',
+                situacoesEnfrentadas: 'Pronto para receber dados',
+                aceitaConsultoria: 'Sistema operacional'
+              },
+              observacoes: `✅ BACKEND FUNCIONANDO PERFEITAMENTE!
+
 ${questionsData.description || ''}
 
-Questões disponíveis: ${questionsData.questions.length}
-Questões configuradas:
+📋 Questões disponíveis: ${questionsData.questions.length}
+
+🔧 Sistema configurado:
 ${questionsData.questions.map(q => `• ${q.question}`).join('\n')}
 
-Status: ✅ Backend operacional
-Endpoint: ${backendUrl}/api/labor-research`,
-                fonte: 'Sistema Backend',
-                status: 'sistema_ativo',
-                criadoEm: new Date().toISOString(),
-                contatado: false,
-                convertido: false
-              }]
-            }
+🌐 Endpoint: ${backendUrl}/api/labor-research
+⏰ Testado em: ${new Date().toLocaleString('pt-BR')}
+
+Status: ✅ Pronto para receber dados reais dos usuários`,
+              fonte: 'Sistema Backend',
+              status: 'backend_conectado',
+              criadoEm: new Date().toISOString(),
+              contatado: true,
+              convertido: false
+            }]
           }
-          return { ok: false }
         }
         
         if (backendResponse.ok) {
