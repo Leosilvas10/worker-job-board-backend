@@ -142,11 +142,6 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
           mensagem: ''
         })
         setStep(1)
-        
-        // Redirecionar para página de vagas após 500ms
-        setTimeout(() => {
-          window.location.href = '/vagas'
-        }, 500)
       } else {
         throw new Error(result.message || 'Erro no envio')
       }
