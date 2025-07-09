@@ -256,7 +256,7 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
     // Enviar para o backend usando a URL correta
     const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
     console.log('📤 Enviando lead para backend:', backendUrl)
-    console.log('📋 Dados do lead:', leadData)
+    console.log('📋 Dados do lead sendo enviados:', JSON.stringify(leadData, null, 2))
     
     const response = await fetch(`${backendUrl}/api/labor-research`, {
       method: 'POST',
@@ -269,6 +269,8 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
     })
 
     const responseText = await response.text()
+    console.log('📨 Status da resposta:', response.status)
+    console.log('📨 Headers da resposta:', Object.fromEntries(response.headers.entries()))
     console.log('📨 Resposta bruta do backend:', responseText)
     
     let result

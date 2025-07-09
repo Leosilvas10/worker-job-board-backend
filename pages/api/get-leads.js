@@ -86,7 +86,8 @@ export default async function handler(req, res) {
     
     let leadsReais = []
     try {
-      const backendResponse = await fetch(`${backendUrl}/api/labor-research`, {
+      // Primeiro, tentar buscar os dados enviados (submissions)
+      const submissionsResponse = await fetch(`${backendUrl}/api/labor-research/submissions`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -95,36 +96,24 @@ export default async function handler(req, res) {
         }
       })
       
-      const responseText = await backendResponse.text()
-      console.log('📡 Status da resposta do backend:', backendResponse.status)
-      console.log('📄 Resposta bruta:', responseText)
+      console.log('📡 Status da resposta do backend (submissions):', submissionsResponse.status)
       
-      if (backendResponse.ok) {
-        let backendData
+      if (submissionsResponse.ok) {
+        const submissionsText = await submissionsResponse.text()
+        console.log('📄 Resposta bruta (submissions):', submissionsText)
+        
+        let submissionsData
         try {
-          backendData = JSON.parse(responseText)
+          submissionsData = JSON.parse(submissionsText)
         } catch (parseError) {
-          console.error('❌ Erro ao fazer parse da resposta:', parseError)
-          throw new Error('Resposta inválida do backend')
+          console.error('❌ Erro ao fazer parse da resposta de submissions:', parseError)
+          submissionsData = null
         }
         
-        console.log('📊 Dados completos do backend:', backendData)
-        
-        // Verificar se há leads no array - suportando diferentes formatos de resposta
-        let leadsArray = []
-        
-        if (backendData.leads && Array.isArray(backendData.leads)) {
-          leadsArray = backendData.leads
-        } else if (backendData.data && Array.isArray(backendData.data)) {
-          leadsArray = backendData.data
-        } else if (Array.isArray(backendData)) {
-          leadsArray = backendData
-        }
-        
-        if (leadsArray.length > 0) {
-          console.log('✅', leadsArray.length, 'leads reais encontrados no backend')
+        if (submissionsData && submissionsData.submissions && Array.isArray(submissionsData.submissions)) {
+          console.log('✅', submissionsData.submissions.length, 'leads reais encontrados no backend')
           
-          leadsReais = leadsArray.map((lead, index) => {
+          leadsReais = submissionsData.submissions.map((lead, index) => {
             // Aplicar sanitização no lead antes de processar
             const cleanLead = sanitizeLead(lead)
             
@@ -178,8 +167,79 @@ export default async function handler(req, res) {
             }
           })
         } else {
-          console.log('⚠️ Backend retornou array vazio ou sem leads')
-          console.log('📋 Resposta completa do backend:', JSON.stringify(backendData, null, 2))
+          console.log('⚠️ Backend submissions retornou array vazio ou sem leads')
+          console.log('📋 Resposta completa do backend (submissions):', JSON.stringify(submissionsData, null, 2))
+        }
+      } else {
+        console.log('⚠️ Endpoint submissions não disponível, tentando endpoint original...')
+        
+        // Fallback para o endpoint original
+        const backendResponse = await fetch(`${backendUrl}/api/labor-research`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'User-Agent': 'SiteDoTrabalhador-Frontend'
+          }
+        })
+        
+        if (backendResponse.ok) {
+          const responseText = await backendResponse.text()
+          console.log('📄 Resposta bruta (original):', responseText)
+          
+          let backendData
+          try {
+            backendData = JSON.parse(responseText)
+          } catch (parseError) {
+            console.error('❌ Erro ao fazer parse da resposta original:', parseError)
+            backendData = null
+          }
+          
+          // Se o backend retornar dados no formato esperado
+          if (backendData && backendData.data && Array.isArray(backendData.data)) {
+            console.log('✅', backendData.data.length, 'leads encontrados no endpoint original')
+            
+            leadsReais = backendData.data.map((lead, index) => {
+              const cleanLead = sanitizeLead(lead)
+              
+              return {
+                id: cleanLead.id || `lead_${index + 1}`,
+                nome: cleanLead.nome || cleanLead.name || cleanLead.nomeCompleto || 'Nome não informado',
+                telefone: cleanLead.telefone || cleanLead.phone || cleanLead.whatsapp || 'Telefone não informado',
+                email: cleanLead.email || 'Email não informado',
+                idade: cleanLead.idade || cleanLead.age || null,
+                cidade: cleanLead.cidade || cleanLead.city || 'Não informado',
+                estado: cleanLead.estado || cleanLead.state || 'Não informado',
+                vaga: {
+                  id: cleanLead.vaga_id || cleanLead.job_id,
+                  titulo: cleanLead.vaga_titulo || cleanLead.job_title || 'Pesquisa Trabalhista',
+                  empresa: cleanLead.empresa || cleanLead.vaga_empresa || cleanLead.company || cleanLead.ultimaEmpresa || 'Empresa não informada',
+                  localizacao: cleanLead.vaga_localizacao || cleanLead.location || `${cleanLead.cidade || 'Não informado'}, ${cleanLead.estado || 'Não informado'}`
+                },
+                // Dados da pesquisa trabalhista do backend
+                pesquisaTrabalhista: {
+                  ultimaEmpresa: cleanLead.ultimaEmpresa || cleanLead.ultima_empresa || cleanLead.last_company || 'Não informado',
+                  tipoCarteira: cleanLead.tipoCarteira || cleanLead.tipo_carteira || cleanLead.work_status || 'Não informado',
+                  recebeuDireitos: cleanLead.recebeuTudoCertinho || cleanLead.recebeu_direitos || cleanLead.received_rights || 'Não informado',
+                  situacoesEnfrentadas: Array.isArray(cleanLead.situacoesDuranteTrabalho) ? 
+                    cleanLead.situacoesDuranteTrabalho.join(', ') : 
+                    (cleanLead.situacoesDuranteTrabalho || cleanLead.situacoes_enfrentadas || cleanLead.work_problems || 'Não informado'),
+                  aceitaConsultoria: cleanLead.aceitaConsultoria || cleanLead.aceita_consultoria || cleanLead.wants_consultation || 'Não informado'
+                },
+                observacoes: cleanLead.observacoes || cleanLead.mensagem || cleanLead.message || 'Sem observações',
+                fonte: cleanLead.fonte || cleanLead.source || 'Pesquisa Trabalhista',
+                utm: {
+                  source: cleanLead.utm_source || '',
+                  medium: cleanLead.utm_medium || '',
+                  campaign: cleanLead.utm_campaign || ''
+                },
+                status: cleanLead.status || 'novo',
+                criadoEm: cleanLead.data_criacao || cleanLead.created_at || cleanLead.data_submissao || cleanLead.timestamp || new Date().toISOString(),
+                contatado: cleanLead.contatado || false,
+                convertido: cleanLead.convertido || false
+              }
+            })
+          }
         }
       }
     } catch (error) {

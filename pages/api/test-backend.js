@@ -1,8 +1,7 @@
-
 export default async function handler(req, res) {
   try {
     const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
-    
+
     // Teste 1: Health check
     console.log('🔍 Testando conexão com backend...')
     const healthResponse = await fetch(`${backendUrl}/api/labor-research`, {
@@ -13,18 +12,18 @@ export default async function handler(req, res) {
         'User-Agent': 'SiteDoTrabalhador-Test'
       }
     })
-    
+
     const healthText = await healthResponse.text()
     console.log('📡 Status Health:', healthResponse.status)
     console.log('📄 Resposta Health:', healthText)
-    
+
     let healthData
     try {
       healthData = JSON.parse(healthText)
     } catch (e) {
       healthData = { raw: healthText }
     }
-    
+
     // Teste 2: Submissão de lead de teste
     const testLead = {
       nome: 'Teste Frontend',
@@ -62,7 +61,7 @@ export default async function handler(req, res) {
       data_criacao: new Date().toISOString(),
       created_at: new Date().toISOString()
     }
-    
+
     console.log('📤 Enviando lead de teste...')
     const submitResponse = await fetch(`${backendUrl}/api/labor-research`, {
       method: 'POST',
@@ -73,18 +72,18 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify(testLead)
     })
-    
+
     const submitText = await submitResponse.text()
     console.log('📡 Status Submit:', submitResponse.status)
     console.log('📄 Resposta Submit:', submitText)
-    
+
     let submitData
     try {
       submitData = JSON.parse(submitText)
     } catch (e) {
       submitData = { raw: submitText }
     }
-    
+
     res.status(200).json({
       success: true,
       message: 'Teste de backend completo',
@@ -99,7 +98,7 @@ export default async function handler(req, res) {
         }
       }
     })
-    
+
   } catch (error) {
     console.error('❌ Erro no teste:', error)
     res.status(500).json({
