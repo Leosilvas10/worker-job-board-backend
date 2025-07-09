@@ -75,18 +75,42 @@ export default async function handler(req, res) {
         { title: 'Diarista', company: 'Residencial', salary: 'R$ 120,00/dia', category: 'Doméstica' },
         { title: 'Cuidadora de Idosos', company: 'Cuidados Senior', salary: 'R$ 1.800,00', category: 'Cuidados' },
         { title: 'Babá', company: 'Família', salary: 'R$ 1.600,00', category: 'Cuidados' },
-        { title: 'Porteiro', company: 'Condomínio', salary: 'R$ 1.500,00', category: 'Segurança' },
+        { title: 'Porteiro Diurno', company: 'Condomínio', salary: 'R$ 1.500,00', category: 'Segurança' },
+        { title: 'Porteiro Noturno', company: 'Edifício', salary: 'R$ 1.600,00', category: 'Segurança' },
         { title: 'Vigilante', company: 'Empresa de Segurança', salary: 'R$ 1.700,00', category: 'Segurança' },
         { title: 'Auxiliar de Limpeza', company: 'Clean Service', salary: 'R$ 1.400,00', category: 'Limpeza' },
-        { title: 'Jardineiro', company: 'Paisagismo Verde', salary: 'R$ 1.350,00', category: 'Jardinagem' },
-        { title: 'Motorista', company: 'Transporte Executivo', salary: 'R$ 2.200,00', category: 'Transporte' },
-        { title: 'Entregador', company: 'Delivery Express', salary: 'R$ 1.800,00', category: 'Logística' },
-        { title: 'Vendedor', company: 'Loja Comercial', salary: 'R$ 1.500,00 + comissão', category: 'Vendas' },
-        { title: 'Atendente', company: 'Comércio Local', salary: 'R$ 1.400,00', category: 'Atendimento' },
-        { title: 'Cozinheira', company: 'Restaurante', salary: 'R$ 1.600,00', category: 'Alimentação' },
-        { title: 'Passadeira', company: 'Lavanderia', salary: 'R$ 1.300,00', category: 'Serviços' },
         { title: 'Faxineira', company: 'Empresa', salary: 'R$ 1.320,00', category: 'Limpeza' },
-        { title: 'Caseiro', company: 'Sítio Particular', salary: 'R$ 2.000,00', category: 'Serviços' }
+        { title: 'Copeira', company: 'Escritório', salary: 'R$ 1.350,00', category: 'Limpeza' },
+        { title: 'Jardineiro', company: 'Paisagismo Verde', salary: 'R$ 1.350,00', category: 'Jardinagem' },
+        { title: 'Motorista Particular', company: 'Família', salary: 'R$ 2.200,00', category: 'Transporte' },
+        { title: 'Motorista de Aplicativo', company: 'Uber/99', salary: 'R$ 2.000,00', category: 'Transporte' },
+        { title: 'Entregador', company: 'Delivery Express', salary: 'R$ 1.800,00', category: 'Logística' },
+        { title: 'Entregador de Moto', company: 'iFood/Rappi', salary: 'R$ 2.100,00', category: 'Logística' },
+        { title: 'Vendedor', company: 'Loja Comercial', salary: 'R$ 1.500,00 + comissão', category: 'Vendas' },
+        { title: 'Vendedor de Loja', company: 'Shopping', salary: 'R$ 1.450,00', category: 'Vendas' },
+        { title: 'Promotor de Vendas', company: 'Supermercado', salary: 'R$ 1.380,00', category: 'Vendas' },
+        { title: 'Atendente', company: 'Comércio Local', salary: 'R$ 1.400,00', category: 'Atendimento' },
+        { title: 'Recepcionista', company: 'Clínica', salary: 'R$ 1.450,00', category: 'Atendimento' },
+        { title: 'Operador de Caixa', company: 'Supermercado', salary: 'R$ 1.380,00', category: 'Atendimento' },
+        { title: 'Cozinheira', company: 'Restaurante', salary: 'R$ 1.600,00', category: 'Alimentação' },
+        { title: 'Ajudante de Cozinha', company: 'Lanchonete', salary: 'R$ 1.350,00', category: 'Alimentação' },
+        { title: 'Garçom/Garçonete', company: 'Restaurante', salary: 'R$ 1.400,00 + gorjetas', category: 'Alimentação' },
+        { title: 'Auxiliar de Padaria', company: 'Padaria Local', salary: 'R$ 1.320,00', category: 'Alimentação' },
+        { title: 'Passadeira', company: 'Lavanderia', salary: 'R$ 1.300,00', category: 'Serviços' },
+        { title: 'Caseiro', company: 'Sítio Particular', salary: 'R$ 2.000,00', category: 'Serviços' },
+        { title: 'Zelador', company: 'Prédio Comercial', salary: 'R$ 1.450,00', category: 'Serviços' },
+        { title: 'Auxiliar de Manutenção', company: 'Condomínio', salary: 'R$ 1.550,00', category: 'Serviços' },
+        { title: 'Servente de Obras', company: 'Construtora', salary: 'R$ 1.400,00', category: 'Construção' },
+        { title: 'Pedreiro', company: 'Reforma Geral', salary: 'R$ 2.500,00', category: 'Construção' },
+        { title: 'Ajudante Geral', company: 'Indústria', salary: 'R$ 1.450,00', category: 'Geral' },
+        { title: 'Operador de Máquinas', company: 'Fábrica', salary: 'R$ 1.800,00', category: 'Industrial' },
+        { title: 'Estoquista', company: 'Depósito', salary: 'R$ 1.400,00', category: 'Logística' },
+        { title: 'Conferente', company: 'Centro de Distribuição', salary: 'R$ 1.500,00', category: 'Logística' },
+        { title: 'Auxiliar Administrativo', company: 'Escritório', salary: 'R$ 1.500,00', category: 'Administrativo' },
+        { title: 'Assistente de Vendas', company: 'Concessionária', salary: 'R$ 1.600,00', category: 'Vendas' },
+        { title: 'Técnico em Manutenção', company: 'Empresa', salary: 'R$ 2.200,00', category: 'Técnico' },
+        { title: 'Soldador', company: 'Metalúrgica', salary: 'R$ 2.800,00', category: 'Industrial' },
+        { title: 'Pintor', company: 'Construtora', salary: 'R$ 2.000,00', category: 'Construção' }
       ];
 
       const locations = [
@@ -203,29 +227,104 @@ export default async function handler(req, res) {
           }
         }
 
-        // Fallback: buscar estatísticas e criar vagas complementares
-        console.log('⚠️ Nenhuma vaga real encontrada, buscando estatísticas...')
+        // Se temos poucas vagas reais, adicionar mais vagas complementares
+        if (formattedJobs.length < 20) {
+          console.log(`⚠️ Apenas ${formattedJobs.length} vagas reais, adicionando vagas complementares...`)
 
-        const statsResponse = await fetch(`${BACKEND_URL}/api/stats`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'User-Agent': 'Frontend-Jobs-API'
+          // Buscar estatísticas para determinar quantas vagas criar
+          try {
+            const statsResponse = await fetch(`${BACKEND_URL}/api/stats`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'User-Agent': 'Frontend-Jobs-API'
+              }
+            })
+
+            const statsData = await statsResponse.json()
+            console.log('📊 Estatísticas recebidas:', statsData)
+
+            // Criar vagas complementares para completar 100 vagas
+            const totalToCreate = Math.max(100 - formattedJobs.length, 50)
+            const complementaryJobs = generateComplementaryJobs(totalToCreate, statsData)
+            
+            console.log(`✅ ${complementaryJobs.length} vagas complementares criadas`)
+            
+            // Combinar vagas reais com complementares
+            const allJobs = [...formattedJobs, ...complementaryJobs]
+
+            return {
+              success: true,
+              data: allJobs,
+              meta: {
+                totalJobs: allJobs.length,
+                realJobs: formattedJobs.length,
+                complementaryJobs: complementaryJobs.length,
+                lastUpdate: jobsData.lastUpdate || new Date().toISOString(),
+                source: 'Backend + Complementares'
+              }
+            }
+          } catch (statsError) {
+            console.log('⚠️ Erro ao buscar estatísticas:', statsError.message)
+            
+            // Fallback: criar 100 vagas complementares
+            const complementaryJobs = generateComplementaryJobs(97, {})
+            const allJobs = [...formattedJobs, ...complementaryJobs]
+
+            return {
+              success: true,
+              data: allJobs,
+              meta: {
+                totalJobs: allJobs.length,
+                realJobs: formattedJobs.length,
+                complementaryJobs: complementaryJobs.length,
+                lastUpdate: new Date().toISOString(),
+                source: 'Backend + Fallback'
+              }
+            }
           }
-        })
-
-        const statsData = await statsResponse.json()
-        console.log('📊 Estatísticas recebidas:', statsData)
-
-        let complementaryJobs = []
-
-        if (statsData && statsData.totalJobs) {
-          const totalToCreate = Math.min(statsData.totalJobs, 100)
-          console.log(`📊 Backend indica ${statsData.totalJobs} vagas totais, criando ${totalToCreate} vagas complementares...`)
-
-          complementaryJobs = generateComplementaryJobs(totalToCreate, statsData)
-          console.log(`✅ ${complementaryJobs.length} vagas complementares criadas baseadas nas estatísticas do backend`)
         }
+
+        // Se temos vagas suficientes, retornar apenas as reais
+        return {
+          success: true,
+          data: formattedJobs,
+          meta: {
+            totalJobs: formattedJobs.length,
+            realJobs: formattedJobs.length,
+            complementaryJobs: 0,
+            lastUpdate: jobsData.lastUpdate || new Date().toISOString(),
+            source: 'Backend Apenas'
+          }
+        }
+      }
+
+      // Fallback: buscar estatísticas e criar vagas complementares
+      console.log('⚠️ Nenhuma vaga real encontrada, buscando estatísticas...')
+
+      const statsResponse = await fetch(`${BACKEND_URL}/api/stats`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'Frontend-Jobs-API'
+        }
+      })
+
+      const statsData = await statsResponse.json()
+      console.log('📊 Estatísticas recebidas:', statsData)
+
+      let complementaryJobs = []
+
+      if (statsData && statsData.totalJobs) {
+        const totalToCreate = Math.min(statsData.totalJobs, 100)
+        console.log(`📊 Backend indica ${statsData.totalJobs} vagas totais, criando ${totalToCreate} vagas complementares...`)
+
+        complementaryJobs = generateComplementaryJobs(totalToCreate, statsData)
+        console.log(`✅ ${complementaryJobs.length} vagas complementares criadas baseadas nas estatísticas do backend`)
+      } else {
+        // Se não há estatísticas, criar 100 vagas padrão
+        complementaryJobs = generateComplementaryJobs(100, {})
+      }
 
         return {
           success: true,
