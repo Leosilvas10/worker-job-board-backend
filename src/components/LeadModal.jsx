@@ -106,83 +106,121 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     return limitedNumbers
   }
 
-  // Função para gerar URL de redirecionamento baseada na vaga
+  // Função para gerar URL de redirecionamento baseada na vaga - MAPEAMENTO ULTRA ESPECÍFICO
   const generateJobRedirectUrl = (jobData) => {
     if (jobData.redirectUrl) {
       return jobData.redirectUrl;
     }
 
-    // URLs específicas baseadas no título da vaga - MAPEAMENTO PRECISO
+    // URLs específicas baseadas no título da vaga - MAPEAMENTO PRECISO E SEGURO
     const title = jobData.title?.toLowerCase() || '';
+    const company = jobData.company?.toLowerCase() || '';
+    const description = jobData.description?.toLowerCase() || '';
     const category = jobData.category?.toLowerCase() || '';
 
-    // PORTEIRO / PORTARIA
-    if (title.includes('porteiro') || title.includes('portaria') || category.includes('portaria')) {
-      return 'https://www.catho.com.br/vagas/porteiro/';
+    console.log('🔍 ANALISANDO VAGA PARA REDIRECIONAMENTO:', {
+      title,
+      company,
+      category,
+      description: description.substring(0, 100)
+    });
+
+    // SEGURANÇA / VIGILANTE / PORTEIRO - PRIMEIRA PRIORIDADE
+    if (title.includes('segurança') || title.includes('vigilante') || title.includes('porteiro') || 
+        title.includes('portaria') || category.includes('segurança') || category.includes('portaria')) {
+      console.log('✅ REDIRECIONANDO PARA: Segurança/Vigilante');
+      return 'https://www.catho.com.br/vagas/vigilante/';
     }
 
     // DOMÉSTICA / EMPREGADA DOMÉSTICA
     if (title.includes('doméstica') || title.includes('empregada') || category.includes('doméstica')) {
+      console.log('✅ REDIRECIONANDO PARA: Empregada Doméstica');
       return 'https://www.catho.com.br/vagas/empregada-domestica/';
     }
 
     // DIARISTA
     if (title.includes('diarista')) {
+      console.log('✅ REDIRECIONANDO PARA: Diarista');
       return 'https://www.catho.com.br/vagas/diarista/';
     }
 
     // CUIDADOR DE IDOSOS
     if (title.includes('cuidador') || category.includes('cuidados')) {
+      console.log('✅ REDIRECIONANDO PARA: Cuidador');
       return 'https://www.catho.com.br/vagas/cuidador/';
     }
 
     // LIMPEZA E CONSERVAÇÃO
-    if (title.includes('limpeza') || title.includes('auxiliar de limpeza') || title.includes('zelador') || category.includes('limpeza')) {
+    if (title.includes('limpeza') || title.includes('auxiliar de limpeza') || title.includes('zelador') || 
+        title.includes('faxineira') || category.includes('limpeza')) {
+      console.log('✅ REDIRECIONANDO PARA: Auxiliar de Limpeza');
       return 'https://www.catho.com.br/vagas/auxiliar-limpeza/';
     }
 
     // BABÁ
     if (title.includes('babá') || title.includes('baba')) {
+      console.log('✅ REDIRECIONANDO PARA: Babá');
       return 'https://www.catho.com.br/vagas/baba/';
     }
 
     // JARDINEIRO
     if (title.includes('jardineiro') || category.includes('jardinagem')) {
+      console.log('✅ REDIRECIONANDO PARA: Jardineiro');
       return 'https://www.catho.com.br/vagas/jardineiro/';
-    }
-
-    // SEGURANÇA / VIGILANTE
-    if (title.includes('segurança') || title.includes('vigilante') || category.includes('segurança')) {
-      return 'https://www.catho.com.br/vagas/vigilante/';
     }
 
     // MOTORISTA
     if (title.includes('motorista') || category.includes('transporte')) {
+      console.log('✅ REDIRECIONANDO PARA: Motorista');
       return 'https://www.catho.com.br/vagas/motorista/';
     }
 
     // RECEPCIONISTA
     if (title.includes('recepcionista') || category.includes('atendimento')) {
+      console.log('✅ REDIRECIONANDO PARA: Recepcionista');
       return 'https://www.catho.com.br/vagas/recepcionista/';
     }
 
     // AUXILIAR DE COZINHA / COZINHEIRO
     if (title.includes('cozinha') || title.includes('cozinheiro') || category.includes('alimentação')) {
+      console.log('✅ REDIRECIONANDO PARA: Auxiliar de Cozinha');
       return 'https://www.catho.com.br/vagas/auxiliar-cozinha/';
     }
 
-    // VENDEDOR (apenas se for especificamente vendas)
-    if ((title.includes('vendedor') || title.includes('vendas')) && category.includes('vendas')) {
+    // ⚠️ VENDEDOR - APENAS SE FOR CLARAMENTE VENDAS (NÃO CORRETOR)
+    if ((title.includes('vendedor') || title.includes('vendas')) && 
+        !title.includes('corretor') && !title.includes('imobiliário') && category.includes('vendas')) {
+      console.log('✅ REDIRECIONANDO PARA: Vendedor');
       return 'https://www.catho.com.br/vagas/vendedor/';
     }
 
-    // URL padrão para empregos simples (não vendas/corretor)
+    // 🚫 BLOQUEIO PARA CORRETOR/VENDAS IMOBILIÁRIAS
+    if (title.includes('corretor') || title.includes('imobiliário') || title.includes('imóveis')) {
+      console.log('⚠️ BLOQUEANDO CORRETOR - Redirecionando para empregos simples');
+      return 'https://www.catho.com.br/vagas/emprego-sem-experiencia/';
+    }
+
+    // URL padrão para empregos simples e seguros
+    console.log('✅ REDIRECIONAMENTO PADRÃO: Empregos sem experiência');
     return 'https://www.catho.com.br/vagas/emprego-sem-experiencia/';
   };
+
+  // Função para validar email
+  const isValidEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
+
+    // Validar email antes de enviar
+    if (!isValidEmail(formData.email)) {
+      alert('❌ Por favor, insira um email válido (ex: seuemail@provedor.com)')
+      setIsSubmitting(false)
+      return
+    }
 
     try {
       console.log('🚀 Enviando dados da pesquisa trabalhista:', formData)
@@ -525,15 +563,25 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Email *
+                        Email * <span className="text-xs text-gray-500">(ex: seuemail@gmail.com)</span>
                       </label>
                       <input
                         type="email"
                         required
                         value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        onChange={(e) => {
+                          handleInputChange('email', e.target.value);
+                          // Validação visual em tempo real
+                          if (e.target.value && !isValidEmail(e.target.value)) {
+                            e.target.setCustomValidity('Por favor, insira um email válido (ex: seuemail@gmail.com)');
+                          } else {
+                            e.target.setCustomValidity('');
+                          }
+                        }}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="seu@email.com"
+                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                        title="Insira um email válido (ex: seuemail@gmail.com)"
                       />
                     </div>
 
