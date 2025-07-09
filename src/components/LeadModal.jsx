@@ -53,6 +53,21 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     }))
   }, [])
 
+  const goToStep2 = useCallback(() => setStep(2), [])
+  const goToStep1 = useCallback(() => setStep(1), [])
+  const goToStep3 = useCallback(() => setStep(3), [])
+  const goToStep2FromStep3 = useCallback(() => setStep(2), [])
+  
+  const incrementAge = useCallback(() => {
+    const novaIdade = Math.min(100, (formData.idade || 18) + 1);
+    handleInputChange('idade', novaIdade);
+  }, [formData.idade, handleInputChange])
+  
+  const decrementAge = useCallback(() => {
+    const novaIdade = Math.max(18, (formData.idade || 18) - 1);
+    handleInputChange('idade', novaIdade);
+  }, [formData.idade, handleInputChange])
+
   const formatWhatsApp = (value) => {
     // Remove tudo que não é número
     const numbers = value.replace(/\D/g, '')
@@ -241,7 +256,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
 
                 <button
                   type="button"
-                  onClick={useCallback(() => setStep(2), [])}
+                  onClick={goToStep2}
                   className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
                 >
                   Continuar →
@@ -304,14 +319,14 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
                 <div className="flex space-x-2">
                   <button
                     type="button"
-                    onClick={useCallback(() => setStep(1), [])}
+                    onClick={goToStep1}
                     className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition-colors"
                   >
                     ← Voltar
                   </button>
                   <button
                     type="button"
-                    onClick={useCallback(() => setStep(3), [])}
+                    onClick={goToStep3}
                     className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
                   >
                     Continuar →
@@ -384,20 +399,14 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
                           <div className="absolute right-1 top-1 flex flex-col">
                             <button
                               type="button"
-                              onClick={useCallback(() => {
-                                const novaIdade = Math.min(100, (formData.idade || 18) + 1);
-                                handleInputChange('idade', novaIdade);
-                              }, [formData.idade, handleInputChange])}
+                              onClick={incrementAge}
                               className="text-xs px-1 py-0 text-gray-600 hover:text-blue-600"
                             >
                               ▲
                             </button>
                             <button
                               type="button"
-                              onClick={useCallback(() => {
-                                const novaIdade = Math.max(18, (formData.idade || 18) - 1);
-                                handleInputChange('idade', novaIdade);
-                              }, [formData.idade, handleInputChange])}
+                              onClick={decrementAge}
                               className="text-xs px-1 py-0 text-gray-600 hover:text-blue-600"
                             >
                               ▼
@@ -479,7 +488,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
                 <div className="flex space-x-2">
                   <button
                     type="button"
-                    onClick={useCallback(() => setStep(2), [])}
+                    onClick={goToStep2FromStep3}
                     className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition-colors"
                   >
                     ← Voltar
