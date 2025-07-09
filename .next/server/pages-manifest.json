@@ -4,5 +4,6 @@
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
   "/api/jobs-stats": "pages/api/jobs-stats.js",
+  "/vagas": "pages/vagas.js",
   "/api/all-jobs-combined": "pages/api/all-jobs-combined.js"
 }
