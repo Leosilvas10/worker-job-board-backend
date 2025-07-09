@@ -51,7 +51,7 @@ export default async function handler(req, res) {
       // Dados pessoais
       nome: nomeCompleto,
       telefone: whatsapp,
-      email: `${nomeCompleto.toLowerCase().replace(/\s+/g, '')}@pesquisatrabalhista.com`,
+      email: 'Não informado',
       idade: idade || 18,
       cidade: cidade || '',
       estado: estado || '',
