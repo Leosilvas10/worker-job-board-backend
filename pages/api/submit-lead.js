@@ -1,11 +1,5 @@
-
 export default async function handler(req, res) {
-  console.log('🔄 API /api/submit-lead chamada')
-  console.log('🔍 Método:', req.method)
-  console.log('📥 Headers:', req.headers)
-  
   if (req.method !== 'POST') {
-    console.log('❌ Método não permitido:', req.method)
     return res.status(405).json({ 
       success: false, 
       message: 'Método não permitido' 
@@ -13,102 +7,80 @@ export default async function handler(req, res) {
   }
 
   try {
-    const data = req.body
-    console.log('📋 Dados recebidos:', JSON.stringify(data, null, 2))
+    console.log('🎯 MODAL ÚNICO - Dados recebidos:', req.body)
 
-    // Validação rigorosa dos campos obrigatórios
-    const requiredFields = {
-      nomeCompleto: 'Nome completo',
-      whatsapp: 'WhatsApp',
-      ultimaEmpresa: 'Última empresa',
-      tipoCarteira: 'Tipo de carteira',
-      recebeuTudoCertinho: 'Recebeu tudo certinho',
-      aceitaConsultoria: 'Aceita consultoria'
-    }
+    const {
+      nome,
+      telefone,
+      email,
+      ultimaEmpresa,
+      tipoCarteira,
+      recebeuTudoCertinho,
+      situacoesDuranteTrabalho,
+      aceitaConsultoria,
+      vaga,
+      fonte,
+      timestamp
+    } = req.body
 
-    const errors = []
-    
-    for (const [field, label] of Object.entries(requiredFields)) {
-      if (!data[field] || (typeof data[field] === 'string' && !data[field].trim())) {
-        errors.push(`${label} é obrigatório`)
-        console.log(`❌ Campo obrigatório não preenchido: ${field}`)
-      }
-    }
-
-    if (errors.length > 0) {
-      console.log('❌ Erros de validação:', errors)
-      return res.status(400).json({
-        success: false,
-        message: errors.join(', '),
-        errors: errors
-      })
-    }
-
-    // Validar formato do WhatsApp
-    const whatsappNumbers = data.whatsapp.replace(/\D/g, '')
-    if (whatsappNumbers.length < 10 || whatsappNumbers.length > 11) {
-      console.log('❌ WhatsApp inválido:', data.whatsapp)
-      return res.status(400).json({
-        success: false,
-        message: 'WhatsApp deve ter formato válido (10 ou 11 dígitos)'
-      })
-    }
-
-    // Preparar dados para o backend
+    // Preparar dados para envio ao backend
     const leadData = {
-      nomeCompleto: data.nomeCompleto.trim(),
-      whatsapp: data.whatsapp.trim(),
-      ultimaEmpresa: data.ultimaEmpresa.trim(),
-      tipoCarteira: data.tipoCarteira,
-      recebeuTudoCertinho: data.recebeuTudoCertinho,
-      situacoesDuranteTrabalho: data.situacoesDuranteTrabalho || [],
-      aceitaConsultoria: data.aceitaConsultoria,
-      vagaId: data.vagaId || 'sem-vaga',
-      vagaTitulo: data.vagaTitulo || 'Vaga não especificada',
-      vagaEmpresa: data.vagaEmpresa || 'Empresa não especificada',
-      timestamp: new Date().toISOString(),
-      fonte: 'Site do Trabalhador'
+      nomeCompleto: nome,
+      whatsapp: telefone,
+      email: email || `${nome.toLowerCase().replace(/\s+/g, '')}@contato.com`,
+      ultimaEmpresa,
+      tipoCarteira,
+      recebeuTudoCertinho,
+      situacoesDuranteTrabalho: Array.isArray(situacoesDuranteTrabalho) 
+        ? situacoesDuranteTrabalho 
+        : [situacoesDuranteTrabalho],
+      aceitaConsultoria,
+      vagaTitulo: vaga?.titulo || 'Pesquisa Trabalhista',
+      fonte: fonte || 'modal_unico',
+      createdAt: timestamp || new Date().toISOString()
     }
 
-    console.log('📤 Enviando para backend:', JSON.stringify(leadData, null, 2))
+    console.log('📤 Enviando para backend:', leadData)
 
-    // Enviar para o backend
+    // Enviar para o backend correto
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app'
-    const backendResponse = await fetch(`${backendUrl}/api/leads`, {
+    const endpoint = `${backendUrl}/api/labor-research-leads`
+
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'User-Agent': 'SiteDoTrabalhador-Modal'
       },
       body: JSON.stringify(leadData)
     })
 
-    const backendResult = await backendResponse.json()
-    
-    console.log('📨 Resposta do backend:', backendResponse.status, backendResult)
+    const responseText = await response.text()
+    console.log('📥 Resposta do backend:', responseText.substring(0, 200))
 
-    // Backend retorna message sem success, então validamos pela presença dos dados
-    if (backendResponse.ok && (backendResult.data || backendResult.message?.includes('sucesso'))) {
-      console.log('✅ Lead enviado com sucesso!')
-      return res.status(200).json({
-        success: true,
-        message: 'Candidatura enviada com sucesso!',
-        data: backendResult.data || backendResult
-      })
-    } else {
-      console.log('❌ Erro no backend:', backendResult)
-      return res.status(500).json({
-        success: false,
-        message: backendResult.message || 'Erro ao processar candidatura'
-      })
+    if (!response.ok) {
+      throw new Error(`Backend erro: ${response.status} - ${responseText}`)
     }
 
+    const result = JSON.parse(responseText)
+    console.log('✅ SUCESSO! Lead salvo:', result)
+
+    return res.status(200).json({
+      success: true,
+      message: 'Pesquisa trabalhista enviada com sucesso!',
+      data: result,
+      timestamp: new Date().toISOString()
+    })
+
   } catch (error) {
-    console.error('❌ Erro na API submit-lead:', error)
+    console.error('❌ ERRO no envio:', error)
+
     return res.status(500).json({
       success: false,
       message: 'Erro interno do servidor',
-      error: error.message
+      error: error.message,
+      timestamp: new Date().toISOString()
     })
   }
 }
