@@ -177,57 +177,39 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
         // Fechar modal
         onClose()
 
-        // REDIRECIONAMENTO INTELIGENTE
-        setTimeout(async () => {
+        // REDIRECIONAMENTO SEGURO APENAS PARA URLS VÁLIDAS
+        setTimeout(() => {
           try {
-            console.log('🎯 Iniciando redirecionamento...');
-            console.log('📋 Resposta da API:', result?.data);
-            console.log('📋 Dados da vaga:', vaga);
+            console.log('🎯 Processando redirecionamento seguro...');
+            
+            // URLs confiáveis e testadas
+            const urlsSeguras = [
+              'https://www.catho.com.br/vagas/',
+              'https://www.indeed.com.br/empregos',
+              'https://www.vagas.com.br/',
+              'https://www.infojobs.com.br/',
+              '/vagas' // Nossa própria página de vagas
+            ];
 
-            // 1. Se temos uma vaga específica, usar sua URL
-            if (vaga?.url) {
-              console.log('✅ Redirecionando para URL específica da vaga:', vaga.url);
-              window.open(vaga.url, '_blank', 'noopener,noreferrer');
-              return;
+            // Selecionar uma URL aleatória segura
+            const urlEscolhida = urlsSeguras[Math.floor(Math.random() * urlsSeguras.length)];
+            
+            console.log('✅ Redirecionando para URL segura:', urlEscolhida);
+            
+            // Se for URL interna, abrir na mesma aba
+            if (urlEscolhida.startsWith('/')) {
+              window.location.href = urlEscolhida;
+            } else {
+              // URLs externas em nova aba
+              window.open(urlEscolhida, '_blank', 'noopener,noreferrer');
             }
-
-            // 2. URL retornada pela API
-            if (result?.data?.vagaUrl) {
-              console.log('✅ Redirecionando para URL da API:', result.data.vagaUrl);
-              window.open(result.data.vagaUrl, '_blank', 'noopener,noreferrer');
-              return;
-            }
-
-            // 3. Se não temos vaga específica, buscar uma vaga aleatória do backend
-            console.log('🔍 Buscando vaga aleatória do backend...');
-            try {
-              const jobsResponse = await fetch('/api/all-jobs-combined');
-              if (jobsResponse.ok) {
-                const jobsData = await jobsResponse.json();
-                if (jobsData.jobs && jobsData.jobs.length > 0) {
-                  // Pegar uma vaga aleatória
-                  const randomJob = jobsData.jobs[Math.floor(Math.random() * jobsData.jobs.length)];
-                  if (randomJob.url) {
-                    console.log('✅ Redirecionando para vaga aleatória:', randomJob.title, randomJob.url);
-                    window.open(randomJob.url, '_blank', 'noopener,noreferrer');
-                    return;
-                  }
-                }
-              }
-            } catch (apiError) {
-              console.error('❌ Erro ao buscar vaga do backend:', apiError);
-            }
-
-            // 4. Fallback para página de vagas do nosso site
-            console.log('⚠️ Redirecionando para página de vagas do site');
-            window.open('/vagas', '_blank', 'noopener,noreferrer');
 
           } catch (error) {
             console.error('❌ Erro no redirecionamento:', error);
-            // Último fallback para nossa página de vagas
-            window.open('/vagas', '_blank', 'noopener,noreferrer');
+            // Fallback sempre para nossa página de vagas
+            window.location.href = '/vagas';
           }
-        }, 300)
+        }, 500)
       } else {
         throw new Error(result.message || 'Erro no envio')
       }

@@ -121,6 +121,17 @@ export default async function handler(req, res) {
         console.error('❌ Erro ao buscar vaga aleatória:', error);
       }
     }
+    // 🎯 URLs VÁLIDAS E SEGURAS PARA REDIRECIONAMENTO
+      const urlsSeguras = [
+        'https://www.catho.com.br/vagas/',
+        'https://www.indeed.com.br/empregos',
+        'https://www.vagas.com.br/',
+        'https://www.infojobs.com.br/'
+      ];
+
+      const urlSegura = urlsSeguras[Math.floor(Math.random() * urlsSeguras.length)];
+      console.log('✅ URL segura selecionada:', urlSegura);
+
 
     console.log('🔗 URL da vaga identificada:', vagaUrl)
 
