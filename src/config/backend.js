@@ -1,6 +1,6 @@
 // Configuração hardcoded do backend para garantir funcionamento em produção
 export const BACKEND_CONFIG = {
-  API_URL: 'https://worker-job-board-backend.onrender.com',
+  API_URL: 'https://worker-job-board-backend-leonardosilvas2.replit.app',
   ENDPOINTS: {
     SIMPLE_JOBS: '/api/simple-jobs',
     ALL_JOBS: '/api/all-jobs-combined',
