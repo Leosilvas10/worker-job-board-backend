@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react'
 
 export default function LeadModal({ isOpen, onClose, vaga = null }) {
@@ -62,9 +61,9 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     }
     setStep(2)
   }, [formData.nomeUltimaEmpresa, formData.tipoCarteira, formData.recebeuTudoCertinho])
-  
+
   const goToStep1 = useCallback(() => setStep(1), [])
-  
+
   const goToStep3 = useCallback(() => {
     // Validar campos obrigatórios do step 2
     if (!formData.aceitaConsultoria) {
@@ -73,14 +72,14 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     }
     setStep(3)
   }, [formData.aceitaConsultoria])
-  
+
   const goToStep2FromStep3 = useCallback(() => setStep(2), [])
-  
+
   const incrementAge = useCallback(() => {
     const novaIdade = Math.min(100, (formData.idade || 18) + 1);
     handleInputChange('idade', novaIdade);
   }, [formData.idade, handleInputChange])
-  
+
   const decrementAge = useCallback(() => {
     const novaIdade = Math.max(18, (formData.idade || 18) - 1);
     handleInputChange('idade', novaIdade);
@@ -89,10 +88,10 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
   const formatWhatsApp = (value) => {
     // Remove tudo que não é número
     const numbers = value.replace(/\D/g, '')
-    
+
     // Limita a 11 dígitos
     const limitedNumbers = numbers.substring(0, 11)
-    
+
     // Aplica a máscara (XX) XXXXX-XXXX
     if (limitedNumbers.length >= 11) {
       return limitedNumbers.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
@@ -103,9 +102,83 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
     } else if (limitedNumbers.length >= 1) {
       return limitedNumbers.replace(/(\d{0,2})/, '($1')
     }
-    
+
     return limitedNumbers
   }
+
+  // Função para gerar URL de redirecionamento baseada na vaga
+  const generateJobRedirectUrl = (jobData) => {
+    if (jobData.redirectUrl) {
+      return jobData.redirectUrl;
+    }
+
+    // URLs específicas baseadas no título da vaga - MAPEAMENTO PRECISO
+    const title = jobData.title?.toLowerCase() || '';
+    const category = jobData.category?.toLowerCase() || '';
+
+    // PORTEIRO / PORTARIA
+    if (title.includes('porteiro') || title.includes('portaria') || category.includes('portaria')) {
+      return 'https://www.catho.com.br/vagas/porteiro/';
+    }
+
+    // DOMÉSTICA / EMPREGADA DOMÉSTICA
+    if (title.includes('doméstica') || title.includes('empregada') || category.includes('doméstica')) {
+      return 'https://www.catho.com.br/vagas/empregada-domestica/';
+    }
+
+    // DIARISTA
+    if (title.includes('diarista')) {
+      return 'https://www.catho.com.br/vagas/diarista/';
+    }
+
+    // CUIDADOR DE IDOSOS
+    if (title.includes('cuidador') || category.includes('cuidados')) {
+      return 'https://www.catho.com.br/vagas/cuidador/';
+    }
+
+    // LIMPEZA E CONSERVAÇÃO
+    if (title.includes('limpeza') || title.includes('auxiliar de limpeza') || title.includes('zelador') || category.includes('limpeza')) {
+      return 'https://www.catho.com.br/vagas/auxiliar-limpeza/';
+    }
+
+    // BABÁ
+    if (title.includes('babá') || title.includes('baba')) {
+      return 'https://www.catho.com.br/vagas/baba/';
+    }
+
+    // JARDINEIRO
+    if (title.includes('jardineiro') || category.includes('jardinagem')) {
+      return 'https://www.catho.com.br/vagas/jardineiro/';
+    }
+
+    // SEGURANÇA / VIGILANTE
+    if (title.includes('segurança') || title.includes('vigilante') || category.includes('segurança')) {
+      return 'https://www.catho.com.br/vagas/vigilante/';
+    }
+
+    // MOTORISTA
+    if (title.includes('motorista') || category.includes('transporte')) {
+      return 'https://www.catho.com.br/vagas/motorista/';
+    }
+
+    // RECEPCIONISTA
+    if (title.includes('recepcionista') || category.includes('atendimento')) {
+      return 'https://www.catho.com.br/vagas/recepcionista/';
+    }
+
+    // AUXILIAR DE COZINHA / COZINHEIRO
+    if (title.includes('cozinha') || title.includes('cozinheiro') || category.includes('alimentação')) {
+      return 'https://www.catho.com.br/vagas/auxiliar-cozinha/';
+    }
+
+    // VENDEDOR (apenas se for especificamente vendas)
+    if ((title.includes('vendedor') || title.includes('vendas')) && category.includes('vendas')) {
+      return 'https://www.catho.com.br/vagas/vendedor/';
+    }
+
+    // URL padrão para empregos simples (não vendas/corretor)
+    return 'https://www.catho.com.br/vagas/emprego-sem-experiencia/';
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -158,10 +231,10 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
           mensagem: ''
         })
         setStep(1)
-        
+
         // Fechar modal
         onClose()
-        
+
         // REDIRECIONAMENTO PRIORITÁRIO para vaga real
         setTimeout(() => {
           try {
@@ -173,7 +246,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
               }
               return
             }
-            
+
             // 2. Alternativa: external_url
             if (vaga && (vaga.external_url || vaga.externalUrl)) {
               const url = vaga.external_url || vaga.externalUrl
@@ -183,84 +256,32 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
               }
               return
             }
-            
+
             // 3. Construir URL da vaga baseada no título/categoria - MAPEAMENTO ESPECÍFICO
             if (vaga && vaga.title) {
-              const title = vaga.title.toLowerCase()
-              let vagaUrl = 'https://www.catho.com.br/vagas/'
-              
-              // DOMÉSTICA E DIARISTA
-              if (title.includes('doméstica') || title.includes('empregada') || title.includes('diarista') || title.includes('faxineira')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/empregada-domestica/'
-              } 
-              // PORTEIRO E VIGILANTE
-              else if (title.includes('porteiro') || title.includes('porteira')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/porteiro/'
-              } 
-              else if (title.includes('vigilante') || title.includes('segurança') || title.includes('guarita')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/vigilante/'
-              }
-              // CUIDADORES
-              else if (title.includes('cuidador') || title.includes('cuidadora') || title.includes('acompanhante') || title.includes('idoso')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/cuidador/'
-              }
-              else if (title.includes('babá') || title.includes('baba') || title.includes('criança')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/baba/'
-              }
-              // MOTORISTA E ENTREGADOR
-              else if (title.includes('motorista') || title.includes('driver')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/motorista/'
-              }
-              else if (title.includes('entregador') || title.includes('delivery') || title.includes('motoboy')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/entregador/'
-              }
-              // LIMPEZA E CONSERVAÇÃO
-              else if (title.includes('limpeza') || title.includes('auxiliar de limpeza') || title.includes('zelador') || title.includes('zeladoria')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/auxiliar-limpeza/'
-              }
-              // VENDAS E ATENDIMENTO
-              else if (title.includes('vendedor') || title.includes('vendedora') || title.includes('consultor de vendas')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/vendedor/'
-              }
-              else if (title.includes('atendente') || title.includes('balconista') || title.includes('caixa') || title.includes('recepcionista')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/atendente/'
-              }
-              // ALIMENTAÇÃO
-              else if (title.includes('cozinheiro') || title.includes('cozinheira') || title.includes('auxiliar de cozinha')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/cozinheiro/'
-              }
-              else if (title.includes('garçom') || title.includes('garçonete') || title.includes('copeira') || title.includes('copeiro')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/garcom/'
-              }
-              // JARDINAGEM E MANUTENÇÃO
-              else if (title.includes('jardineiro') || title.includes('jardineira') || title.includes('paisagismo')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/jardineiro/'
-              }
-              else if (title.includes('manutenção') || title.includes('auxiliar de manutenção') || title.includes('handyman')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/auxiliar-manutencao/'
-              }
-              // CONSTRUÇÃO
-              else if (title.includes('pedreiro') || title.includes('servente') || title.includes('ajudante') || title.includes('construção')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/construcao-civil/'
-              }
-              // FALLBACK GENÉRICO
-              else {
-                vagaUrl = 'https://www.catho.com.br/vagas/emprego/'
-              }
-              
-              console.log('🔄 REDIRECIONAMENTO por categoria:', vagaUrl)
-              if (typeof window !== 'undefined') {
-                window.open(vagaUrl, '_blank', 'noopener,noreferrer')
-              }
+              const jobData = {
+                title: vaga.title || vaga.titulo,
+                category: vaga.category, // Assuming there's a category field
+                redirectUrl: vaga.redirectUrl
+              };
+              // Redirecionar após envio bem-sucedido
+              const redirectUrl = generateJobRedirectUrl(jobData);
+              console.log('🔗 Dados da vaga para redirecionamento:', {
+                title: jobData.title,
+                category: jobData.category,
+                redirectUrl: redirectUrl
+              });
+              console.log('🔗 Redirecionando para:', redirectUrl);
+              window.open(redirectUrl, '_blank');
               return
             }
-            
+
             // 4. Fallback extremo: Catho geral
             console.log('🔄 REDIRECIONAMENTO FALLBACK para Catho geral')
             if (typeof window !== 'undefined') {
               window.open('https://www.catho.com.br/vagas/', '_blank', 'noopener,noreferrer')
             }
-            
+
           } catch (error) {
             console.error('❌ Erro no redirecionamento:', error)
             // Fallback final seguro
@@ -282,7 +303,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
         </div>
       `
       document.body.appendChild(errorDiv)
-      
+
       // Remover mensagem após 3 segundos
       setTimeout(() => {
         document.body.removeChild(errorDiv)
@@ -486,7 +507,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
                   <label className="block text-sm font-medium text-gray-700 mb-3">
                     <span className="text-blue-600 font-semibold">6.</span> Para isso, informe seu nome e WhatsApp para contato:
                   </label>
-                  
+
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
