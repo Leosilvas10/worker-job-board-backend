@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const cron = require('node-cron');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -405,16 +406,31 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Rota para atualizar vagas manualmente
+// Rota para atualizar vagas (webhook seguro)
 app.post('/api/update-jobs', (req, res) => {
-  console.log('🔄 Atualizando vagas manualmente...');
+  const { webhook_secret } = req.body;
   
-  // Execute o mesmo código do update-jobs.js aqui
-  // ou importe e execute a função
+  // Verificação de segurança
+  if (webhook_secret !== 'SUA_CHAVE_SECRETA_AQUI') {
+    return res.status(401).json({
+      error: 'Token de segurança inválido',
+      timestamp: new Date().toISOString()
+    });
+  }
   
-  res.json({
-    message: 'Vagas atualizadas com sucesso',
-    timestamp: new Date().toISOString()
+  console.log('🔄 Atualizando vagas via webhook...');
+  
+  updateJobsAutomatically().then(() => {
+    res.json({
+      message: 'Vagas atualizadas com sucesso via webhook',
+      timestamp: new Date().toISOString()
+    });
+  }).catch(error => {
+    res.status(500).json({
+      error: 'Erro ao atualizar vagas',
+      details: error.message,
+      timestamp: new Date().toISOString()
+    });
   });
 });
 
@@ -426,6 +442,72 @@ app.use((req, res) => {
   });
 });
 
+// Função para atualizar vagas automaticamente
+async function updateJobsAutomatically() {
+  console.log('🔄 Atualizando vagas automaticamente...');
+  
+  const updatedJobs = [
+    {
+      id: Date.now(),
+      title: "Empregada Doméstica",
+      company: "Família Silva",
+      salary: "R$ 1.400,00",
+      type: "CLT",
+      timeAgo: "Há 1 hora",
+      description: "Limpeza, organização e cuidados com a casa. Experiência de 2 anos.",
+      tags: ["Doméstica", "CLT"],
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: Date.now() + 1,
+      title: "Diarista - 3x por semana",
+      company: "Residência Particular",
+      salary: "R$ 150,00/dia",
+      type: "Diarista",
+      timeAgo: "Há 2 horas",
+      description: "Limpeza residencial. Disponibilidade para segunda, quarta e sexta.",
+      tags: ["Diarista", "Flexível"],
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: Date.now() + 2,
+      title: "Cuidadora de Idosos",
+      company: "Família Oliveira",
+      salary: "R$ 1.600,00",
+      type: "CLT",
+      timeAgo: "Há 3 horas",
+      description: "Cuidados com idoso. Experiência e paciência necessárias.",
+      tags: ["Cuidadora", "Idoso"],
+      createdAt: new Date().toISOString()
+    }
+  ];
+
+  try {
+    fs.writeFileSync('jobs-data.json', JSON.stringify(updatedJobs, null, 2));
+    console.log(`✅ ${updatedJobs.length} vagas atualizadas automaticamente!`);
+    console.log(`📅 Última atualização: ${new Date().toISOString()}`);
+  } catch (error) {
+    console.error('❌ Erro ao atualizar vagas automaticamente:', error);
+  }
+}
+
+// Configurar agendamento para atualizar vagas
+// Executa todos os dias às 8:00 da manhã
+cron.schedule('0 8 * * *', updateJobsAutomatically, {
+  scheduled: true,
+  timezone: "America/Sao_Paulo"
+});
+
+// Executa a cada 6 horas
+cron.schedule('0 */6 * * *', updateJobsAutomatically, {
+  scheduled: true,
+  timezone: "America/Sao_Paulo"
+});
+
+console.log('⏰ Agendamento configurado:');
+console.log('   - Atualização diária às 8:00');
+console.log('   - Atualização a cada 6 horas');
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
   console.log(`📍 URL local: http://0.0.0.0:${PORT}`);
@@ -434,4 +516,7 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`   - https://worker-job-board-frontend-leonardosilvas2.replit.app`);
   console.log(`   - https://sitedotrabalhador.com.br`);
   console.log(`💾 Dados carregados: ${laborResearchLeads.length} leads salvos`);
+  
+  // Executar uma vez ao iniciar o servidor
+  updateJobsAutomatically();
 });
