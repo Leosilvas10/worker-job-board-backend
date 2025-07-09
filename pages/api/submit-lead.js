@@ -258,7 +258,8 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
     console.log('📤 Enviando lead para backend:', backendUrl)
     console.log('📋 Dados do lead sendo enviados:', JSON.stringify(leadData, null, 2))
     
-    const response = await fetch(`${backendUrl}/api/labor-research`, {
+    // Tentar primeiro o endpoint de leads
+    let response = await fetch(`${backendUrl}/api/leads`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -267,6 +268,20 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
       },
       body: JSON.stringify(leadData)
     })
+
+    // Se não funcionar, tentar o endpoint de labor-research
+    if (!response.ok) {
+      console.log('⚠️ Endpoint /api/leads falhou, tentando /api/labor-research...')
+      response = await fetch(`${backendUrl}/api/labor-research`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'User-Agent': 'SiteDoTrabalhador-Frontend'
+        },
+        body: JSON.stringify(leadData)
+      })
+    }
 
     const responseText = await response.text()
     console.log('📨 Status da resposta:', response.status)
