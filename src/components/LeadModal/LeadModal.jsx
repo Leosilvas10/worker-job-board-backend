@@ -128,12 +128,35 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
 
       console.log('📤 Enviando dados do formulário:', submissionData)
 
+      try {
       const response = await fetch('/api/submit-lead', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(submissionData),
+        body: JSON.stringify({
+          name: formData.nomeCompleto,
+          whatsapp: formData.whatsapp,
+          lastCompany: formData.ultimaEmpresa,
+          workStatus: formData.tipoCarteira,
+          receivedRights: formData.recebeuCertinho,
+          workProblems: formData.situacoes,
+          wantConsultation: formData.consultaGratuita,
+          jobId: jobData?.id,
+          jobTitle: jobData?.title,
+          company: jobData?.company,
+          jobLink: jobData?.link,
+          originalLocation: jobData?.location,
+          lgpdConsent: formData.aceitoTratamento,
+          fonte: 'Site do Trabalhador',
+          timestamp: new Date().toISOString(),
+          // Dados estruturados para o backend
+          ultima_empresa: formData.ultimaEmpresa,
+          tipo_carteira: formData.tipoCarteira,
+          recebeu_direitos: formData.recebeuCertinho,
+          situacoes_enfrentadas: formData.situacoes.join(', '),
+          aceita_consultoria: formData.consultaGratuita
+        })
       })
 
       const result = await response.json()

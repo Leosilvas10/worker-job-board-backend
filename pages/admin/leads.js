@@ -271,10 +271,10 @@ export default function AdminLeads() {
                       <div className="text-sm text-gray-500">{lead.telefone || lead.phone}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {lead.vaga?.titulo || lead.interesse || 'Candidatura'}
+                      {lead.vaga?.titulo || lead.vaga_titulo || lead.interesse || 'Pesquisa Trabalhista'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {lead.fonte || lead.source || 'Site'}
+                      {lead.fonte || lead.source || 'Formulário Site'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <select
@@ -587,58 +587,166 @@ export default function AdminLeads() {
                   </div>
                 )}
 
-                {/* Experiência Profissional */}
+                {/* Pesquisa Trabalhista */}
                 <div className="bg-yellow-50 p-6 rounded-lg">
                   <h3 className="text-lg font-semibold text-yellow-800 mb-4 flex items-center">
-                    💪 Experiência Profissional
+                    ⚖️ Pesquisa Trabalhista - Último Emprego
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Trabalhou Antes?</label>
+                      <label className="block text-sm font-medium text-gray-700">Última Empresa</label>
                       <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.profissional?.trabalhouAntes || selectedLead.trabalhou_antes ? 'Sim' : 'Não'}
+                        {selectedLead.pesquisaTrabalhista?.ultimaEmpresa || selectedLead.ultima_empresa || 'Não informado'}
                       </p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Último Emprego</label>
-                      <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.profissional?.ultimoEmprego || selectedLead.ultimo_emprego || 'Não informado'}
+                      <label className="block text-sm font-medium text-gray-700">Tipo de Carteira</label>
+                      <p className={`mt-1 text-sm font-medium p-2 rounded ${
+                        (selectedLead.pesquisaTrabalhista?.tipoCarteira || selectedLead.tipo_carteira)?.includes('com carteira') ? 'bg-green-100 text-green-800' :
+                        (selectedLead.pesquisaTrabalhista?.tipoCarteira || selectedLead.tipo_carteira)?.includes('sem carteira') ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {selectedLead.pesquisaTrabalhista?.tipoCarteira || selectedLead.tipo_carteira || 'Não informado'}
                       </p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Tempo no Último Emprego</label>
-                      <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.profissional?.tempoUltimoEmprego || selectedLead.tempo_ultimo_emprego || 'Não informado'}
+                      <label className="block text-sm font-medium text-gray-700">Recebeu Direitos Trabalhistas</label>
+                      <p className={`mt-1 text-sm font-medium p-2 rounded ${
+                        (selectedLead.pesquisaTrabalhista?.recebeuDireitos || selectedLead.recebeu_direitos)?.includes('sim') ? 'bg-green-100 text-green-800' :
+                        (selectedLead.pesquisaTrabalhista?.recebeuDireitos || selectedLead.recebeu_direitos)?.includes('não') ? 'bg-red-100 text-red-800' :
+                        'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {selectedLead.pesquisaTrabalhista?.recebeuDireitos || selectedLead.recebeu_direitos || 'Não informado'}
                       </p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Motivo da Demissão</label>
+                      <label className="block text-sm font-medium text-gray-700">Aceita Consultoria</label>
+                      <p className={`mt-1 text-sm font-medium p-2 rounded ${
+                        (selectedLead.pesquisaTrabalhista?.aceitaConsultoria || selectedLead.aceita_consultoria)?.includes('sim') ? 'bg-green-100 text-green-800' :
+                        (selectedLead.pesquisaTrabalhista?.aceitaConsultoria || selectedLead.aceita_consultoria)?.includes('não') ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {selectedLead.pesquisaTrabalhista?.aceitaConsultoria || selectedLead.aceita_consultoria || 'Não informado'}
+                      </p>
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block text-sm font-medium text-gray-700">Situações Enfrentadas</label>
                       <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.profissional?.motivoDemissao || selectedLead.motivo_demissao || 'Não informado'}
+                        {selectedLead.pesquisaTrabalhista?.situacoesEnfrentadas || selectedLead.situacoes_enfrentadas || 'Não informado'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Verbas Rescisórias */}
+                <div className="bg-red-50 p-6 rounded-lg">
+                  <h3 className="text-lg font-semibold text-red-800 mb-4 flex items-center">
+                    💰 Verbas Rescisórias
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">FGTS</label>
+                      <p className={`mt-1 text-sm font-medium p-2 rounded ${
+                        (selectedLead.pesquisaTrabalhista?.verbas?.fgts || selectedLead.fgts)?.includes('sim') ? 'bg-green-100 text-green-800' :
+                        (selectedLead.pesquisaTrabalhista?.verbas?.fgts || selectedLead.fgts)?.includes('não') ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {selectedLead.pesquisaTrabalhista?.verbas?.fgts || selectedLead.fgts || 'Não informado'}
                       </p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Salário Anterior</label>
-                      <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.profissional?.salarioAnterior || selectedLead.salario_anterior || 'Não informado'}
+                      <label className="block text-sm font-medium text-gray-700">Férias</label>
+                      <p className={`mt-1 text-sm font-medium p-2 rounded ${
+                        (selectedLead.pesquisaTrabalhista?.verbas?.ferias || selectedLead.ferias)?.includes('sim') ? 'bg-green-100 text-green-800' :
+                        (selectedLead.pesquisaTrabalhista?.verbas?.ferias || selectedLead.ferias)?.includes('não') ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {selectedLead.pesquisaTrabalhista?.verbas?.ferias || selectedLead.ferias || 'Não informado'}
                       </p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Anos de Experiência</label>
-                      <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.profissional?.experienciaAnos || selectedLead.experiencia_anos || '0'} anos
+                      <label className="block text-sm font-medium text-gray-700">13º Salário</label>
+                      <p className={`mt-1 text-sm font-medium p-2 rounded ${
+                        (selectedLead.pesquisaTrabalhista?.verbas?.decimoTerceiro || selectedLead.decimo_terceiro)?.includes('sim') ? 'bg-green-100 text-green-800' :
+                        (selectedLead.pesquisaTrabalhista?.verbas?.decimoTerceiro || selectedLead.decimo_terceiro)?.includes('não') ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {selectedLead.pesquisaTrabalhista?.verbas?.decimoTerceiro || selectedLead.decimo_terceiro || 'Não informado'}
                       </p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Disponibilidade</label>
+                      <label className="block text-sm font-medium text-gray-700">Horas Extras</label>
+                      <p className={`mt-1 text-sm font-medium p-2 rounded ${
+                        (selectedLead.pesquisaTrabalhista?.verbas?.horasExtras || selectedLead.horas_extras)?.includes('sim') ? 'bg-green-100 text-green-800' :
+                        (selectedLead.pesquisaTrabalhista?.verbas?.horasExtras || selectedLead.horas_extras)?.includes('não') ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {selectedLead.pesquisaTrabalhista?.verbas?.horasExtras || selectedLead.horas_extras || 'Não informado'}
+                      </p>
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block text-sm font-medium text-gray-700">Verbas de Rescisão</label>
                       <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.profissional?.disponibilidade || selectedLead.disponibilidade || 'Não informada'}
+                        {selectedLead.pesquisaTrabalhista?.verbas?.verbas_rescisao || selectedLead.verbas_rescisao || 'Não informado'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Problemas Trabalhistas */}
+                <div className="bg-orange-50 p-6 rounded-lg">
+                  <h3 className="text-lg font-semibold text-orange-800 mb-4 flex items-center">
+                    ⚠️ Problemas Trabalhistas Identificados
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Assédio</label>
+                      <p className={`mt-1 text-sm font-medium p-2 rounded ${
+                        (selectedLead.pesquisaTrabalhista?.problemas?.assedio || selectedLead.assedio)?.includes('sim') ? 'bg-red-100 text-red-800' :
+                        (selectedLead.pesquisaTrabalhista?.problemas?.assedio || selectedLead.assedio)?.includes('não') ? 'bg-green-100 text-green-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {selectedLead.pesquisaTrabalhista?.problemas?.assedio || selectedLead.assedio || 'Não informado'}
                       </p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Pretensão Salarial</label>
-                      <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.profissional?.pretensaoSalarial || selectedLead.pretensao_salarial || 'Não informada'}
+                      <label className="block text-sm font-medium text-gray-700">Humilhações</label>
+                      <p className={`mt-1 text-sm font-medium p-2 rounded ${
+                        (selectedLead.pesquisaTrabalhista?.problemas?.humilhacoes || selectedLead.humilhacoes)?.includes('sim') ? 'bg-red-100 text-red-800' :
+                        (selectedLead.pesquisaTrabalhista?.problemas?.humilhacoes || selectedLead.humilhacoes)?.includes('não') ? 'bg-green-100 text-green-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {selectedLead.pesquisaTrabalhista?.problemas?.humilhacoes || selectedLead.humilhacoes || 'Não informado'}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Acúmulo de Funções</label>
+                      <p className={`mt-1 text-sm font-medium p-2 rounded ${
+                        (selectedLead.pesquisaTrabalhista?.problemas?.acumulo_funcoes || selectedLead.acumulo_funcoes)?.includes('sim') ? 'bg-red-100 text-red-800' :
+                        (selectedLead.pesquisaTrabalhista?.problemas?.acumulo_funcoes || selectedLead.acumulo_funcoes)?.includes('não') ? 'bg-green-100 text-green-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {selectedLead.pesquisaTrabalhista?.problemas?.acumulo_funcoes || selectedLead.acumulo_funcoes || 'Não informado'}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Sem Registro</label>
+                      <p className={`mt-1 text-sm font-medium p-2 rounded ${
+                        (selectedLead.pesquisaTrabalhista?.problemas?.sem_registro || selectedLead.sem_registro)?.includes('sim') ? 'bg-red-100 text-red-800' :
+                        (selectedLead.pesquisaTrabalhista?.problemas?.sem_registro || selectedLead.sem_registro)?.includes('não') ? 'bg-green-100 text-green-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {selectedLead.pesquisaTrabalhista?.problemas?.sem_registro || selectedLead.sem_registro || 'Não informado'}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Atraso de Salário</label>
+                      <p className={`mt-1 text-sm font-medium p-2 rounded ${
+                        (selectedLead.pesquisaTrabalhista?.problemas?.atraso_salario || selectedLead.atraso_salario)?.includes('sim') ? 'bg-red-100 text-red-800' :
+                        (selectedLead.pesquisaTrabalhista?.problemas?.atraso_salario || selectedLead.atraso_salario)?.includes('não') ? 'bg-green-100 text-green-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {selectedLead.pesquisaTrabalhista?.problemas?.atraso_salario || selectedLead.atraso_salario || 'Não informado'}
                       </p>
                     </div>
                   </div>

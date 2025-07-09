@@ -119,15 +119,27 @@ export default async function handler(req, res) {
                 empresa: cleanLead.empresa,
                 localizacao: `${cleanLead.cidade}, ${cleanLead.estado}`
               },
-              profissional: {
-                trabalhouAntes: cleanLead.trabalhou_antes === 'sim' || cleanLead.trabalhou_antes === true,
-                ultimoEmprego: cleanLead.ultimo_emprego,
-                tempoUltimoEmprego: cleanLead.tempo_ultimo_emprego,
-                motivoDemissao: cleanLead.motivo_demissao,
-                salarioAnterior: cleanLead.salario_anterior,
-                experienciaAnos: cleanLead.experiencia_anos || 0,
-                disponibilidade: cleanLead.disponibilidade,
-                pretensaoSalarial: cleanLead.pretensao_salarial
+              // Dados da pesquisa trabalhista do backend
+              pesquisaTrabalhista: {
+                ultimaEmpresa: cleanLead.ultima_empresa,
+                tipoCarteira: cleanLead.tipo_carteira,
+                recebeuDireitos: cleanLead.recebeu_direitos,
+                situacoesEnfrentadas: cleanLead.situacoes_enfrentadas,
+                aceitaConsultoria: cleanLead.aceita_consultoria,
+                verbas: {
+                  fgts: cleanLead.fgts,
+                  ferias: cleanLead.ferias,
+                  decimoTerceiro: cleanLead.decimo_terceiro,
+                  horasExtras: cleanLead.horas_extras,
+                  verbas_rescisao: cleanLead.verbas_rescisao
+                },
+                problemas: {
+                  assedio: cleanLead.assedio,
+                  humilhacoes: cleanLead.humilhacoes,
+                  acumulo_funcoes: cleanLead.acumulo_funcoes,
+                  sem_registro: cleanLead.sem_registro,
+                  atraso_salario: cleanLead.atraso_salario
+                }
               },
               observacoes: cleanLead.observacoes || cleanLead.mensagem,
               fonte: cleanLead.fonte || 'site',
@@ -136,10 +148,10 @@ export default async function handler(req, res) {
                 medium: cleanLead.utm_medium || '',
                 campaign: cleanLead.utm_campaign || ''
               },
-              status: 'novo', // Status padrão para leads vindos do backend
-              criadoEm: cleanLead.data_criacao || new Date().toISOString(),
-              contatado: false,
-              convertido: false
+              status: cleanLead.status || 'novo',
+              criadoEm: cleanLead.data_criacao || cleanLead.created_at || new Date().toISOString(),
+              contatado: cleanLead.contatado || false,
+              convertido: cleanLead.convertido || false
             }
           })
         }

@@ -180,6 +180,26 @@ export default async function handler(req, res) {
       email: null, // Email não é obrigatório
       empresa: company || 'Não especificada',
       cargo: jobTitle || 'Vaga de Emprego',
+      
+      // Dados estruturados da pesquisa trabalhista
+      ultima_empresa: lastCompany,
+      tipo_carteira: workStatus,
+      recebeu_direitos: receivedRights,
+      situacoes_enfrentadas: Array.isArray(workProblems) ? workProblems.join(', ') : (workProblems || 'Nenhuma'),
+      aceita_consultoria: wantConsultation,
+      
+      // Dados da vaga
+      vaga_id: jobId,
+      vaga_titulo: jobTitle,
+      vaga_empresa: company,
+      vaga_localizacao: originalLocation,
+      vaga_link: jobLink,
+      
+      // Metadata
+      fonte: fonte || 'Site do Trabalhador',
+      lgpd_consent: lgpdConsent,
+      timestamp: new Date().toISOString(),
+      
       mensagem: `PESQUISA RÁPIDA SOBRE ÚLTIMO EMPREGO
 
 DADOS PESSOAIS:
