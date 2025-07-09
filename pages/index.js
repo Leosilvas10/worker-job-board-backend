@@ -27,12 +27,12 @@ export default function Home() {
         })
         const data = await response.json()
         
-        if (data.success && data.jobs) {
-          console.log(`✅ Total de ${data.jobs.length} vagas disponíveis`)
-          console.log(`📊 Internas: ${data.meta?.internalJobs || 0}, Externas: ${data.meta?.externalJobs || 0}`)
+        if (data.success && data.data) {
+          console.log(`✅ Total de ${data.data.length} vagas disponíveis`)
+          console.log(`📊 Reais: ${data.meta?.realJobs || 0}, Complementares: ${data.meta?.complementaryJobs || 0}`)
           
           // Pegar apenas as 6 primeiras vagas para exibir em destaque
-          const featuredJobs = data.jobs.slice(0, 6)
+          const featuredJobs = data.data.slice(0, 6)
           console.log(`🔥 ${featuredJobs.length} vagas selecionadas para destaque`)
           
           setJobs(featuredJobs)

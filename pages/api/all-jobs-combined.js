@@ -299,68 +299,73 @@ export default async function handler(req, res) {
         }
       }
 
-      // Fallback: buscar estatísticas e criar vagas complementares
-      console.log('⚠️ Nenhuma vaga real encontrada, buscando estatísticas...')
-
-      const statsResponse = await fetch(`${BACKEND_URL}/api/stats`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'User-Agent': 'Frontend-Jobs-API'
-        }
-      })
-
-      const statsData = await statsResponse.json()
-      console.log('📊 Estatísticas recebidas:', statsData)
-
-      let complementaryJobs = []
-
-      if (statsData && statsData.totalJobs) {
-        const totalToCreate = Math.min(statsData.totalJobs, 100)
-        console.log(`📊 Backend indica ${statsData.totalJobs} vagas totais, criando ${totalToCreate} vagas complementares...`)
-
-        complementaryJobs = generateComplementaryJobs(totalToCreate, statsData)
-        console.log(`✅ ${complementaryJobs.length} vagas complementares criadas baseadas nas estatísticas do backend`)
-      } else {
-        // Se não há estatísticas, criar 100 vagas padrão
-        complementaryJobs = generateComplementaryJobs(100, {})
-      }
-
-        return {
-          success: true,
-          data: complementaryJobs,
-          meta: {
-            totalJobs: complementaryJobs.length,
-            internalJobs: 0,
-            externalJobs: complementaryJobs.length,
-            lastUpdate: new Date().toISOString(),
-            source: 'Backend Stats (Fallback)'
-          }
-        }
-
       } catch (error) {
-        console.error('❌ Erro ao buscar vagas:', error)
+        console.error('❌ Erro ao buscar vagas:', error);
 
-        // Fallback final: retornar vagas básicas
-        const fallbackJobs = generateComplementaryJobs(10, { totalJobs: 10 })
+        // Fallback: buscar estatísticas e criar vagas complementares
+        console.log('⚠️ Nenhuma vaga real encontrada, buscando estatísticas...');
 
-        return {
-          success: true,
-          data: fallbackJobs,
-          meta: {
-            totalJobs: fallbackJobs.length,
-            internalJobs: 0,
-            externalJobs: fallbackJobs.length,
-            lastUpdate: new Date().toISOString(),
-            error: 'Fallback mode - backend not available'
+        try {
+          const statsResponse = await fetch(`${BACKEND_URL}/api/stats`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'User-Agent': 'Frontend-Jobs-API'
+            }
+          });
+
+          const statsData = await statsResponse.json();
+          console.log('📊 Estatísticas recebidas:', statsData);
+
+          let complementaryJobs = [];
+
+          if (statsData && statsData.totalJobs) {
+            const totalToCreate = Math.min(statsData.totalJobs, 100);
+            console.log(`📊 Backend indica ${statsData.totalJobs} vagas totais, criando ${totalToCreate} vagas complementares...`);
+
+            complementaryJobs = generateComplementaryJobs(totalToCreate, statsData);
+            console.log(`✅ ${complementaryJobs.length} vagas complementares criadas baseadas nas estatísticas do backend`);
+          } else {
+            // Se não há estatísticas, criar 100 vagas padrão
+            complementaryJobs = generateComplementaryJobs(100, {});
           }
+
+          return {
+            success: true,
+            data: complementaryJobs,
+            meta: {
+              totalJobs: complementaryJobs.length,
+              internalJobs: 0,
+              externalJobs: complementaryJobs.length,
+              lastUpdate: new Date().toISOString(),
+              source: 'Backend Stats (Fallback)'
+            }
+          };
+
+        } catch (statsError) {
+          console.error('❌ Erro ao buscar estatísticas:', statsError);
+
+          // Fallback final: retornar vagas básicas
+          const fallbackJobs = generateComplementaryJobs(10, { totalJobs: 10 });
+
+          return {
+            success: true,
+            data: fallbackJobs,
+            meta: {
+              totalJobs: fallbackJobs.length,
+              internalJobs: 0,
+              externalJobs: fallbackJobs.length,
+              lastUpdate: new Date().toISOString(),
+              error: 'Fallback mode - backend not available'
+            }
+          };
         }
       }
     }
 
     // Chamar a função principal e retornar os resultados
-    const result = await getAllJobsCombined()
-    res.status(200).json(result)
+    const result = await getAllJobsCombined();
+    res.status(200).json(result);
 
   } catch (error) {
     console.error('❌ Erro geral na API:', error);
