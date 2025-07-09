@@ -258,7 +258,7 @@ LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
     console.log('📤 Enviando lead para backend:', backendUrl)
     console.log('📋 Dados do lead:', leadData)
     
-    const response = await fetch(`${backendUrl}/api/leads`, {
+    const response = await fetch(`${backendUrl}/api/labor-research`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     
     // Teste 1: Health check
     console.log('🔍 Testando conexão com backend...')
-    const healthResponse = await fetch(`${backendUrl}/api/leads`, {
+    const healthResponse = await fetch(`${backendUrl}/api/labor-research`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export default async function handler(req, res) {
     }
     
     console.log('📤 Enviando lead de teste...')
-    const submitResponse = await fetch(`${backendUrl}/api/leads`, {
+    const submitResponse = await fetch(`${backendUrl}/api/labor-research`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

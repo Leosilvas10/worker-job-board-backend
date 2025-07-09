@@ -86,7 +86,7 @@ export default async function handler(req, res) {
     
     let leadsReais = []
     try {
-      const backendResponse = await fetch(`${backendUrl}/api/leads`, {
+      const backendResponse = await fetch(`${backendUrl}/api/labor-research`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

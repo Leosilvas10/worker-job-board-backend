@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react'
 
 const LeadModal = ({ isOpen, onClose, jobData }) => {
@@ -94,45 +93,25 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
         return
       }
 
-      // Preparar dados para envio
-      const submissionData = {
-        // Dados pessoais
-        name: formData.name,
-        whatsapp: formData.whatsapp,
-        email: null,
-
-        // Respostas da pesquisa
-        lastCompany: formData.lastCompany || 'Não informado',
-        workStatus: formData.workStatus || 'Não informado',
-        receivedRights: formData.receivedRights || 'Não informado',
-        workProblems: formData.workProblems || [],
-        wantConsultation: formData.wantConsultation || 'Não informado',
-
-        // Consentimento LGPD
-        lgpdConsent: formData.lgpdConsent,
-
-        // Dados da vaga
-        jobId: jobData?.id || jobData?.jobId,
-        jobTitle: jobData?.title || jobData?.jobTitle || 'Vaga não especificada',
-        company: jobData?.company?.name || jobData?.company || 'Empresa não especificada',
-        jobLink: jobData?.url || jobData?.link || jobData?.apply_url || jobData?.original_url || '#',
-        originalLocation: jobData?.originalLocation || jobData?.location || 'Brasil',
-
-        // Metadados
-        fonte: 'Site do Trabalhador - Pesquisa Trabalhista',
-        paginaOrigem: window.location.href,
-        timestamp: new Date().toISOString(),
-        source: 'Site do Trabalhador - Formulário Único'
+      // Preparar dados para envio no formato exato do backend
+      const leadData = {
+        ultimaEmpresa: formData.lastCompany || "Nome da empresa",
+        tipoCarteira: formData.workStatus || "Com carteira assinada",
+        recebeuTudoCertinho: formData.receivedRights || "Sim",
+        situacoesDuranteTrabalho: Array.isArray(formData.workProblems) ? formData.workProblems : [formData.workProblems || "Nenhuma"],
+        aceitaConsultoria: formData.wantConsultation || "Sim",
+        nomeCompleto: formData.name,
+        whatsapp: formData.whatsapp
       }
 
-      console.log('📤 Enviando dados do formulário:', submissionData)
+      console.log('📤 Enviando dados do formulário:', leadData)
 
-      const response = await fetch('/api/submit-lead', {
+      const response = await fetch('/api/labor-research', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(submissionData)
+        body: JSON.stringify(leadData)
       })
 
       const result = await response.json()
