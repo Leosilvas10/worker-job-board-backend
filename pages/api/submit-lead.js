@@ -14,35 +14,18 @@ export default async function handler(req, res) {
       // Dados pessoais
       nomeCompleto,
       whatsapp,
-      email,
       idade,
       cidade,
       estado,
       
-      // Informações trabalhistas
-      ultimaEmpresa,
-      cargo,
-      tempoTrabalho,
-      tipoCarteira,
+      // Pesquisa trabalhista - 5 questões principais
+      recebeuFgts,
+      recebeuFerias,
+      recebeuDecimoTerceiro,
+      sofreu_assedio,
+      trabalhouSemRegistro,
       
-      // Verbas trabalhistas
-      fgts,
-      ferias,
-      decimoTerceiro,
-      horasExtras,
-      verbasRescisao,
-      
-      // Problemas enfrentados
-      assedio,
-      humilhacoes,
-      acumuloFuncoes,
-      semRegistro,
-      atrasoSalario,
-      
-      // Situações específicas
-      situacoesEnfrentadas,
-      recebeuDireitos,
-      aceitaConsultoria,
+      // Observações
       mensagem,
       
       // Dados da vaga (se houver)
@@ -61,30 +44,14 @@ export default async function handler(req, res) {
       cidade: cidade || '',
       estado: estado || '',
       
-      // Informações trabalhistas
-      ultima_empresa: ultimaEmpresa || '',
-      cargo: cargo || '',
-      tempo_trabalho: tempoTrabalho || '',
-      tipo_carteira: tipoCarteira || '',
+      // Pesquisa trabalhista - 5 questões principais
+      fgts: recebeuFgts || 'Não informado',
+      ferias: recebeuFerias || 'Não informado',
+      decimo_terceiro: recebeuDecimoTerceiro || 'Não informado',
+      assedio: sofreu_assedio || 'Não informado',
+      sem_registro: trabalhouSemRegistro || 'Não informado',
       
-      // Verbas trabalhistas (formato esperado pelo backend)
-      fgts: fgts || 'Não informado',
-      ferias: ferias || 'Não informado',
-      decimo_terceiro: decimoTerceiro || 'Não informado',
-      horas_extras: horasExtras || 'Não informado',
-      verbas_rescisao: verbasRescisao || 'Não informado',
-      
-      // Problemas enfrentados
-      assedio: assedio || 'Não informado',
-      humilhacoes: humilhacoes || 'Não informado',
-      acumulo_funcoes: acumuloFuncoes || 'Não informado',
-      sem_registro: semRegistro || 'Não informado',
-      atraso_salario: atrasoSalario || 'Não informado',
-      
-      // Situações específicas
-      situacoes_enfrentadas: situacoesEnfrentadas || '',
-      recebeu_direitos: recebeuDireitos || 'Não informado',
-      aceita_consultoria: aceitaConsultoria || 'Não informado',
+      // Observações
       mensagem: mensagem || '',
       
       // Dados da vaga (se aplicável)
