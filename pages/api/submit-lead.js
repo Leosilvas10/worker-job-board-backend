@@ -129,9 +129,11 @@ export default async function handler(req, res) {
       message: 'Pesquisa trabalhista enviada com sucesso! Entraremos em contato em breve.',
       data: {
         ...result,
-        vagaUrl: vaga?.url || vaga?.redirectUrl, // Retornar URL real da vaga
-        vagaTitulo: vaga?.title || vaga?.titulo,
-        vagaEmpresa: vaga?.company || vaga?.empresa
+        vagaUrl: vaga?.url || vaga?.redirectUrl, // URL REAL da vaga
+        vagaTitulo: vaga?.titulo || vaga?.title,
+        vagaEmpresa: vaga?.empresa || vaga?.company,
+        vagaId: vaga?.id,
+        vagaLocalizacao: vaga?.localizacao || vaga?.location
       },
       timestamp: new Date().toISOString()
     })

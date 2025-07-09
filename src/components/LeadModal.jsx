@@ -672,8 +672,7 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
                           <option value="RS">Rio Grande do Sul</option>
                           <option value="PR">Paraná</option>
                           <option value="SC">Santa Catarina</option>
-                          <option value="BA">Bahia</option>
-                          <option value="GO">Goiás</option>
+                          <option value="BA">Bahia</option><option value="GO">Goiás</option>
                           <option value="PE">Pernambuco</option>
                           <option value="CE">Ceará</option>
                         </select>

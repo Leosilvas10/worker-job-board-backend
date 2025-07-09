@@ -116,9 +116,10 @@ UTM Campaign: ${utm_campaign}`
       success: true,
       message: 'Candidatura enviada com sucesso!',
       data: {
-        vagaUrl: vagaUrl,
+        vagaUrl: vagaUrl, // URL REAL da vaga
         vagaTitulo: vagaTitulo,
         vagaEmpresa: vagaEmpresa,
+        vagaId: vagaId,
         backendResponse: result
       }
     })
