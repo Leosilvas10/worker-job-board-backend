@@ -1,0 +1,73 @@
+📋 INSTRUÇÕES PARA O ASSISTENTE DO FRONTEND
+🎯 ENDPOINT CORRETO CONFIRMADO:
+POST https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research
+📝 ESTRUTURA DOS DADOS QUE O BACKEND ESPERA:
+{
+  "ultimaEmpresa": "Nome da empresa",
+  "tipoCarteira": "sim|nao|parcial", 
+  "recebeuTudoCertinho": "sim|nao|parcial",
+  "situacoesDuranteTrabalho": ["array", "de", "opcoes"],
+  "aceitaConsultoria": "sim|nao",
+  "nomeCompleto": "Nome completo da pessoa",
+  "whatsapp": "(11) 99999-9999"
+}
+🔧 O QUE DIZER PARA O ASSISTENTE:
+"Preciso que você configure o envio do formulário de pesquisa trabalhista para o endpoint correto. Aqui estão as especificações:
+
+URL do endpoint: https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research
+
+Método: POST
+
+Headers necessários:
+
+{
+  'Content-Type': 'application/json'
+}
+Campos obrigatórios do formulário:
+
+ultimaEmpresa (string)
+tipoCarteira (string: "sim", "nao" ou "parcial")
+recebeuTudoCertinho (string: "sim", "nao" ou "parcial")
+situacoesDuranteTrabalho (array de strings)
+aceitaConsultoria (string: "sim" ou "nao")
+nomeCompleto (string)
+whatsapp (string)
+Exemplo de implementação:
+
+const handleSubmit = async (formData) => {
+  try {
+    const response = await fetch('https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+    
+    const result = await response.json();
+    console.log('Sucesso:', result);
+    
+    // Aqui você pode mostrar mensagem de sucesso para o usuário
+    
+  } catch (error) {
+    console.error('Erro:', error);
+    // Aqui você pode mostrar mensagem de erro para o usuário
+  }
+};
+Resposta esperada do backend em caso de sucesso:
+
+{
+  "message": "Pesquisa trabalhista recebida com sucesso",
+  "data": { /* dados salvos com ID e timestamp */ },
+  "status": "success",
+  "timestamp": "2025-07-09T14:37:19.583Z"
+}
+Configure o formulário para enviar os dados exatamente neste formato e teste o envio."
+
+✅ CONFIRMAÇÃO:
+O backend já foi testado e está funcionando perfeitamente. O problema está apenas na configuração do frontend para enviar os dados no formato correto para o endpoint correto.
+
+🔍 PARA VERIFICAR SE FUNCIONOU:
+Após a implementação, você pode verificar se os dados estão sendo salvos acessando:
+
+GET https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research-leads
