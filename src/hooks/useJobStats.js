@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react'
 
 export const useJobStats = () => {
@@ -5,7 +6,11 @@ export const useJobStats = () => {
     totalJobs: 0,
     newJobsToday: 0,
     companies: 0,
-    applicants: 0
+    applicants: 0,
+    formatted: {
+      totalJobsFormatted: '0',
+      recentJobsFormatted: '0'
+    }
   })
   const [loading, setLoading] = useState(true)
   const hasLoaded = useRef(false)
@@ -16,31 +21,57 @@ export const useJobStats = () => {
 
     const fetchStats = async () => {
       try {
-        console.log('📊 Buscando estatísticas das vagas...')
+        console.log('📊 Buscando estatísticas das vagas do backend...')
 
-        const response = await fetch('/api/all-jobs-combined')
+        const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app'
+        
+        // Buscar vagas diretamente do endpoint /api/jobs do backend
+        const response = await fetch(`${BACKEND_URL}/api/jobs`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'User-Agent': 'Frontend-Stats-API'
+          }
+        })
+
         if (response.ok) {
           const data = await response.json()
-          const totalJobs = data.jobs?.length || data.data?.length || 0
+          console.log('✅ Dados recebidos do backend:', data)
           
-          setStats({
+          const totalJobs = data.jobs?.length || data.total || 0
+          const recentJobs = Math.floor(totalJobs * 0.15) // 15% como recentes
+          
+          const formattedStats = {
             totalJobs: totalJobs,
-            newJobsToday: Math.floor(totalJobs * 0.15), // 15% como novas hoje
+            newJobsToday: recentJobs,
             companies: Math.floor(totalJobs * 0.6), // 60% como empresas diferentes
-            applicants: Math.floor(totalJobs * 8) // 8 candidatos por vaga em média
-          })
-          console.log('✅ Estatísticas calculadas:', totalJobs, 'vagas totais')
+            applicants: Math.floor(totalJobs * 8), // 8 candidatos por vaga em média
+            formatted: {
+              totalJobsFormatted: formatJobCount(totalJobs),
+              recentJobsFormatted: formatJobCount(recentJobs)
+            }
+          }
+          
+          setStats(formattedStats)
+          console.log('✅ Estatísticas calculadas:', formattedStats)
           hasLoaded.current = true
+        } else {
+          throw new Error(`API retornou status ${response.status}`)
         }
       } catch (error) {
         console.error('❌ Erro ao buscar estatísticas:', error)
-        // Fallback com números padrão
-        setStats({
+        // Fallback com números padrão baseados no que vimos na imagem
+        const fallbackStats = {
           totalJobs: 120,
           newJobsToday: 18,
           companies: 72,
-          applicants: 960
-        })
+          applicants: 960,
+          formatted: {
+            totalJobsFormatted: '120+',
+            recentJobsFormatted: '18+'
+          }
+        }
+        setStats(fallbackStats)
       } finally {
         setLoading(false)
       }
@@ -58,7 +89,7 @@ export const useJobFormatting = () => {
     if (count >= 1000) {
       return `${(count / 1000).toFixed(1)}k+`
     }
-    return count.toLocaleString('pt-BR')
+    return `${count}+`
   }
 
   const getCategoryDisplayName = (category) => {
@@ -88,4 +119,12 @@ export const useJobFormatting = () => {
     getJobText,
     formatCategoryCount
   }
+}
+
+// Função helper para formatação (movida para fora do hook para reutilização)
+function formatJobCount(count) {
+  if (count >= 1000) {
+    return `${(count / 1000).toFixed(1)}k+`
+  }
+  return `${count}+`
 }
