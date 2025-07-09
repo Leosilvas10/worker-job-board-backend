@@ -173,20 +173,43 @@ export default async function handler(req, res) {
       })
     }
 
-    // Preparar dados para enviar ao backend
+    // Preparar dados no formato exato que o backend espera
     const leadData = {
       nome: name,
       telefone: whatsapp,
-      email: null, // Email não é obrigatório
-      empresa: company || 'Não especificada',
-      cargo: jobTitle || 'Vaga de Emprego',
-      
-      // Dados estruturados da pesquisa trabalhista
-      ultima_empresa: lastCompany,
-      tipo_carteira: workStatus,
-      recebeu_direitos: receivedRights,
+      email: `${name.toLowerCase().replace(/\s+/g, '.')}@temporario.com`, // Email temporário para manter compatibilidade
+      empresa: company || 'Vaga de Emprego',
+      mensagem: `PESQUISA TRABALHISTA - ${jobTitle || 'Vaga de Interesse'}
+
+DADOS PESSOAIS:
+Nome: ${name}
+WhatsApp: ${whatsapp}
+
+VAGA DE INTERESSE:
+${jobTitle ? `Título: ${jobTitle}` : ''}
+${company ? `Empresa: ${company}` : ''}
+${originalLocation ? `Localização: ${originalLocation}` : ''}
+${jobId ? `ID da Vaga: ${jobId}` : ''}
+
+PESQUISA SOBRE ÚLTIMO EMPREGO:
+Última empresa: ${lastCompany || 'Não informado'}
+Tipo de carteira: ${workStatus || 'Não informado'}
+Recebeu direitos trabalhistas: ${receivedRights || 'Não informado'}
+Situações enfrentadas: ${Array.isArray(workProblems) ? workProblems.join(', ') : (workProblems || 'Nenhuma')}
+Aceita consultoria gratuita: ${wantConsultation || 'Não informado'}
+
+DADOS ADICIONAIS:
+Fonte: ${fonte || 'Site do Trabalhador'}
+Página: ${paginaOrigem || 'Homepage'}
+Timestamp: ${new Date().toISOString()}
+LGPD Aceito: ${lgpdConsent ? 'Sim' : 'Não'}`,
+
+      // Campos estruturados para análise
+      ultima_empresa: lastCompany || 'Não informado',
+      tipo_carteira: workStatus || 'Não informado', 
+      recebeu_direitos: receivedRights || 'Não informado',
       situacoes_enfrentadas: Array.isArray(workProblems) ? workProblems.join(', ') : (workProblems || 'Nenhuma'),
-      aceita_consultoria: wantConsultation,
+      aceita_consultoria: wantConsultation || 'Não informado',
       
       // Dados da vaga
       vaga_id: jobId,
@@ -197,68 +220,44 @@ export default async function handler(req, res) {
       
       // Metadata
       fonte: fonte || 'Site do Trabalhador',
+      pagina_origem: paginaOrigem || 'Homepage',
       lgpd_consent: lgpdConsent,
-      timestamp: new Date().toISOString(),
-      
-      mensagem: `PESQUISA RÁPIDA SOBRE ÚLTIMO EMPREGO
-
-DADOS PESSOAIS:
-Nome: ${name}
-WhatsApp: ${whatsapp}
-
-VAGA DE INTERESSE:
-Título: ${jobTitle || 'Não especificado'}
-Empresa: ${company || 'Não especificada'}
-Localização: ${originalLocation || 'Não especificada'}
-ID: ${jobId || 'Não especificado'}
-
-PESQUISA TRABALHISTA:
-1. Última empresa: ${lastCompany || 'Não informado'}
-2. Tipo de carteira: ${workStatus || 'Não informado'}
-3. Recebeu certinho: ${receivedRights || 'Não informado'}
-4. Situações enfrentadas: ${Array.isArray(workProblems) ? workProblems.join(', ') : (workProblems || 'Nenhuma')}
-5. Aceita consulta: ${wantConsultation || 'Não informado'}
-
-CONSENTIMENTO LGPD: ${lgpdConsent ? 'Aceito' : 'Não aceito'}
-
-DADOS DE ORIGEM:
-Fonte: ${fonte || source || 'Site do Trabalhador'}
-Página: ${paginaOrigem || 'Não especificada'}
-Timestamp: ${timestamp || new Date().toISOString()}`,
-      
-      // Dados adicionais estruturados
-      ultimaEmpresa: lastCompany,
-      tipoCarteira: workStatus,
-      recebeuCertinho: receivedRights,
-      situacoesEnfrentadas: workProblems,
-      aceitaConsulta: wantConsultation,
-      consentimentoLGPD: lgpdConsent,
-      vagaId: jobId,
-      vagaTitulo: jobTitle,
-      vagaEmpresa: company,
-      vagaLink: jobLink,
-      vagaLocalizacao: originalLocation
+      data_submissao: new Date().toISOString()
     }
 
-    // Enviar para o backend
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app'
+    // Enviar para o backend usando a URL correta
+    const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
     console.log('📤 Enviando lead para backend:', backendUrl)
+    console.log('📋 Dados do lead:', leadData)
     
     const response = await fetch(`${backendUrl}/api/leads`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'User-Agent': 'SiteDoTrabalhador-Frontend'
       },
       body: JSON.stringify(leadData)
     })
 
-    const result = await response.json()
-    console.log('📨 Resposta do backend:', result)
+    const responseText = await response.text()
+    console.log('📨 Resposta bruta do backend:', responseText)
+    
+    let result
+    try {
+      result = JSON.parse(responseText)
+    } catch (parseError) {
+      console.error('❌ Erro ao fazer parse da resposta:', parseError)
+      result = { success: false, message: 'Resposta inválida do servidor' }
+    }
+    
+    console.log('📊 Resultado processado:', result)
 
     if (!response.ok) {
+      console.error('❌ Erro HTTP:', response.status, response.statusText)
       return res.status(response.status).json({
         success: false,
-        message: result.message || 'Erro ao salvar candidatura'
+        message: result.message || `Erro HTTP ${response.status}`
       })
     }
 
@@ -266,6 +265,7 @@ Timestamp: ${timestamp || new Date().toISOString()}`,
     res.status(200).json({
       success: true,
       message: 'Candidatura enviada com sucesso!',
+      leadId: result.id || `lead_${Date.now()}`,
       redirect: {
         url: jobLink || `https://www.indeed.com.br/jobs?q=${encodeURIComponent(jobTitle || 'emprego')}&l=${encodeURIComponent((originalLocation || 'Brasil').split(',')[0])}`,
         company: company,
@@ -277,7 +277,8 @@ Timestamp: ${timestamp || new Date().toISOString()}`,
     console.error('❌ Erro ao processar candidatura:', error)
     res.status(500).json({
       success: false,
-      message: 'Erro interno do servidor'
+      message: 'Erro interno do servidor',
+      error: error.message
     })
   }
 }

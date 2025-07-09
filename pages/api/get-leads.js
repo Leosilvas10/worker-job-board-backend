@@ -90,17 +90,30 @@ export default async function handler(req, res) {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'User-Agent': 'SiteDoTrabalhador-Frontend'
         }
       })
+      
+      const responseText = await backendResponse.text()
       console.log('📡 Status da resposta do backend:', backendResponse.status)
+      console.log('📄 Resposta bruta:', responseText)
       
       if (backendResponse.ok) {
-        const backendData = await backendResponse.json()
-        console.log('📊 Dados completos do backend:', backendData)
-        console.log('✅', backendData.leads?.length || 0, 'leads reais carregados do backend')
+        let backendData
+        try {
+          backendData = JSON.parse(responseText)
+        } catch (parseError) {
+          console.error('❌ Erro ao fazer parse da resposta:', parseError)
+          throw new Error('Resposta inválida do backend')
+        }
         
-        if (backendData.success && backendData.leads) {
+        console.log('📊 Dados completos do backend:', backendData)
+        
+        // Verificar se há leads no array
+        if (backendData.leads && Array.isArray(backendData.leads) && backendData.leads.length > 0) {
+          console.log('✅', backendData.leads.length, 'leads reais encontrados no backend')
+          
           leadsReais = backendData.leads.map(lead => {
             // Aplicar sanitização no lead antes de processar
             const cleanLead = sanitizeLead(lead)
@@ -111,13 +124,13 @@ export default async function handler(req, res) {
               telefone: cleanLead.telefone,
               email: cleanLead.email,
               idade: cleanLead.idade,
-              cidade: cleanLead.cidade,
-              estado: cleanLead.estado,
+              cidade: cleanLead.cidade || 'Não informado',
+              estado: cleanLead.estado || 'Não informado',
               vaga: {
                 id: cleanLead.vaga_id,
-                titulo: cleanLead.vaga_titulo,
-                empresa: cleanLead.empresa,
-                localizacao: `${cleanLead.cidade}, ${cleanLead.estado}`
+                titulo: cleanLead.vaga_titulo || 'Vaga de Interesse',
+                empresa: cleanLead.empresa || cleanLead.vaga_empresa || 'Empresa não informada',
+                localizacao: cleanLead.vaga_localizacao || `${cleanLead.cidade || 'Não informado'}, ${cleanLead.estado || 'Não informado'}`
               },
               // Dados da pesquisa trabalhista do backend
               pesquisaTrabalhista: {
@@ -149,15 +162,17 @@ export default async function handler(req, res) {
                 campaign: cleanLead.utm_campaign || ''
               },
               status: cleanLead.status || 'novo',
-              criadoEm: cleanLead.data_criacao || cleanLead.created_at || new Date().toISOString(),
+              criadoEm: cleanLead.data_criacao || cleanLead.created_at || cleanLead.data_submissao || new Date().toISOString(),
               contatado: cleanLead.contatado || false,
               convertido: cleanLead.convertido || false
             }
           })
+        } else {
+          console.log('⚠️ Backend retornou array vazio ou sem leads')
         }
       }
     } catch (error) {
-      console.log('Erro ao buscar leads do backend, usando dados de exemplo:', error.message)
+      console.error('❌ Erro ao buscar leads do backend:', error.message)
     }
 
     // Dados de exemplo para demonstração (caso o backend esteja indisponível)

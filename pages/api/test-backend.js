@@ -1,93 +1,88 @@
 
-// API para testar conexão com o backend
 export default async function handler(req, res) {
-  const BACKEND_URL = 'https://worker-job-board-backend-leonardosilvas2.replit.app';
-  
   try {
-    console.log('🔍 Testando conexão com backend...');
+    const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
     
-    const results = {};
+    // Teste 1: Health check
+    console.log('🔍 Testando conexão com backend...')
+    const healthResponse = await fetch(`${backendUrl}/api/leads`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'User-Agent': 'SiteDoTrabalhador-Test'
+      }
+    })
     
-    // Testar endpoint de leads
+    const healthText = await healthResponse.text()
+    console.log('📡 Status Health:', healthResponse.status)
+    console.log('📄 Resposta Health:', healthText)
+    
+    let healthData
     try {
-      const leadsResponse = await fetch(`${BACKEND_URL}/api/leads`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      
-      const leadsData = leadsResponse.ok ? await leadsResponse.json() : null;
-      
-      results.leads = {
-        status: leadsResponse.status,
-        ok: leadsResponse.ok,
-        data: leadsData,
-        count: leadsData?.leads?.length || leadsData?.data?.length || 0
-      };
-    } catch (error) {
-      results.leads = { error: error.message };
+      healthData = JSON.parse(healthText)
+    } catch (e) {
+      healthData = { raw: healthText }
     }
     
-    // Testar endpoint de stats
-    try {
-      const statsResponse = await fetch(`${BACKEND_URL}/api/jobs-stats`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      
-      const statsData = statsResponse.ok ? await statsResponse.json() : null;
-      
-      results.stats = {
-        status: statsResponse.status,
-        ok: statsResponse.ok,
-        data: statsData,
-        totalJobs: statsData?.totalJobs || 0
-      };
-    } catch (error) {
-      results.stats = { error: error.message };
+    // Teste 2: Submissão de lead de teste
+    const testLead = {
+      nome: 'Teste Frontend',
+      telefone: '(11) 99999-9999',
+      email: 'teste@frontend.com',
+      empresa: 'Teste',
+      mensagem: 'Lead de teste do frontend',
+      ultima_empresa: 'Empresa Teste',
+      tipo_carteira: 'CLT',
+      recebeu_direitos: 'Sim',
+      situacoes_enfrentadas: 'Nenhuma',
+      aceita_consultoria: 'Sim',
+      fonte: 'Teste Frontend'
     }
     
-    // Testar endpoint all-jobs-combined
+    console.log('📤 Enviando lead de teste...')
+    const submitResponse = await fetch(`${backendUrl}/api/leads`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'User-Agent': 'SiteDoTrabalhador-Test'
+      },
+      body: JSON.stringify(testLead)
+    })
+    
+    const submitText = await submitResponse.text()
+    console.log('📡 Status Submit:', submitResponse.status)
+    console.log('📄 Resposta Submit:', submitText)
+    
+    let submitData
     try {
-      const allJobsResponse = await fetch(`${BACKEND_URL}/api/all-jobs-combined`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      
-      const allJobsData = allJobsResponse.ok ? await allJobsResponse.json() : null;
-      
-      results.allJobs = {
-        status: allJobsResponse.status,
-        ok: allJobsResponse.ok,
-        data: allJobsData,
-        count: allJobsData?.data?.length || allJobsData?.jobs?.length || 0
-      };
-    } catch (error) {
-      results.allJobs = { error: error.message };
+      submitData = JSON.parse(submitText)
+    } catch (e) {
+      submitData = { raw: submitText }
     }
     
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      backend: BACKEND_URL,
-      timestamp: new Date().toISOString(),
-      endpoints: results
-    });
+      message: 'Teste de backend completo',
+      tests: {
+        health: {
+          status: healthResponse.status,
+          data: healthData
+        },
+        submit: {
+          status: submitResponse.status,
+          data: submitData
+        }
+      }
+    })
     
   } catch (error) {
-    console.error('❌ Erro ao testar backend:', error);
-    
-    return res.status(500).json({
+    console.error('❌ Erro no teste:', error)
+    res.status(500).json({
       success: false,
-      error: error.message,
-      backend: BACKEND_URL
-    });
+      message: 'Erro no teste de backend',
+      error: error.message
+    })
   }
 }
