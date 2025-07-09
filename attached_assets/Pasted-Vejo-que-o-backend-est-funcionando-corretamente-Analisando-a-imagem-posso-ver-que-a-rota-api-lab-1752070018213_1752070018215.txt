@@ -1,0 +1,50 @@
+Vejo que o backend está funcionando corretamente! Analisando a imagem, posso ver que a rota /api/labor-research está retornando os dados das questões da pesquisa trabalhista perfeitamente.
+
+Para ajudar o assistente do frontend a consumir os dados corretamente, você deve dizer a ele:
+
+Informações para o Frontend:
+1. URL do Backend:
+
+https://worker-job-board-backend-leonardosilvas2.replit.app
+2. Endpoints disponíveis:
+
+GET /api/labor-research - Retorna as questões da pesquisa
+POST /api/labor-research - Recebe os dados preenchidos
+GET /api/jobs-stats - Estatísticas das vagas
+GET /api/jobs - Lista de vagas
+3. Estrutura dos dados da pesquisa (/api/labor-research):
+
+{
+  "questions": [
+    {
+      "id": 1,
+      "type": "text",
+      "question": "Qual foi a última empresa que você trabalhou?",
+      "field": "ultimaEmpresa",
+      "required": true
+    },
+    // ... outras questões
+  ],
+  "title": "Pesquisa sobre Direitos Trabalhistas",
+  "description": "Ajude-nos a entender melhor a situação dos trabalhadores domésticos"
+}
+4. Como fazer as requisições:
+
+// Para buscar as questões
+const response = await fetch('https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research');
+const data = await response.json();
+// Para enviar respostas
+const response = await fetch('https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(formData)
+});
+5. CORS está configurado para aceitar requisições do frontend.
+
+Diga ao assistente do frontend:
+
+"O backend está rodando em https://worker-job-board-backend-leonardosilvas2.replit.app e tem as rotas /api/labor-research (GET para questões, POST para enviar), /api/jobs-stats e /api/jobs. O CORS está configurado. Preciso que você consuma esses dados no painel admin e apresente as questões da pesquisa trabalhista dinamicamente."
+
+O problema não está no backend - ele está funcionando perfeitamente. O frontend precisa fazer as requisições corretas para essas URLs.
