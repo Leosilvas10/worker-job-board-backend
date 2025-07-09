@@ -80,33 +80,52 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
     setIsSubmitting(true)
 
     try {
-      // Validar campos obrigatórios
-      if (!formData.name || !formData.whatsapp) {
-        alert('❌ Por favor, preencha nome e WhatsApp')
+      // Validar campos obrigatórios com mensagens específicas
+      const name = formData.name?.trim() || ''
+      const whatsapp = formData.whatsapp?.trim() || ''
+      const lastCompany = formData.lastCompany?.trim() || ''
+      
+      console.log('🔍 VALIDAÇÃO DOS CAMPOS:')
+      console.log('- Nome:', name ? `"${name}"` : 'VAZIO')
+      console.log('- WhatsApp:', whatsapp ? `"${whatsapp}"` : 'VAZIO')
+      console.log('- Última empresa:', lastCompany ? `"${lastCompany}"` : 'VAZIO')
+      console.log('- Tipo carteira:', formData.workStatus || 'VAZIO')
+      console.log('- Recebeu direitos:', formData.receivedRights || 'VAZIO')
+      console.log('- Quer consultoria:', formData.wantConsultation || 'VAZIO')
+      console.log('- LGPD consent:', formData.lgpdConsent)
+
+      if (!name) {
+        alert('❌ Por favor, preencha seu nome completo')
         setIsSubmitting(false)
         return
       }
 
-      if (!formData.lastCompany) {
-        alert('❌ Por favor, informe o nome da última empresa')
+      if (!whatsapp) {
+        alert('❌ Por favor, preencha seu WhatsApp')
+        setIsSubmitting(false)
+        return
+      }
+
+      if (!lastCompany) {
+        alert('❌ Por favor, informe o nome da última empresa onde trabalhou')
         setIsSubmitting(false)
         return
       }
 
       if (!formData.workStatus) {
-        alert('❌ Por favor, informe o tipo de carteira de trabalho')
+        alert('❌ Por favor, informe se trabalhou com ou sem carteira assinada')
         setIsSubmitting(false)
         return
       }
 
       if (!formData.receivedRights) {
-        alert('❌ Por favor, informe se recebeu os direitos trabalhistas')
+        alert('❌ Por favor, informe se recebeu os direitos trabalhistas ao sair')
         setIsSubmitting(false)
         return
       }
 
       if (!formData.wantConsultation) {
-        alert('❌ Por favor, informe se deseja consultoria jurídica')
+        alert('❌ Por favor, informe se deseja consultoria trabalhista')
         setIsSubmitting(false)
         return
       }
@@ -119,7 +138,7 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
 
       // Preparar dados no formato EXATO que o backend espera
       const leadData = {
-        ultimaEmpresa: formData.lastCompany || '',
+        ultimaEmpresa: lastCompany,
         tipoCarteira: formData.workStatus === 'Com carteira assinada' ? 'sim' : 
                      formData.workStatus === 'Sem carteira assinada' ? 'nao' : 
                      formData.workStatus === 'Começei sem, depois registraram' ? 'parcial' : 'nao',
@@ -128,21 +147,34 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
                            formData.receivedRights === 'Recebi só uma parte' ? 'parcial' : 'nao',
         situacoesDuranteTrabalho: Array.isArray(formData.workProblems) ? formData.workProblems : [],
         aceitaConsultoria: formData.wantConsultation === 'Sim, quero saber meus direitos' ? 'sim' : 'nao',
-        nomeCompleto: formData.name || '',
-        whatsapp: formData.whatsapp || ''
+        nomeCompleto: name,
+        whatsapp: whatsapp
       }
 
       console.log('📤 DADOS DO FORMULÁRIO ANTES DO ENVIO:', formData)
       console.log('📋 DADOS DA VAGA:', jobData)
       console.log('🚀 DADOS FORMATADOS PARA BACKEND:', leadData)
       console.log('🔍 VERIFICANDO CAMPOS OBRIGATÓRIOS:')
-      console.log('- Nome:', leadData.nomeCompleto)
-      console.log('- WhatsApp:', leadData.whatsapp)
-      console.log('- Empresa:', leadData.ultimaEmpresa)
+      console.log('- Nome:', leadData.nomeCompleto, '| Tamanho:', leadData.nomeCompleto?.length || 0)
+      console.log('- WhatsApp:', leadData.whatsapp, '| Tamanho:', leadData.whatsapp?.length || 0)
+      console.log('- Empresa:', leadData.ultimaEmpresa, '| Tamanho:', leadData.ultimaEmpresa?.length || 0)
       console.log('- Carteira:', leadData.tipoCarteira)
       console.log('- Recebeu:', leadData.recebeuTudoCertinho)
       console.log('- Situações:', leadData.situacoesDuranteTrabalho)
       console.log('- Consultoria:', leadData.aceitaConsultoria)
+      
+      // Verificar se todos os campos obrigatórios estão presentes
+      const camposObrigatorios = ['nomeCompleto', 'whatsapp', 'ultimaEmpresa', 'tipoCarteira', 'recebeuTudoCertinho', 'aceitaConsultoria']
+      const camposFaltando = camposObrigatorios.filter(campo => !leadData[campo] || leadData[campo] === '')
+      
+      if (camposFaltando.length > 0) {
+        console.error('❌ CAMPOS OBRIGATÓRIOS FALTANDO:', camposFaltando)
+        alert(`❌ Campos obrigatórios faltando: ${camposFaltando.join(', ')}`)
+        setIsSubmitting(false)
+        return
+      }
+      
+      console.log('✅ TODOS OS CAMPOS OBRIGATÓRIOS ESTÃO PREENCHIDOS!')
 
       // Enviar DIRETAMENTE para o backend, sem passar pela API local
       const apiUrl = '/api/submit-lead'
@@ -191,6 +223,11 @@ const LeadModal = ({ isOpen, onClose, jobData }) => {
       console.log('- result.success:', result.success)
       console.log('- result.message:', result.message)
 
+      console.log('🔍 ANALISANDO RESPOSTA DO SERVIDOR:')
+      console.log('- response.ok:', response.ok)
+      console.log('- response.status:', response.status)
+      console.log('- result:', result)
+      
       if (response.ok && (result.status === 'success' || result.success === true || result.message?.includes('sucesso'))) {
         console.log('🎉 SUCESSO! Dados enviados com sucesso!')
         // Preparar mensagem de sucesso
