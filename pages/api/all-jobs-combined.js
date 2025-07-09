@@ -178,24 +178,34 @@ export default async function handler(req, res) {
         console.log('🔗 Conectando ao backend:', BACKEND_URL);
 
         // Buscar vagas reais do endpoint /api/jobs
+        console.log('🔗 Tentando conectar ao backend:', `${BACKEND_URL}/api/jobs`);
+        
         const jobsResponse = await fetch(`${BACKEND_URL}/api/jobs`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'User-Agent': 'Frontend-Jobs-API'
-          }
+            'User-Agent': 'Frontend-Jobs-API',
+            'Accept': 'application/json'
+          },
+          timeout: 10000
         });
 
         console.log('📡 Status da resposta do backend (jobs):', jobsResponse.status);
+        console.log('📡 Headers da resposta:', Object.fromEntries(jobsResponse.headers.entries()));
 
         let formattedJobs = [];
 
         if (jobsResponse.ok) {
           const jobsData = await jobsResponse.json();
-          console.log('📊 Vagas reais recebidas:', jobsData);
-
-          if (jobsData.jobs && jobsData.jobs.length > 0) {
-            console.log(`✅ ${jobsData.jobs.length} vagas reais carregadas do backend agendado`);
+          console.log('📊 ESTRUTURA COMPLETA recebida do backend:');
+          console.log('- Chaves disponíveis:', Object.keys(jobsData));
+          console.log('- Tipo de dados:', typeof jobsData);
+          console.log('- Jobs array length:', jobsData.jobs?.length || 'N/A');
+          console.log('- Total informado:', jobsData.total || 'N/A');
+          
+          if (jobsData.jobs && Array.isArray(jobsData.jobs) && jobsData.jobs.length > 0) {
+            console.log(`✅ ${jobsData.jobs.length} vagas REAIS carregadas do backend!`);
+            console.log('📋 Primeira vaga de exemplo:', jobsData.jobs[0]);
 
             // Converter formato das vagas para compatibilidade com o frontend
             formattedJobs = jobsData.jobs.map(job => ({
