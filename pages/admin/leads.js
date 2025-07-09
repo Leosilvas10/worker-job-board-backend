@@ -21,9 +21,9 @@ export default function AdminLeads() {
         console.log('🔍 Carregando leads do painel admin...')
         const response = await fetch('/api/get-leads')
         const data = await response.json()
-        
+
         console.log('📊 Resposta da API:', data)
-        
+
         // SEMPRE usar os dados retornados pela API (que agora sempre funciona)
         if (data && data.leads && Array.isArray(data.leads)) {
           setLeads(data.leads)
@@ -73,9 +73,9 @@ export default function AdminLeads() {
     const matchesSearch = (lead.nome || lead.name)?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          (lead.email)?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          (lead.telefone || lead.phone)?.includes(searchTerm)
-    
+
     const matchesStatus = statusFilter === 'all' || lead.status === statusFilter
-    
+
     return matchesSearch && matchesStatus
   })
 
@@ -426,18 +426,18 @@ export default function AdminLeads() {
                         DADOS PRINCIPAIS
                       </span>
                     </h3>
-                    
+
                     {(() => {
                       const message = selectedLead.mensagem || selectedLead.observacoes || ''
                       const lines = message.split('\n').filter(line => line.trim())
-                      
+
                       // Extrair informações específicas
                       const ultimaEmpresa = lines.find(line => line.includes('Última empresa:') || line.includes('1. Última empresa:'))?.split(':')[1]?.trim()
                       const tipoCarteira = lines.find(line => line.includes('Tipo de carteira:') || line.includes('2. Tipo de carteira:'))?.split(':')[1]?.trim()
                       const recebeuCertinho = lines.find(line => line.includes('Recebeu certinho:') || line.includes('3. Recebeu certinho:'))?.split(':')[1]?.trim()
                       const situacoes = lines.find(line => line.includes('Situações enfrentadas:') || line.includes('4. Situações enfrentadas:'))?.split(':')[1]?.trim()
                       const consultaGratuita = lines.find(line => line.includes('consulta gratuita:') || line.includes('5. Aceita consulta:'))?.split(':')[1]?.trim()
-                      
+
                       // Verificar se é um lead com possíveis problemas trabalhistas
                       const temProblemasTrabalhistas = message.toLowerCase().includes('não recebi') || 
                                                        message.toLowerCase().includes('hora extra') ||
@@ -448,7 +448,7 @@ export default function AdminLeads() {
                                                        tipoCarteira?.toLowerCase().includes('sem carteira') ||
                                                        recebeuCertinho?.toLowerCase().includes('não') ||
                                                        recebeuCertinho?.toLowerCase().includes('parte')
-                      
+
                       return (
                         <div className="space-y-6">
                           {/* Alerta para leads prioritários */}
@@ -466,7 +466,7 @@ export default function AdminLeads() {
                               </div>
                             </div>
                           )}
-                          
+
                           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {/* Coluna Esquerda */}
                             <div className="space-y-4">
@@ -478,7 +478,7 @@ export default function AdminLeads() {
                                   {ultimaEmpresa || 'Não informado'}
                                 </p>
                               </div>
-                              
+
                               <div className="bg-white p-5 rounded-lg border-2 border-orange-200">
                                 <h5 className="font-bold text-gray-900 mb-3 flex items-center">
                                   📄 Situação da Carteira de Trabalho
@@ -492,7 +492,7 @@ export default function AdminLeads() {
                                   {tipoCarteira || 'Não informado'}
                                 </div>
                               </div>
-                              
+
                               <div className="bg-white p-5 rounded-lg border-2 border-orange-200">
                                 <h5 className="font-bold text-gray-900 mb-3 flex items-center">
                                   💰 Recebeu os Direitos Trabalhistas?
@@ -506,7 +506,7 @@ export default function AdminLeads() {
                                 </div>
                               </div>
                             </div>
-                            
+
                             {/* Coluna Direita */}
                             <div className="space-y-4">
                               <div className="bg-white p-5 rounded-lg border-2 border-orange-200">
@@ -531,7 +531,7 @@ export default function AdminLeads() {
                                   )}
                                 </div>
                               </div>
-                              
+
                               <div className="bg-white p-5 rounded-lg border-2 border-orange-200">
                                 <h5 className="font-bold text-gray-900 mb-3 flex items-center">
                                   ⚖️ Interesse em Consulta Jurídica Gratuita
@@ -544,7 +544,7 @@ export default function AdminLeads() {
                                   {consultaGratuita || 'Não informado'}
                                 </div>
                               </div>
-                              
+
                               {/* Contato prioritário se há problemas */}
                               {temProblemasTrabalhistas && (
                                 <div className="bg-yellow-50 border-2 border-yellow-400 p-4 rounded-lg">
@@ -573,52 +573,74 @@ export default function AdminLeads() {
                   </div>
                 )}
 
-                {/* Pesquisa Trabalhista */}
+                {/* Pesquisa Trabalhista - Dados específicos */}
                 <div className="bg-yellow-50 p-6 rounded-lg">
                   <h3 className="text-lg font-semibold text-yellow-800 mb-4 flex items-center">
                     ⚖️ Pesquisa Trabalhista - Último Emprego
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Última Empresa</label>
                       <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.pesquisaTrabalhista?.ultimaEmpresa || selectedLead.ultima_empresa || 'Não informado'}
+                        {selectedLead.dadosCompletos?.ultimaEmpresa || selectedLead.empresa || 'Não informado'}
                       </p>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Tipo de Carteira</label>
                       <p className={`mt-1 text-sm font-medium p-2 rounded ${
-                        (selectedLead.pesquisaTrabalhista?.tipoCarteira || selectedLead.tipo_carteira)?.includes('com carteira') ? 'bg-green-100 text-green-800' :
-                        (selectedLead.pesquisaTrabalhista?.tipoCarteira || selectedLead.tipo_carteira)?.includes('sem carteira') ? 'bg-red-100 text-red-800' :
+                        (selectedLead.dadosCompletos?.tipoCarteira || selectedLead.tipo_carteira) === 'sim' ? 'bg-green-100 text-green-800' :
+                        (selectedLead.dadosCompletos?.tipoCarteira || selectedLead.tipo_carteira) === 'nao' ? 'bg-red-100 text-red-800' :
                         'bg-gray-100 text-gray-800'
                       }`}>
-                        {selectedLead.pesquisaTrabalhista?.tipoCarteira || selectedLead.tipo_carteira || 'Não informado'}
+                        {selectedLead.dadosCompletos?.tipoCarteira === 'sim' ? 'Com carteira assinada' :
+                         selectedLead.dadosCompletos?.tipoCarteira === 'nao' ? 'Sem carteira assinada' :
+                         selectedLead.dadosCompletos?.tipoCarteira === 'parcial' ? 'Parcialmente registrado' :
+                         'Não informado'}
                       </p>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Recebeu Direitos Trabalhistas</label>
                       <p className={`mt-1 text-sm font-medium p-2 rounded ${
-                        (selectedLead.pesquisaTrabalhista?.recebeuDireitos || selectedLead.recebeu_direitos)?.includes('sim') ? 'bg-green-100 text-green-800' :
-                        (selectedLead.pesquisaTrabalhista?.recebeuDireitos || selectedLead.recebeu_direitos)?.includes('não') ? 'bg-red-100 text-red-800' :
-                        'bg-yellow-100 text-yellow-800'
+                        (selectedLead.dadosCompletos?.recebeuTudoCertinho || selectedLead.recebeu_direitos) === 'sim' ? 'bg-green-100 text-green-800' :
+                        (selectedLead.dadosCompletos?.recebeuTudoCertinho || selectedLead.recebeu_direitos) === 'nao' ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
                       }`}>
-                        {selectedLead.pesquisaTrabalhista?.recebeuDireitos || selectedLead.recebeu_direitos || 'Não informado'}
+                        {selectedLead.dadosCompletos?.recebeuTudoCertinho === 'sim' ? 'Sim, recebeu tudo' :
+                         selectedLead.dadosCompletos?.recebeuTudoCertinho === 'nao' ? 'Não recebeu nada' :
+                         selectedLead.dadosCompletos?.recebeuTudoCertinho === 'parcial' ? 'Recebeu parcialmente' :
+                         'Não informado'}
                       </p>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Aceita Consultoria</label>
                       <p className={`mt-1 text-sm font-medium p-2 rounded ${
-                        (selectedLead.pesquisaTrabalhista?.aceitaConsultoria || selectedLead.aceita_consultoria)?.includes('sim') ? 'bg-green-100 text-green-800' :
-                        (selectedLead.pesquisaTrabalhista?.aceitaConsultoria || selectedLead.aceita_consultoria)?.includes('não') ? 'bg-red-100 text-red-800' :
+                        (selectedLead.dadosCompletos?.aceitaConsultoria || selectedLead.aceita_consultoria) === 'sim' ? 'bg-green-100 text-green-800' :
+                        (selectedLead.dadosCompletos?.aceitaConsultoria || selectedLead.aceita_consultoria) === 'nao' ? 'bg-red-100 text-red-800' :
                         'bg-gray-100 text-gray-800'
                       }`}>
-                        {selectedLead.pesquisaTrabalhista?.aceitaConsultoria || selectedLead.aceita_consultoria || 'Não informado'}
+                        {selectedLead.dadosCompletos?.aceitaConsultoria === 'sim' ? 'Sim, quer consultoria' :
+                         selectedLead.dadosCompletos?.aceitaConsultoria === 'nao' ? 'Não quer consultoria' :
+                         'Não informado'}
                       </p>
                     </div>
                     <div className="col-span-2">
                       <label className="block text-sm font-medium text-gray-700">Situações Enfrentadas</label>
                       <p className="mt-1 text-sm text-gray-900 bg-white p-2 rounded">
-                        {selectedLead.pesquisaTrabalhista?.situacoesEnfrentadas || selectedLead.situacoes_enfrentadas || 'Não informado'}
+                        {selectedLead.dadosCompletos?.situacoesDuranteTrabalho ? 
+                          Array.isArray(selectedLead.dadosCompletos.situacoesDuranteTrabalho) ?
+                            selectedLead.dadosCompletos.situacoesDuranteTrabalho.map(situacao => {
+                              switch(situacao) {
+                                case 'horas_extras_nao_pagas': return 'Horas extras não pagas';
+                                case 'fgts_nao_depositado': return 'FGTS não depositado';
+                                case 'trabalho_domingos_feriados': return 'Trabalho em domingos/feriados';
+                                case 'assedio_moral': return 'Assédio moral';
+                                case 'acumulo_funcoes': return 'Acúmulo de funções';
+                                case 'nenhuma': return 'Nenhuma dessas';
+                                default: return situacao;
+                              }
+                            }).join(', ') :
+                            selectedLead.dadosCompletos.situacoesDuranteTrabalho :
+                          selectedLead.situacoes_enfrentadas || 'Não informado'}
                       </p>
                     </div>
                   </div>
