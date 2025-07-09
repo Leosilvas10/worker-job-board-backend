@@ -4,8 +4,9 @@
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
   "/admin/leads": "pages/admin/leads.js",
+  "/api/get-leads": "pages/api/get-leads.js",
   "/api/jobs-stats": "pages/api/jobs-stats.js",
   "/api/all-jobs-combined": "pages/api/all-jobs-combined.js",
-  "/api/get-leads": "pages/api/get-leads.js",
-  "/api/submit-candidatura-new": "pages/api/submit-candidatura-new.js"
+  "/api/submit-candidatura-new": "pages/api/submit-candidatura-new.js",
+  "/admin": "pages/admin.js"
 }
