@@ -184,30 +184,67 @@ export default function LeadModal({ isOpen, onClose, vaga = null }) {
               return
             }
             
-            // 3. Construir URL da vaga baseada no título/categoria
+            // 3. Construir URL da vaga baseada no título/categoria - MAPEAMENTO ESPECÍFICO
             if (vaga && vaga.title) {
               const title = vaga.title.toLowerCase()
               let vagaUrl = 'https://www.catho.com.br/vagas/'
               
-              if (title.includes('doméstica') || title.includes('diarista')) {
+              // DOMÉSTICA E DIARISTA
+              if (title.includes('doméstica') || title.includes('empregada') || title.includes('diarista') || title.includes('faxineira')) {
                 vagaUrl = 'https://www.catho.com.br/vagas/empregada-domestica/'
-              } else if (title.includes('porteiro') || title.includes('vigilante')) {
+              } 
+              // PORTEIRO E VIGILANTE
+              else if (title.includes('porteiro') || title.includes('porteira')) {
                 vagaUrl = 'https://www.catho.com.br/vagas/porteiro/'
-              } else if (title.includes('cuidador') || title.includes('babá')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/cuidador/'
-              } else if (title.includes('motorista')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/motorista/'
-              } else if (title.includes('limpeza') || title.includes('faxina')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/auxiliar-limpeza/'
-              } else if (title.includes('vendedor') || title.includes('atendente')) {
-                vagaUrl = 'https://www.catho.com.br/vagas/vendedor/'
-              } else if (title.includes('segurança')) {
+              } 
+              else if (title.includes('vigilante') || title.includes('segurança') || title.includes('guarita')) {
                 vagaUrl = 'https://www.catho.com.br/vagas/vigilante/'
-              } else if (title.includes('cozinheiro') || title.includes('garçom')) {
+              }
+              // CUIDADORES
+              else if (title.includes('cuidador') || title.includes('cuidadora') || title.includes('acompanhante') || title.includes('idoso')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/cuidador/'
+              }
+              else if (title.includes('babá') || title.includes('baba') || title.includes('criança')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/baba/'
+              }
+              // MOTORISTA E ENTREGADOR
+              else if (title.includes('motorista') || title.includes('driver')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/motorista/'
+              }
+              else if (title.includes('entregador') || title.includes('delivery') || title.includes('motoboy')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/entregador/'
+              }
+              // LIMPEZA E CONSERVAÇÃO
+              else if (title.includes('limpeza') || title.includes('auxiliar de limpeza') || title.includes('zelador') || title.includes('zeladoria')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/auxiliar-limpeza/'
+              }
+              // VENDAS E ATENDIMENTO
+              else if (title.includes('vendedor') || title.includes('vendedora') || title.includes('consultor de vendas')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/vendedor/'
+              }
+              else if (title.includes('atendente') || title.includes('balconista') || title.includes('caixa') || title.includes('recepcionista')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/atendente/'
+              }
+              // ALIMENTAÇÃO
+              else if (title.includes('cozinheiro') || title.includes('cozinheira') || title.includes('auxiliar de cozinha')) {
                 vagaUrl = 'https://www.catho.com.br/vagas/cozinheiro/'
-              } else if (title.includes('jardineiro')) {
+              }
+              else if (title.includes('garçom') || title.includes('garçonete') || title.includes('copeira') || title.includes('copeiro')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/garcom/'
+              }
+              // JARDINAGEM E MANUTENÇÃO
+              else if (title.includes('jardineiro') || title.includes('jardineira') || title.includes('paisagismo')) {
                 vagaUrl = 'https://www.catho.com.br/vagas/jardineiro/'
-              } else {
+              }
+              else if (title.includes('manutenção') || title.includes('auxiliar de manutenção') || title.includes('handyman')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/auxiliar-manutencao/'
+              }
+              // CONSTRUÇÃO
+              else if (title.includes('pedreiro') || title.includes('servente') || title.includes('ajudante') || title.includes('construção')) {
+                vagaUrl = 'https://www.catho.com.br/vagas/construcao-civil/'
+              }
+              // FALLBACK GENÉRICO
+              else {
                 vagaUrl = 'https://www.catho.com.br/vagas/emprego/'
               }
               
