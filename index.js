@@ -774,15 +774,67 @@ async function updateJobsAutomatically() {
   }
 }
 
+// Função para atualizar vagas em destaque automaticamente
+async function updateFeaturedJobsAutomatically() {
+  console.log('🌟 Atualizando vagas em destaque automaticamente...');
+  
+  try {
+    // Pegar 6 vagas aleatórias das 120 vagas principais
+    const allJobs = loadJobsFromFile();
+    
+    if (allJobs.length === 0) {
+      console.log('❌ Nenhuma vaga encontrada para destacar');
+      return;
+    }
+    
+    // Selecionar 6 vagas aleatórias
+    const shuffled = allJobs.sort(() => 0.5 - Math.random());
+    const selectedJobs = shuffled.slice(0, 6);
+    
+    // Converter para formato de vagas em destaque
+    const featuredJobs = selectedJobs.map((job, index) => ({
+      id: `featured-${index + 1}`,
+      title: job.title,
+      company: job.company,
+      salary: job.salary,
+      type: job.type,
+      timeAgo: "Há poucos minutos",
+      description: job.description,
+      tags: [...job.tags, "Destaque"],
+      featured: true,
+      priority: index + 1,
+      url: job.url,
+      location: job.location,
+      schedule: job.schedule,
+      createdAt: new Date().toISOString()
+    }));
+    
+    // Salvar vagas em destaque
+    fs.writeFileSync('featured-jobs.json', JSON.stringify(featuredJobs, null, 2));
+    console.log(`✅ ${featuredJobs.length} vagas em destaque atualizadas automaticamente!`);
+    console.log(`🌟 Vagas selecionadas: ${featuredJobs.map(j => j.title).join(', ')}`);
+    
+    return featuredJobs;
+  } catch (error) {
+    console.error('❌ Erro ao atualizar vagas em destaque:', error);
+  }
+}
+
 // Configurar agendamento para atualizar vagas
 // Executa todos os dias às 8:00 da manhã
-cron.schedule('0 8 * * *', updateJobsAutomatically, {
+cron.schedule('0 8 * * *', async () => {
+  await updateJobsAutomatically();
+  await updateFeaturedJobsAutomatically();
+}, {
   scheduled: true,
   timezone: "America/Sao_Paulo"
 });
 
 // Executa a cada 6 horas
-cron.schedule('0 */6 * * *', updateJobsAutomatically, {
+cron.schedule('0 */6 * * *', async () => {
+  await updateJobsAutomatically();
+  await updateFeaturedJobsAutomatically();
+}, {
   scheduled: true,
   timezone: "America/Sao_Paulo"
 });
@@ -801,5 +853,7 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`💾 Dados carregados: ${laborResearchLeads.length} leads salvos`);
   
   // Executar uma vez ao iniciar o servidor
-  updateJobsAutomatically();
+  updateJobsAutomatically().then(() => {
+    updateFeaturedJobsAutomatically();
+  });
 });
