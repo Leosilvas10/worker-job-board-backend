@@ -31,7 +31,7 @@ export default function Home() {
 
     const loadFeaturedJobs = async () => {
       try {
-        console.log('🔍 Buscando vagas em destaque do endpoint específico...')
+        console.log('🔍 Buscando vagas para destaque na homepage...')
         setLoading(true)
 
         // Timeout de segurança para garantir que o loading seja removido
@@ -40,14 +40,45 @@ export default function Home() {
             console.log('⏰ Timeout de segurança ativado, removendo loading')
             setLoading(false)
           }
-        }, 10000) // 10 segundos máximo
+        }, 8000) // 8 segundos máximo
 
+        // Primeiro, tentar o endpoint específico de vagas em destaque
         const BACKEND_URL = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
-        const response = await fetch(`${BACKEND_URL}/api/featured-jobs`, {
-          method: 'GET',
+        
+        try {
+          const featuredResponse = await fetch(`${BACKEND_URL}/api/featured-jobs`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Cache-Control': 'no-cache',
+              'Pragma': 'no-cache'
+            }
+          })
+
+          if (featuredResponse.ok) {
+            const featuredData = await featuredResponse.json()
+            
+            if (featuredData.success && featuredData.featuredJobs && Array.isArray(featuredData.featuredJobs) && featuredData.featuredJobs.length > 0) {
+              console.log(`✅ ${featuredData.featuredJobs.length} vagas em destaque carregadas do endpoint específico`)
+              console.log('🔥 Última atualização:', featuredData.lastUpdate)
+
+              if (mounted) {
+                setJobs(featuredData.featuredJobs)
+                setLoading(false)
+                console.log('🎯 Vagas em destaque definidas:', featuredData.featuredJobs.map(j => j.title))
+                return
+              }
+            }
+          }
+        } catch (featuredError) {
+          console.log('⚠️ Endpoint específico não disponível, usando fallback:', featuredError.message)
+        }
+
+        // Fallback: buscar todas as vagas e selecionar 6 para destaque
+        console.log('🔄 Buscando vagas gerais para usar como destaque...')
+        const allJobsResponse = await fetch('/api/all-jobs-combined', {
           headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache'
           }
@@ -58,108 +89,41 @@ export default function Home() {
           timeoutId = null
         }
 
-        if (response.ok && mounted) {
-          const data = await response.json()
-          console.log('📊 Dados das vagas em destaque recebidos:', { 
-            success: data.success, 
-            featuredJobsLength: data.featuredJobs?.length,
-            lastUpdate: data.lastUpdate
-          })
+        if (allJobsResponse.ok && mounted) {
+          const allJobsData = await allJobsResponse.json()
+          const jobsArray = allJobsData.jobs || allJobsData.data || []
+          
+          console.log(`✅ Total de ${jobsArray.length} vagas disponíveis`)
+          console.log(`📊 Reais: ${allJobsData.meta?.realJobs || jobsArray.length}, Complementares: ${allJobsData.meta?.complementaryJobs || 0}`)
 
-          if (data.success && data.featuredJobs && Array.isArray(data.featuredJobs) && data.featuredJobs.length > 0) {
-            console.log(`✅ ${data.featuredJobs.length} vagas em destaque carregadas`)
-            console.log('🔥 Última atualização:', data.lastUpdate)
-
+          if (jobsArray.length > 0) {
+            // Selecionar 6 vagas aleatórias para destaque
+            const shuffled = [...jobsArray].sort(() => 0.5 - Math.random())
+            const featured = shuffled.slice(0, 6)
+            
             if (mounted) {
-              setJobs(data.featuredJobs)
+              setJobs(featured)
               setLoading(false)
-              console.log('🎯 Vagas em destaque definidas:', data.featuredJobs.map(j => j.title))
+              console.log('🔥 6 vagas selecionadas para destaque')
             }
           } else {
-            console.log('⚠️ Nenhuma vaga em destaque encontrada, fazendo fallback...')
-            
-            // Fallback: buscar algumas vagas do endpoint geral
-            const fallbackResponse = await fetch('/api/all-jobs-combined', {
-              headers: {
-                'Cache-Control': 'no-cache',
-                'Pragma': 'no-cache'
-              }
-            })
-
-            if (fallbackResponse.ok && mounted) {
-              const fallbackData = await fallbackResponse.json()
-              const jobsArray = fallbackData.jobs || fallbackData.data || []
-              
-              if (jobsArray.length > 0) {
-                const shuffled = [...jobsArray].sort(() => 0.5 - Math.random())
-                const featured = shuffled.slice(0, 6)
-                
-                if (mounted) {
-                  setJobs(featured)
-                  setLoading(false)
-                  console.log('🔄 Fallback: 6 vagas selecionadas aleatoriamente')
-                }
-              }
+            if (mounted) {
+              setJobs([])
+              setLoading(false)
+              console.log('⚠️ Nenhuma vaga encontrada')
             }
           }
         } else if (mounted) {
-          console.error('❌ Erro na resposta da API featured-jobs:', response.status)
-          
-          // Fallback em caso de erro
-          try {
-            const fallbackResponse = await fetch('/api/all-jobs-combined')
-            if (fallbackResponse.ok) {
-              const fallbackData = await fallbackResponse.json()
-              const jobsArray = fallbackData.jobs || fallbackData.data || []
-              
-              if (jobsArray.length > 0) {
-                const shuffled = [...jobsArray].sort(() => 0.5 - Math.random())
-                const featured = shuffled.slice(0, 6)
-                
-                if (mounted) {
-                  setJobs(featured)
-                  setLoading(false)
-                  console.log('🔄 Fallback por erro: 6 vagas selecionadas')
-                }
-              }
-            }
-          } catch (fallbackError) {
-            if (mounted) {
-              console.error('❌ Erro no fallback:', fallbackError)
-              setJobs([])
-              setLoading(false)
-            }
-          }
+          console.error('❌ Erro ao buscar vagas:', allJobsResponse.status)
+          setJobs([])
+          setLoading(false)
         }
+
       } catch (error) {
         if (mounted) {
-          console.error('❌ Erro ao carregar vagas em destaque:', error)
-          
-          // Fallback final
-          try {
-            const fallbackResponse = await fetch('/api/all-jobs-combined')
-            if (fallbackResponse.ok) {
-              const fallbackData = await fallbackResponse.json()
-              const jobsArray = fallbackData.jobs || fallbackData.data || []
-              
-              if (jobsArray.length > 0) {
-                const shuffled = [...jobsArray].sort(() => 0.5 - Math.random())
-                const featured = shuffled.slice(0, 6)
-                
-                if (mounted) {
-                  setJobs(featured)
-                  setLoading(false)
-                  console.log('🔄 Fallback final: 6 vagas selecionadas')
-                }
-              }
-            }
-          } catch (finalError) {
-            if (mounted) {
-              console.error('❌ Erro no fallback final:', finalError)
-              setJobs([])
-              setLoading(false)
-            }
-          }
+          console.error('❌ Erro geral ao carregar vagas em destaque:', error)
+          setJobs([])
+          setLoading(false)
         }
         if (timeoutId) {
           clearTimeout(timeoutId)
