@@ -46,6 +46,11 @@ export default function Home() {
         const BACKEND_URL = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
         
         try {
+          console.log('🎯 Tentando buscar vagas em destaque do endpoint específico...')
+          
+          const controller = new AbortController()
+          const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 segundos timeout
+          
           const featuredResponse = await fetch(`${BACKEND_URL}/api/featured-jobs`, {
             method: 'GET',
             headers: {
@@ -53,8 +58,11 @@ export default function Home() {
               'Accept': 'application/json',
               'Cache-Control': 'no-cache',
               'Pragma': 'no-cache'
-            }
+            },
+            signal: controller.signal
           })
+
+          clearTimeout(timeoutId)
 
           if (featuredResponse.ok) {
             const featuredData = await featuredResponse.json()
@@ -69,54 +77,136 @@ export default function Home() {
                 console.log('🎯 Vagas em destaque definidas:', featuredData.featuredJobs.map(j => j.title))
                 return
               }
+            } else {
+              console.log('⚠️ Endpoint específico retornou dados inválidos, usando fallback')
             }
+          } else {
+            console.log('⚠️ Endpoint específico retornou erro HTTP:', featuredResponse.status)
           }
         } catch (featuredError) {
-          console.log('⚠️ Endpoint específico não disponível, usando fallback:', featuredError.message)
+          console.log('⚠️ Erro ao acessar endpoint específico:', featuredError.message)
+          if (featuredError.name === 'AbortError') {
+            console.log('⏰ Timeout no endpoint específico')
+          }
         }
 
         // Fallback: buscar todas as vagas e selecionar 6 para destaque
         console.log('🔄 Buscando vagas gerais para usar como destaque...')
-        const allJobsResponse = await fetch('/api/all-jobs-combined', {
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache'
-          }
-        })
-
-        if (timeoutId) {
-          clearTimeout(timeoutId)
-          timeoutId = null
-        }
-
-        if (allJobsResponse.ok && mounted) {
-          const allJobsData = await allJobsResponse.json()
-          const jobsArray = allJobsData.jobs || allJobsData.data || []
+        
+        try {
+          const allJobsController = new AbortController()
+          const allJobsTimeoutId = setTimeout(() => allJobsController.abort(), 8000) // 8 segundos
           
-          console.log(`✅ Total de ${jobsArray.length} vagas disponíveis`)
-          console.log(`📊 Reais: ${allJobsData.meta?.realJobs || jobsArray.length}, Complementares: ${allJobsData.meta?.complementaryJobs || 0}`)
+          const allJobsResponse = await fetch('/api/all-jobs-combined', {
+            headers: {
+              'Cache-Control': 'no-cache',
+              'Pragma': 'no-cache'
+            },
+            signal: allJobsController.signal
+          })
 
-          if (jobsArray.length > 0) {
-            // Selecionar 6 vagas aleatórias para destaque
-            const shuffled = [...jobsArray].sort(() => 0.5 - Math.random())
-            const featured = shuffled.slice(0, 6)
-            
-            if (mounted) {
-              setJobs(featured)
-              setLoading(false)
-              console.log('🔥 6 vagas selecionadas para destaque')
-            }
-          } else {
-            if (mounted) {
-              setJobs([])
-              setLoading(false)
-              console.log('⚠️ Nenhuma vaga encontrada')
-            }
+          clearTimeout(allJobsTimeoutId)
+
+          if (timeoutId) {
+            clearTimeout(timeoutId)
+            timeoutId = null
           }
-        } else if (mounted) {
-          console.error('❌ Erro ao buscar vagas:', allJobsResponse.status)
-          setJobs([])
-          setLoading(false)
+
+          if (allJobsResponse.ok && mounted) {
+            const allJobsData = await allJobsResponse.json()
+            const jobsArray = allJobsData.jobs || allJobsData.data || []
+            
+            console.log(`✅ Total de ${jobsArray.length} vagas disponíveis`)
+            console.log(`📊 Reais: ${allJobsData.meta?.realJobs || jobsArray.length}, Complementares: ${allJobsData.meta?.complementaryJobs || 0}`)
+
+            if (jobsArray.length > 0) {
+              // Selecionar 6 vagas aleatórias para destaque
+              const shuffled = [...jobsArray].sort(() => 0.5 - Math.random())
+              const featured = shuffled.slice(0, 6)
+              
+              if (mounted) {
+                setJobs(featured)
+                setLoading(false)
+                console.log('🔥 6 vagas selecionadas para destaque')
+              }
+            } else {
+              // Fallback final: vagas estáticas
+              if (mounted) {
+                console.log('⚠️ Criando vagas estáticas como último recurso')
+                const staticJobs = [
+                  {
+                    id: 'static_1',
+                    title: 'Empregada Doméstica',
+                    company: 'Família Particular',
+                    location: 'São Paulo, SP',
+                    salary: 'R$ 1.320,00',
+                    type: 'CLT',
+                    description: 'Vaga para empregada doméstica com experiência.',
+                    isExternal: true,
+                    requiresLead: true,
+                    redirectUrl: 'https://www.catho.com.br/vagas/empregada-domestica/'
+                  },
+                  {
+                    id: 'static_2',
+                    title: 'Porteiro',
+                    company: 'Condomínio Central',
+                    location: 'Rio de Janeiro, RJ',
+                    salary: 'R$ 1.500,00',
+                    type: 'CLT',
+                    description: 'Oportunidade para porteiro experiente.',
+                    isExternal: true,
+                    requiresLead: true,
+                    redirectUrl: 'https://www.catho.com.br/vagas/porteiro/'
+                  }
+                ]
+                setJobs(staticJobs)
+                setLoading(false)
+                console.log('🔥 Vagas estáticas carregadas')
+              }
+            }
+          } else if (mounted) {
+            console.error('❌ Erro ao buscar vagas fallback:', allJobsResponse.status)
+            // Mesmo em caso de erro, criar vagas estáticas
+            const staticJobs = [
+              {
+                id: 'error_fallback_1',
+                title: 'Diarista',
+                company: 'Residencial',
+                location: 'Belo Horizonte, MG',
+                salary: 'R$ 120,00/dia',
+                type: 'Diarista',
+                description: 'Oportunidade para diarista experiente.',
+                isExternal: true,
+                requiresLead: true,
+                redirectUrl: 'https://www.catho.com.br/vagas/'
+              }
+            ]
+            setJobs(staticJobs)
+            setLoading(false)
+            console.log('🔥 Vagas de erro carregadas')
+          }
+        } catch (fallbackError) {
+          console.error('❌ Erro no fallback das vagas:', fallbackError.message)
+          if (mounted) {
+            // Último recurso: vagas básicas
+            const emergencyJobs = [
+              {
+                id: 'emergency_1',
+                title: 'Cuidadora',
+                company: 'Família',
+                location: 'Curitiba, PR',
+                salary: 'R$ 1.800,00',
+                type: 'CLT',
+                description: 'Vaga para cuidadora de idosos.',
+                isExternal: true,
+                requiresLead: true,
+                redirectUrl: 'https://www.catho.com.br/vagas/cuidador/'
+              }
+            ]
+            setJobs(emergencyJobs)
+            setLoading(false)
+            console.log('🆘 Vagas de emergência carregadas')
+          }
         }
 
       } catch (error) {
