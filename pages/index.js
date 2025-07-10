@@ -24,211 +24,232 @@ export default function Home() {
     })
   }, [jobs, loading, showModal])
 
-  // Buscar vagas em destaque do endpoint específico
+  // Sistema de cache diário para vagas em destaque
   useEffect(() => {
     let mounted = true
-    let timeoutId = null
 
-    const loadFeaturedJobs = async () => {
+    const loadFeaturedJobsDaily = async () => {
       try {
-        console.log('🔍 Buscando vagas para destaque na homepage...')
+        console.log('🔍 Iniciando carregamento de vagas em destaque (atualizadas diariamente)...')
         setLoading(true)
 
-        // Timeout de segurança para garantir que o loading seja removido
-        timeoutId = setTimeout(() => {
-          if (mounted) {
-            console.log('⏰ Timeout de segurança ativado, removendo loading')
+        // Verificar se temos vagas em cache e se foram atualizadas hoje
+        const today = new Date().toDateString()
+        const cachedData = localStorage.getItem('featuredJobs')
+        const cachedDate = localStorage.getItem('featuredJobsDate')
+
+        if (cachedData && cachedDate === today) {
+          console.log('✅ Usando vagas em destaque do cache diário')
+          const parsedJobs = JSON.parse(cachedData)
+          if (mounted && parsedJobs.length > 0) {
+            setJobs(parsedJobs)
             setLoading(false)
-          }
-        }, 8000) // 8 segundos máximo
-
-        // Primeiro, tentar o endpoint específico de vagas em destaque
-        const BACKEND_URL = 'https://worker-job-board-backend-leonardosilvas2.replit.app'
-        
-        try {
-          console.log('🎯 Tentando buscar vagas em destaque do endpoint específico...')
-          
-          const controller = new AbortController()
-          const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 segundos timeout
-          
-          const featuredResponse = await fetch(`${BACKEND_URL}/api/featured-jobs`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'Cache-Control': 'no-cache',
-              'Pragma': 'no-cache'
-            },
-            signal: controller.signal
-          })
-
-          clearTimeout(timeoutId)
-
-          if (featuredResponse.ok) {
-            const featuredData = await featuredResponse.json()
-            
-            if (featuredData.success && featuredData.featuredJobs && Array.isArray(featuredData.featuredJobs) && featuredData.featuredJobs.length > 0) {
-              console.log(`✅ ${featuredData.featuredJobs.length} vagas em destaque carregadas do endpoint específico`)
-              console.log('🔥 Última atualização:', featuredData.lastUpdate)
-
-              if (mounted) {
-                setJobs(featuredData.featuredJobs)
-                setLoading(false)
-                console.log('🎯 Vagas em destaque definidas:', featuredData.featuredJobs.map(j => j.title))
-                return
-              }
-            } else {
-              console.log('⚠️ Endpoint específico retornou dados inválidos, usando fallback')
-            }
-          } else {
-            console.log('⚠️ Endpoint específico retornou erro HTTP:', featuredResponse.status)
-          }
-        } catch (featuredError) {
-          console.log('⚠️ Erro ao acessar endpoint específico:', featuredError.message)
-          if (featuredError.name === 'AbortError') {
-            console.log('⏰ Timeout no endpoint específico')
+            console.log(`🔥 ${parsedJobs.length} vagas em destaque carregadas do cache`)
+            return
           }
         }
 
-        // Fallback: buscar todas as vagas e selecionar 6 para destaque
-        console.log('🔄 Buscando vagas gerais para usar como destaque...')
-        
-        try {
-          const allJobsController = new AbortController()
-          const allJobsTimeoutId = setTimeout(() => allJobsController.abort(), 8000) // 8 segundos
-          
-          const allJobsResponse = await fetch('/api/all-jobs-combined', {
-            headers: {
-              'Cache-Control': 'no-cache',
-              'Pragma': 'no-cache'
-            },
-            signal: allJobsController.signal
-          })
+        console.log('🔄 Cache expirado ou inexistente, buscando novas vagas...')
 
-          clearTimeout(allJobsTimeoutId)
-
-          if (timeoutId) {
-            clearTimeout(timeoutId)
-            timeoutId = null
+        // Buscar todas as vagas disponíveis
+        const response = await fetch('/api/all-jobs-combined', {
+          method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
           }
+        })
 
-          if (allJobsResponse.ok && mounted) {
-            const allJobsData = await allJobsResponse.json()
-            const jobsArray = allJobsData.jobs || allJobsData.data || []
-            
-            console.log(`✅ Total de ${jobsArray.length} vagas disponíveis`)
-            console.log(`📊 Reais: ${allJobsData.meta?.realJobs || jobsArray.length}, Complementares: ${allJobsData.meta?.complementaryJobs || 0}`)
+        if (response.ok && mounted) {
+          const data = await response.json()
+          const allJobs = data.jobs || data.data || []
 
-            if (jobsArray.length > 0) {
-              // Selecionar 6 vagas aleatórias para destaque
-              const shuffled = [...jobsArray].sort(() => 0.5 - Math.random())
-              const featured = shuffled.slice(0, 6)
+          console.log(`✅ Total de ${allJobs.length} vagas disponíveis`)
+
+          if (allJobs.length > 0) {
+            // Criar algoritmo inteligente para selecionar as 6 melhores vagas
+            let featuredJobs = []
+
+            // 1. Priorizar vagas com salários mais altos
+            const highSalaryJobs = allJobs
+              .filter(job => job.salary && (job.salary.includes('R$') || job.salary.includes('.')))
+              .sort((a, b) => {
+                const salaryA = parseFloat(a.salary.replace(/[^\d,]/g, '').replace(',', '.')) || 0
+                const salaryB = parseFloat(b.salary.replace(/[^\d,]/g, '').replace(',', '.')) || 0
+                return salaryB - salaryA
+              })
+              .slice(0, 2)
+
+            featuredJobs.push(...highSalaryJobs)
+
+            // 2. Adicionar vagas de categorias populares
+            const categories = ['Doméstica', 'Portaria', 'Vendas', 'Limpeza', 'Cuidados']
+            for (const category of categories) {
+              if (featuredJobs.length >= 6) break
               
-              if (mounted) {
-                setJobs(featured)
-                setLoading(false)
-                console.log('🔥 6 vagas selecionadas para destaque')
-              }
-            } else {
-              // Fallback final: vagas estáticas
-              if (mounted) {
-                console.log('⚠️ Criando vagas estáticas como último recurso')
-                const staticJobs = [
-                  {
-                    id: 'static_1',
-                    title: 'Empregada Doméstica',
-                    company: 'Família Particular',
-                    location: 'São Paulo, SP',
-                    salary: 'R$ 1.320,00',
-                    type: 'CLT',
-                    description: 'Vaga para empregada doméstica com experiência.',
-                    isExternal: true,
-                    requiresLead: true,
-                    redirectUrl: 'https://www.catho.com.br/vagas/empregada-domestica/'
-                  },
-                  {
-                    id: 'static_2',
-                    title: 'Porteiro',
-                    company: 'Condomínio Central',
-                    location: 'Rio de Janeiro, RJ',
-                    salary: 'R$ 1.500,00',
-                    type: 'CLT',
-                    description: 'Oportunidade para porteiro experiente.',
-                    isExternal: true,
-                    requiresLead: true,
-                    redirectUrl: 'https://www.catho.com.br/vagas/porteiro/'
-                  }
-                ]
-                setJobs(staticJobs)
-                setLoading(false)
-                console.log('🔥 Vagas estáticas carregadas')
+              const categoryJob = allJobs.find(job => 
+                job.category === category && 
+                !featuredJobs.some(fj => fj.id === job.id)
+              )
+              
+              if (categoryJob) {
+                featuredJobs.push(categoryJob)
               }
             }
-          } else if (mounted) {
-            console.error('❌ Erro ao buscar vagas fallback:', allJobsResponse.status)
-            // Mesmo em caso de erro, criar vagas estáticas
+
+            // 3. Completar com vagas aleatórias se necessário
+            while (featuredJobs.length < 6 && featuredJobs.length < allJobs.length) {
+              const randomJob = allJobs[Math.floor(Math.random() * allJobs.length)]
+              if (!featuredJobs.some(fj => fj.id === randomJob.id)) {
+                featuredJobs.push(randomJob)
+              }
+            }
+
+            // Garantir que temos exatamente 6 vagas
+            featuredJobs = featuredJobs.slice(0, 6)
+
+            // Salvar no cache diário
+            localStorage.setItem('featuredJobs', JSON.stringify(featuredJobs))
+            localStorage.setItem('featuredJobsDate', today)
+
+            if (mounted) {
+              setJobs(featuredJobs)
+              setLoading(false)
+              console.log('🔥 6 vagas em destaque selecionadas e cacheadas para hoje')
+              console.log('📋 Vagas selecionadas:', featuredJobs.map(j => `${j.title} - ${j.salary}`))
+            }
+          } else {
+            // Fallback: vagas estáticas se não houver vagas disponíveis
+            console.log('⚠️ Nenhuma vaga encontrada, usando vagas estáticas')
             const staticJobs = [
               {
-                id: 'error_fallback_1',
-                title: 'Diarista',
-                company: 'Residencial',
-                location: 'Belo Horizonte, MG',
-                salary: 'R$ 120,00/dia',
-                type: 'Diarista',
-                description: 'Oportunidade para diarista experiente.',
+                id: 'static_1',
+                title: 'Empregada Doméstica',
+                company: 'Família Particular',
+                location: 'São Paulo, SP',
+                salary: 'R$ 1.320,00',
+                type: 'CLT',
+                description: 'Vaga para empregada doméstica com experiência. Limpeza geral, organização e preparo de refeições.',
                 isExternal: true,
                 requiresLead: true,
-                redirectUrl: 'https://www.catho.com.br/vagas/'
-              }
-            ]
-            setJobs(staticJobs)
-            setLoading(false)
-            console.log('🔥 Vagas de erro carregadas')
-          }
-        } catch (fallbackError) {
-          console.error('❌ Erro no fallback das vagas:', fallbackError.message)
-          if (mounted) {
-            // Último recurso: vagas básicas
-            const emergencyJobs = [
+                redirectUrl: 'https://www.catho.com.br/vagas/empregada-domestica/'
+              },
               {
-                id: 'emergency_1',
-                title: 'Cuidadora',
+                id: 'static_2',
+                title: 'Diarista',
+                company: 'Residencial Particular',
+                location: 'Rio de Janeiro, RJ',
+                salary: 'R$ 120,00/dia',
+                type: 'Diarista',
+                description: 'Limpeza completa de apartamento 2 quartos, 2x por semana.',
+                isExternal: true,
+                requiresLead: true,
+                redirectUrl: 'https://www.catho.com.br/vagas/diarista/'
+              },
+              {
+                id: 'static_3',
+                title: 'Porteiro Diurno',
+                company: 'Condomínio Central',
+                location: 'São Paulo, SP',
+                salary: 'R$ 1.500,00',
+                type: 'CLT',
+                description: 'Controle de acesso, recebimento de correspondências e atendimento.',
+                isExternal: true,
+                requiresLead: true,
+                redirectUrl: 'https://www.catho.com.br/vagas/porteiro/'
+              },
+              {
+                id: 'static_4',
+                title: 'Cuidadora de Idosos',
                 company: 'Família',
-                location: 'Curitiba, PR',
+                location: 'Belo Horizonte, MG',
                 salary: 'R$ 1.800,00',
                 type: 'CLT',
-                description: 'Vaga para cuidadora de idosos.',
+                description: 'Cuidados básicos com idoso, acompanhamento e medicação.',
                 isExternal: true,
                 requiresLead: true,
                 redirectUrl: 'https://www.catho.com.br/vagas/cuidador/'
+              },
+              {
+                id: 'static_5',
+                title: 'Auxiliar de Limpeza',
+                company: 'Empresa de Limpeza',
+                location: 'Curitiba, PR',
+                salary: 'R$ 1.400,00',
+                type: 'CLT',
+                description: 'Limpeza de escritórios e áreas comerciais.',
+                isExternal: true,
+                requiresLead: true,
+                redirectUrl: 'https://www.catho.com.br/vagas/auxiliar-limpeza/'
+              },
+              {
+                id: 'static_6',
+                title: 'Vendedor',
+                company: 'Loja Comercial',
+                location: 'Salvador, BA',
+                salary: 'R$ 1.450,00 + comissão',
+                type: 'CLT',
+                description: 'Atendimento ao cliente e vendas no varejo.',
+                isExternal: true,
+                requiresLead: true,
+                redirectUrl: 'https://www.catho.com.br/vagas/vendedor/'
               }
             ]
-            setJobs(emergencyJobs)
-            setLoading(false)
-            console.log('🆘 Vagas de emergência carregadas')
+
+            if (mounted) {
+              setJobs(staticJobs)
+              setLoading(false)
+              console.log('🔥 Vagas estáticas carregadas como fallback')
+            }
           }
+        } else {
+          throw new Error(`Erro na API: ${response.status}`)
         }
 
       } catch (error) {
+        console.error('❌ Erro ao carregar vagas em destaque:', error)
+        
         if (mounted) {
-          console.error('❌ Erro geral ao carregar vagas em destaque:', error)
-          setJobs([])
+          // Em caso de erro, sempre mostrar vagas básicas
+          const emergencyJobs = [
+            {
+              id: 'emergency_1',
+              title: 'Empregada Doméstica',
+              company: 'Oportunidade Disponível',
+              location: 'Sua Região',
+              salary: 'R$ 1.320,00',
+              type: 'CLT',
+              description: 'Vaga para empregada doméstica. Entre em contato para mais informações.',
+              isExternal: true,
+              requiresLead: true,
+              redirectUrl: 'https://www.catho.com.br/vagas/empregada-domestica/'
+            },
+            {
+              id: 'emergency_2',
+              title: 'Porteiro',
+              company: 'Condomínio',
+              location: 'Sua Região',
+              salary: 'R$ 1.500,00',
+              type: 'CLT',
+              description: 'Oportunidade para porteiro. Entre em contato para mais informações.',
+              isExternal: true,
+              requiresLead: true,
+              redirectUrl: 'https://www.catho.com.br/vagas/porteiro/'
+            }
+          ]
+          
+          setJobs(emergencyJobs)
           setLoading(false)
-        }
-        if (timeoutId) {
-          clearTimeout(timeoutId)
+          console.log('🆘 Vagas de emergência carregadas')
         }
       }
     }
 
     // Carregar imediatamente
-    loadFeaturedJobs()
+    loadFeaturedJobsDaily()
 
     return () => {
       mounted = false
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
     }
   }, [])
 
