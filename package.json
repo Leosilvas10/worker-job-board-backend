@@ -1,5 +1,6 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
   "name": "nodejs",
   "version": "1.0.0",
   "description": "",
@@ -61,5 +62,34 @@
     "cross-env": "^7.0.3",
     "postcss": "^8.5.6"
 >>>>>>> 79fa66948f9a4341546e3a01bd6ba22bc6ad392e
+=======
+  "name": "sitedotrabalhador-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "sync-vagas": "node scripts/sync-vagas.js",
+    "test-db": "node scripts/test-database.js",
+    "test-manual": "node test-manual.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.11.1",
+    "axios": "^1.7.9",
+    "bcryptjs": "^3.0.2",
+    "cheerio": "^1.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.5.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "node-cron": "^3.0.3",
+    "prisma": "^6.11.1",
+    "sqlite3": "^5.1.7",
+    "validator": "^13.15.15"
+>>>>>>> dc9c62ddd2287c86efddfb40b3c595cbf24ad228
   }
 }
