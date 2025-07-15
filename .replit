@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 entrypoint = "index.js"
 modules = ["nodejs-22"]
 hidden = [".config", "package-lock.json"]
@@ -18,13 +19,63 @@ runButton = "Start Backend"
 
 [[workflows.workflow]]
 name = "Start Backend"
+=======
+modules = ["nodejs-20", "web"]
+run = "npm run dev"
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+run = ["sh", "-c", "npm start"]
+build = ["sh", "-c", "npm run build"]
+
+[[ports]]
+localPort = 3000
+externalPort = 80
+
+[[ports]]
+localPort = 3001
+externalPort = 3001
+
+[[ports]]
+localPort = 3002
+externalPort = 3002
+
+[[ports]]
+localPort = 3003
+externalPort = 3003
+
+[workflows]
+runButton = "Development Server"
+
+[[workflows.workflow]]
+name = "Development Server"
+>>>>>>> 79fa66948f9a4341546e3a01bd6ba22bc6ad392e
 author = 41608291
 mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
+<<<<<<< HEAD
 args = "node index.js"
 
 [[ports]]
 localPort = 5000
 externalPort = 80
+=======
+args = "npm run dev"
+
+[[workflows.workflow]]
+name = "Production Server"
+author = 41608291
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run build"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm start"
+>>>>>>> 79fa66948f9a4341546e3a01bd6ba22bc6ad392e

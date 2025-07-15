@@ -1,0 +1,71 @@
+📊 DADOS PARA O FRONTEND - CONFIGURAÇÃO COMPLETA
+🎯 INFORMAÇÕES ESSENCIAIS PARA O FRONTEND:
+1. URL DO BACKEND:
+https://worker-job-board-backend-leonardosilvas2.replit.app
+2. ROTAS PARA PESQUISA TRABALHISTA:
+📤 ENVIAR DADOS (POST):
+
+URL: https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research
+Método: POST
+Content-Type: application/json
+📥 BUSCAR DADOS SALVOS (GET):
+
+URL: https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research-leads
+Método: GET
+📋 BUSCAR ESTRUTURA DO FORMULÁRIO (GET):
+
+URL: https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research
+Método: GET
+3. ESTRUTURA DOS DADOS QUE O FRONTEND DEVE ENVIAR:
+{
+  "ultimaEmpresa": "Nome da empresa",
+  "tipoCarteira": "sim|nao|parcial",
+  "recebeuTudoCertinho": "sim|nao|parcial", 
+  "situacoesDuranteTrabalho": [
+    "horas_extras_nao_pagas",
+    "ferias_nao_concedidas",
+    "fgts_nao_depositado",
+    "13_salario_nao_pago",
+    "desconto_indevido",
+    "assedio_moral",
+    "acidente_trabalho",
+    "nenhuma"
+  ],
+  "aceitaConsultoria": "sim|nao",
+  "nomeCompleto": "Nome completo do usuário",
+  "whatsapp": "(11) 99999-9999"
+}
+4. ESTRUTURA DA RESPOSTA APÓS SALVAR:
+{
+  "message": "Pesquisa trabalhista recebida com sucesso",
+  "data": {
+    "id": 1736434071102,
+    "ultimaEmpresa": "...",
+    "tipoCarteira": "...",
+    // ... todos os campos enviados
+    "createdAt": "2025-01-09T14:27:51.102Z"
+  },
+  "status": "success",
+  "timestamp": "2025-01-09T14:27:51.102Z"
+}
+5. LOCAL DE ARMAZENAMENTO NO BACKEND:
+Arquivo: labor-research-leads.json (persistente)
+Array em memória: laborResearchLeads
+Função de salvamento: saveLeadsToFile()
+6. EXEMPLO DE FETCH PARA O FRONTEND:
+// ENVIAR DADOS
+const response = await fetch('https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(dadosDoFormulario)
+});
+// BUSCAR DADOS SALVOS
+const leads = await fetch('https://worker-job-board-backend-leonardosilvas2.replit.app/api/labor-research-leads');
+const data = await leads.json();
+✅ ESSAS SÃO TODAS AS INFORMAÇÕES QUE O FRONTEND PRECISA!
+
+
+Scroll to latest
+Assistant mode

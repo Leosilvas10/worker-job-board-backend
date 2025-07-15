@@ -1,0 +1,111 @@
+Perfeito! Vou explicar onde a URL é armazenada e como o frontend deve tratar isso.
+
+Onde a URL é armazenada:
+A URL da vaga já está sendo armazenada no campo url de cada vaga. Veja no arquivo jobs-data.json:
+
+{
+  "id": 1752093835744,
+  "title": "Jardineiro",
+  "company": "Residência Zona Sul",
+  "salary": "R$ 1.410,00",
+  "type": "CLT",
+  "url": "https://www.catho.com.br/vaga/jardineiro-residncia-zona-sul-1752093835744"
+}
+Como o frontend deve tratar:
+1. Ao buscar as vagas:
+const response = await fetch('https://worker-job-board-backend-leonardosilvas2.replit.app/api/jobs');
+const data = await response.json();
+// Cada vaga já vem com a URL
+data.jobs.forEach(job => {
+  console.log(`Vaga: ${job.title}`);
+  console.log(`URL: ${job.url}`);
+});
+2. Ao enviar candidatura:
+const candidatura = {
+  // Dados da vaga
+  jobId: job.id,
+  jobTitle: job.title,
+  jobCompany: job.company,
+  jobUrl: job.url,           // ← URL da vaga aqui
+  jobSalary: job.salary,
+  jobType: job.type,
+  
+  // Dados do candidato
+  nomeCompleto: "João Silva",
+  email: "joao@email.com",
+  telefone: "(11) 99999-9999",
+  whatsapp: "(11) 99999-9999",
+  cidade: "São Paulo",
+  estado: "SP",
+  idade: 30,
+  experiencia: "2 anos",
+  disponibilidade: "Período integral",
+  observacoes: "Disponível para começar imediatamente"
+};
+const response = await fetch('https://worker-job-board-backend-leonardosilvas2.replit.app/api/job-applications', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(candidatura)
+});
+3. Exemplo prático no React:
+function CandidaturaModal({ vaga, onClose }) {
+  const [formData, setFormData] = useState({
+    nomeCompleto: '',
+    email: '',
+    telefone: '',
+    // ... outros campos
+  });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    const candidatura = {
+      // Dados da vaga selecionada
+      jobId: vaga.id,
+      jobTitle: vaga.title,
+      jobCompany: vaga.company,
+      jobUrl: vaga.url,        // ← URL da vaga
+      jobSalary: vaga.salary,
+      jobType: vaga.type,
+      
+      // Dados do formulário
+      ...formData
+    };
+    try {
+      const response = await fetch('/api/job-applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(candidatura)
+      });
+      
+      if (response.ok) {
+        alert('Candidatura enviada com sucesso!');
+        onClose();
+      }
+    } catch (error) {
+      console.error('Erro ao enviar candidatura:', error);
+    }
+  };
+O que acontece no backend:
+O backend já está preparado para receber e armazenar a URL:
+
+// Salva candidatura com URL da vaga
+const applicationData = {
+  id: Date.now(),
+  jobId,
+  jobTitle,
+  jobCompany,
+  jobUrl,              // ← URL salva aqui
+  jobSalary,
+  jobType,
+  nomeCompleto,
+  email,
+  // ... outros dados
+  createdAt: new Date().toISOString()
+};
+Resumo para o frontend:
+Buscar vagas: GET /api/jobs (cada vaga já vem com url)
+Candidatar: POST /api/job-applications (enviar jobUrl: vaga.url)
+A URL fica linkada ao lead da candidatura automaticamente
+Está tudo pronto! O frontend só precisa pegar a vaga.url e enviar no campo jobUrl da candidatura. 🚀
