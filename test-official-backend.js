@@ -2,7 +2,7 @@
 async function testOfficialBackend() {
   console.log('🧪 Testando conexão com API oficial do backend...');
   
-  const BACKEND_URL = 'https://worker-job-board-backend-leonardosilvas2.replit.app';
+  const BACKEND_URL = 'https://api.sitedotrabalhador.com.br';
   
   try {
     // Teste 1: Endpoint /api/jobs

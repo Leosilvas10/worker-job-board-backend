@@ -1,10 +1,9 @@
 
-const backendUrl = 'https://worker-job-board-backend-leonardosilvas2.replit.app';
+const backendUrl = 'https://api.sitedotrabalhador.com.br';
 
 async function testBackendConnection() {
   console.log('🧪 Testando conexão com backend...');
   console.log('🔗 URL:', backendUrl);
-  
   try {
     // Teste 1: Health check
     console.log('\n📊 Testando /api/jobs-stats...');

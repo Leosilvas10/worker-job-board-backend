@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://seu-site-do-trabalhador.onrender.com/sitemap.xml

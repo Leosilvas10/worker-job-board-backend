@@ -12,7 +12,7 @@ const nextConfig = {
     outputFileTracingRoot: undefined,
   },
   async rewrites() {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.sitedotrabalhador.com.br';
     
     // Garantir que a URL sempre comece com https://
     const validApiUrl = apiUrl.startsWith('http') ? apiUrl : `https://${apiUrl}`;

@@ -2,7 +2,7 @@
 // Configuração do backend
 export const BACKEND_CONFIG = {
   // URL do backend em produção
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app',
+  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'https://api.sitedotrabalhador.com.br',
   
   // Endpoints disponíveis
   ENDPOINTS: {

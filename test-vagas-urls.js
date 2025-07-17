@@ -1,7 +1,7 @@
 
 console.log('🔍 Testando URLs das vagas reais...');
 
-const BACKEND_URL = 'https://worker-job-board-backend-leonardosilvas2.replit.app';
+const BACKEND_URL = 'https://api.sitedotrabalhador.com.br';
 
 async function testJobsUrls() {
   try {

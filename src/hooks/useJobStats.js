@@ -61,7 +61,7 @@ export const useJobStats = () => {
         }
 
         // Se o local falhar, tentar o backend externo
-        const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://worker-job-board-backend-leonardosilvas2.replit.app'
+        const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.sitedotrabalhador.com.br'
         
         console.log('📡 Tentando backend externo:', BACKEND_URL)
         
