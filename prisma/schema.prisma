@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id               Int      @id @default(autoincrement())
+  nome             String
+  whatsapp         String
+  ultimaEmpresa    String
+  tipoContrato     String
+  recebeuVerbas    String
+  situacoesVividas String
+  desejaConsulta   String
+  vagaId           Int?
+  vaga             Vaga?     @relation(fields: [vagaId], references: [id])
+  createdAt        DateTime  @default(now())
+}
+
+model Vaga {
+  id               Int      @id @default(autoincrement())
+  titulo           String
+  descricao        String
+  empresa          String   @default("Empresa")
+  localizacao      String   @default("Brasil")
+  categoria        String   @default("Geral")
+  tipo             String   @default("CLT")
+  salario          Float
+  urlOriginal      String   @unique
+  destaque         Boolean  @default(false)
+  ativa            Boolean  @default(true)
+  candidatos       Lead[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}

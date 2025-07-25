@@ -1,0 +1,146 @@
+{
+    "success": true,
+    "data": [
+        {
+            "id": 10,
+            "titulo": "Babá",
+            "descricao": "Cuidados com criança de 2 anos. Experiência comprovada e referências.",
+            "salario": 1800,
+            "urlOriginal": "https://www.infojobs.com.br",
+            "destaque": false,
+            "ativa": true,
+            "createdAt": "2025-07-05T15:20:15.353Z",
+            "updatedAt": "2025-07-05T15:20:15.353Z",
+            "_count": {
+                "candidatos": 0
+            }
+        },
+        {
+            "id": 9,
+            "titulo": "Operador de Caixa",
+            "descricao": "Operação de caixa e atendimento ao cliente em supermercado.",
+            "salario": 1450,
+            "urlOriginal": "https://www.sine.com.br/oportunidades",
+            "destaque": true,
+            "ativa": true,
+            "createdAt": "2025-07-05T15:20:15.344Z",
+            "updatedAt": "2025-07-05T15:20:15.344Z",
+            "_count": {
+                "candidatos": 0
+            }
+        },
+        {
+            "id": 8,
+            "titulo": "Auxiliar de Cozinha",
+            "descricao": "Preparo e distribuição da merenda escolar em escola municipal.",
+            "salario": 1380,
+            "urlOriginal": "https://www.catho.com.br/vagas",
+            "destaque": false,
+            "ativa": true,
+            "createdAt": "2025-07-05T15:20:15.335Z",
+            "updatedAt": "2025-07-05T15:20:15.335Z",
+            "_count": {
+                "candidatos": 0
+            }
+        },
+        {
+            "id": 7,
+            "titulo": "Vendedor(a)",
+            "descricao": "Vendas de roupas e acessórios em loja física. Experiência em varejo.",
+            "salario": 1500,
+            "urlOriginal": "https://www.infojobs.com.br",
+            "destaque": false,
+            "ativa": true,
+            "createdAt": "2025-07-05T15:20:15.325Z",
+            "updatedAt": "2025-07-05T15:20:15.325Z",
+            "_count": {
+                "candidatos": 0
+            }
+        },
+        {
+            "id": 6,
+            "titulo": "Motorista Entregador",
+            "descricao": "Entregas de produtos diversos na região metropolitana. CNH categoria B obrigatória.",
+            "salario": 2100,
+            "urlOriginal": "https://www.sine.com.br/oportunidades",
+            "destaque": true,
+            "ativa": true,
+            "createdAt": "2025-07-05T15:20:15.315Z",
+            "updatedAt": "2025-07-05T15:20:15.315Z",
+            "_count": {
+                "candidatos": 0
+            }
+        },
+        {
+            "id": 5,
+            "titulo": "Garçom/Garçonete",
+            "descricao": "Atendimento em restaurante, anotação de pedidos e servir mesas.",
+            "salario": 1600,
+            "urlOriginal": "https://www.catho.com.br/vagas",
+            "destaque": true,
+            "ativa": true,
+            "createdAt": "2025-07-05T15:20:15.307Z",
+            "updatedAt": "2025-07-05T15:20:15.307Z",
+            "_count": {
+                "candidatos": 0
+            }
+        },
+        {
+            "id": 4,
+            "titulo": "Auxiliar de Limpeza",
+            "descricao": "Limpeza de escritórios comerciais no período noturno.",
+            "salario": 1412,
+            "urlOriginal": "https://www.vagas.com.br",
+            "destaque": false,
+            "ativa": true,
+            "createdAt": "2025-07-05T15:20:15.298Z",
+            "updatedAt": "2025-07-05T15:20:15.298Z",
+            "_count": {
+                "candidatos": 0
+            }
+        },
+        {
+            "id": 3,
+            "titulo": "Porteiro Diurno",
+            "descricao": "Controle de acesso e atendimento aos moradores em condomínio residencial.",
+            "salario": 1500,
+            "urlOriginal": "https://www.sine.com.br/oportunidades",
+            "destaque": true,
+            "ativa": true,
+            "createdAt": "2025-07-05T15:20:15.291Z",
+            "updatedAt": "2025-07-05T15:20:15.291Z",
+            "_count": {
+                "candidatos": 0
+            }
+        },
+        {
+            "id": 2,
+            "titulo": "Diarista",
+            "descricao": "Limpeza completa de apartamento 2 quartos, 2x por semana.",
+            "salario": 150,
+            "urlOriginal": "https://www.infojobs.com.br",
+            "destaque": true,
+            "ativa": true,
+            "createdAt": "2025-07-05T15:20:15.280Z",
+            "updatedAt": "2025-07-05T15:20:15.280Z",
+            "_count": {
+                "candidatos": 0
+            }
+        },
+        {
+            "id": 1,
+            "titulo": "Empregada Doméstica",
+            "descricao": "Limpeza geral da casa, organização, preparo de refeições simples. Experiência comprovada.",
+            "salario": 1320,
+            "urlOriginal": "https://www.catho.com.br/vagas",
+            "destaque": true,
+            "ativa": true,
+            "createdAt": "2025-07-05T15:20:15.254Z",
+            "updatedAt": "2025-07-05T15:20:15.254Z",
+            "_count": {
+                "candidatos": 1
+            }
+        }
+    ],
+    "total": 10
+}

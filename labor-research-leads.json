@@ -1,0 +1,86 @@
+[
+  {
+    "nomeCompleto": "leonardo",
+    "email": "leonardosilvas10@gmail.com",
+    "whatsapp": "(31) 99199-8938",
+    "idade": 18,
+    "cidade": "Porto Alegre",
+    "estado": "RS",
+    "nomeUltimaEmpresa": "aliar",
+    "tipoCarteira": "com_carteira",
+    "recebeuTudoCertinho": "sim",
+    "situacoesEnfrentadas": [
+      "hora_extra_sem_receber",
+      "domingos_feriados_sem_adicional",
+      "assedio_humilhacoes"
+    ],
+    "aceitaConsultoria": "sim",
+    "mensagem": "",
+    "nome_ultima_empresa": "aliar",
+    "tipo_carteira": "com_carteira",
+    "recebeu_tudo_certinho": "sim",
+    "situacoes_enfrentadas": "hora_extra_sem_receber, domingos_feriados_sem_adicional, assedio_humilhacoes",
+    "aceita_consultoria": "sim",
+    "vaga": null,
+    "fonte": "modal_pesquisa_trabalhista_rapida",
+    "timestamp": "2025-07-17T14:55:06.609Z"
+  },
+  {
+    "nomeCompleto": "leonardo",
+    "email": "leonardosilvas10@gmail.com",
+    "whatsapp": "(31) 99199-8938",
+    "idade": 18,
+    "cidade": "Niterói",
+    "estado": "RJ",
+    "nomeUltimaEmpresa": "ALAIR",
+    "tipoCarteira": "com_carteira",
+    "recebeuTudoCertinho": "sim",
+    "situacoesEnfrentadas": [
+      "hora_extra_sem_receber",
+      "nenhuma_dessas",
+      "acumulo_funcoes_sem_aumento"
+    ],
+    "aceitaConsultoria": "sim",
+    "mensagem": "",
+    "nome_ultima_empresa": "ALAIR",
+    "tipo_carteira": "com_carteira",
+    "recebeu_tudo_certinho": "sim",
+    "situacoes_enfrentadas": "hora_extra_sem_receber, nenhuma_dessas, acumulo_funcoes_sem_aumento",
+    "aceita_consultoria": "sim",
+    "vaga": null,
+    "fonte": "modal_pesquisa_trabalhista_rapida",
+    "timestamp": "2025-07-17T17:07:47.459Z",
+    "situacoesDuranteTrabalho": []
+  },
+  {
+    "nomeCompleto": "leonardo",
+    "email": "leonardosilvas10@gmail.com",
+    "whatsapp": "(31) 99199-8938",
+    "idade": 18,
+    "cidade": "Porto Alegre",
+    "estado": "RS",
+    "nomeUltimaEmpresa": "aliar",
+    "tipoCarteira": "com_carteira",
+    "recebeuTudoCertinho": "sim",
+    "situacoesEnfrentadas": [
+      "hora_extra_sem_receber",
+      "acumulo_funcoes_sem_aumento"
+    ],
+    "aceitaConsultoria": "sim",
+    "mensagem": "",
+    "nome_ultima_empresa": "aliar",
+    "tipo_carteira": "com_carteira",
+    "recebeu_tudo_certinho": "sim",
+    "situacoes_enfrentadas": "hora_extra_sem_receber, acumulo_funcoes_sem_aumento",
+    "aceita_consultoria": "sim",
+    "vaga": {
+      "id": "catho_1",
+      "titulo": "Doméstica - Catho",
+      "empresa": "Catho LTDA",
+      "localizacao": "São Paulo, SP"
+    },
+    "fonte": "modal_pesquisa_trabalhista_rapida",
+    "timestamp": "2025-07-18T15:01:55.536Z",
+    "situacoesDuranteTrabalho": []
+  }
+]
